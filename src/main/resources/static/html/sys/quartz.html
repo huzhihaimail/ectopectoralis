@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="../../plugin/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../plugin/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../plugin/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../plugin/ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+    <link href="../../plugin/ztree/css/metroStyle/metroStyle.css" rel="stylesheet">
+
+    <link rel="icon" href="../../images/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../../images/favicon.png" type="image/x-icon"/>
+</head>
+<body style="padding-top: 15px;">
+<div id="app" class="container-fluid" v-cloak>
+
+    <!-- 查询列表展示区域 -->
+    <div v-show="show">
+        <div class="row-fluid">
+            <div class="col-md-10 form-inline">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="请输入关键字查询" @keyup.enter="query"
+                           v-model="vueQueryParam.keyword">
+                    <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary" @click="query">
+                                <i class="fa fa-search"></i>查询
+                            </button>
+                    </span>
+                </div>
+
+                <!-- 此处定义表格左上方的按钮-->
+                <div id="toolbar" class="btn-group">
+                    <a class="btn btn-success" @click="save"><i class="fa fa-floppy-o"></i>新建</a>
+                    <a class="btn btn-warning" @click="update"><i class="fa fa-pencil-square-o"></i>修改</a>
+                    <a class="btn btn-danger" @click="del"><i class="fa fa-trash"></i>删除</a>
+                    <a class="btn btn-primary" @click="changeStart"><i class="fa fa-caret-square-o-right"></i>&nbsp;启用</a>
+                    <a class="btn btn-primary" @click="changeStop"><i class="fa fa-power-off"></i>&nbsp;停用</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="col-md-12" style="margin-top: 15px">
+
+                <!-- show table -->
+                <table id="grid"></table>
+                <!-- /show table -->
+            </div>
+        </div>
+    </div>
+    <!-- /查询列表展示区域 -->
+
+    <!-- 新建、修改展示区域 -->
+    <div v-show="!show" class="panel panel-primary" v-cloak>
+
+        <div class="panel-heading">
+            <i class="fa fa-pencil-square-o"></i> &nbsp; {{title}}
+        </div>
+
+        <div class="panel-body">
+
+            <!-- 异常信息提示 -->
+            <div class="form-horizontal col-md-8" v-show="errorMessage!=null">
+                <div class="col-sm-9 alert alert-danger">
+                    <span class="fa fa-exclamation-triangle fa-lg"></span> {{errorMessage}}
+                </div>
+            </div>
+            <!-- /异常信息提示 -->
+
+            <div class="form-horizontal col-md-8">
+
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">名称<span style="color:red">*</span></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.jobName"
+                               placeholder="请输入名称"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">分组<span style="color:red">*</span></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.jobGroup"
+                               placeholder="请输入分组"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">表达式<span style="color:red">*</span></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.cronExpression"
+                               placeholder="请输入cron表达式"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">描述<span style="color:red">*</span></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.description"
+                               placeholder="请输入描述"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">并行运行<span style="color:red">*</span></div>
+                    <div class="col-sm-2">
+                        <span class="text-red">是</span>
+                        <input type="radio" value="0" name="isConcurrent" v-model="model.isConcurrent">
+                    </div>
+                    <div class="col-sm-2">
+                        否 <input type="radio" value="1" name="isConcurrent" v-model="model.isConcurrent">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">Spring bean<span style="color:red">*</span></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.springId"
+                               placeholder="请输入spring bean"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">方法名<span style="color:red">*</span></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.methodName"
+                               placeholder="请输入方法名"/>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <a type="button" class="btn btn-success" @click="commit"><i class="fa fa-check-square-o"></i>&nbsp;确定</a>&nbsp;&nbsp;
+                    <a type="button" class="btn btn-warning" @click="reload"><i class="fa fa-undo"></i>&nbsp;返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /新建、修改展示区域 -->
+
+</div>
+</body>
+<script src="../../plugin/jquery/jquery.min.js"></script>
+<script src="../../plugin/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../plugin/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+<script src="../../plugin/bootstrap-table/1.12.1/bootstrap-table-zh-CN.min.js"></script>
+<script src="../../plugin/vue/2.5.13/vue.min.js"></script>
+<script src="../../plugin/layer-v3.1.1/layer/layer.js"></script>
+<script src="../../plugin/ztree/js/jquery.ztree.all.min.js"></script>
+<script src="../../plugin/moment/moment.min.js"></script>
+
+<script src="../../vue/common/application.js"></script>
+<script src="../../vue/common/layer.js"></script>
+<script src="../../vue/common/bootstrap-table.js"></script>
+<script src="../../vue/sys/quartzJob.js"></script>
+</html>
