@@ -1,12 +1,9 @@
 package cn.com.njdhy.muscle.biceps.service.srvc;
 
-import cn.com.njdhy.muscle.biceps.dao.SrvcBannerDao;
-import cn.com.njdhy.muscle.biceps.model.SrvcBanner;
+import cn.com.njdhy.muscle.biceps.dao.srvc.SrvcBannerDao;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
 import cn.com.njdhy.muscle.biceps.service.BaseServiceImpl;
-import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 /**
  * banner图管理业务层实现类

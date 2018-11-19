@@ -1,10 +1,7 @@
 package cn.com.njdhy.muscle.biceps.service.srvc;
 
-import cn.com.njdhy.muscle.biceps.model.SrvcBanner;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
 import cn.com.njdhy.muscle.biceps.service.BaseService;
-import com.github.pagehelper.PageInfo;
-
-import java.util.Map;
 
 /**
  * banner图管理业务处理接口

@@ -4,9 +4,9 @@ import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.controller.sys.RoleCtl;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
-import cn.com.njdhy.muscle.biceps.exception.srvc.BannerErrorCode;
-import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
-import cn.com.njdhy.muscle.biceps.service.srvc.SrvcBannerService;
+import cn.com.njdhy.muscle.biceps.exception.srvc.ModuleErrorCode;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModule;
+import cn.com.njdhy.muscle.biceps.service.srvc.SrvcModuleService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,18 +18,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * banner图管理控制器
+ * 十大模块控制器
  * @author rain
- * @date 2018/11/16 10:46
+ * @date 2018/11/17 22:24
  **/
 @RestController
-@RequestMapping("/srvc/banner")
-public class BannerCtl {
+@RequestMapping("/srvc/module")
+public class ModuleCtl {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleCtl.class);
 
     @Autowired
-    private SrvcBannerService srvcBannerService;
+    private SrvcModuleService srvcModuleService;
 
     /**
      * 查询banner图列表
@@ -42,7 +42,7 @@ public class BannerCtl {
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
-        PageInfo<SrvcBanner> result = srvcBannerService.queryList(queryParam, pageNumber, pageSize);
+        PageInfo<SrvcModule> result = srvcModuleService.queryList(queryParam, pageNumber, pageSize);
 
         return Result.success(result.getTotal(), result.getList());
     }
@@ -58,10 +58,10 @@ public class BannerCtl {
 
         // todo 参数校验
 
-        SrvcBanner model = srvcBannerService.queryById(id);
+        SrvcModule model = srvcModuleService.queryById(id);
 
         if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcBanner();
+            model = new SrvcModule();
         }
 
         return Result.success().put("model", model);
@@ -71,21 +71,21 @@ public class BannerCtl {
     /**
      * 保存
      *
-     * @param srvcBanner 请求数据对象
+     * @param srvcModule 请求数据对象
      * @return 结果对象
      */
     @RequestMapping("/insert")
-    public Result insert(@RequestBody SrvcBanner srvcBanner) {
+    public Result insert(@RequestBody SrvcModule srvcModule) {
 
         try {
 
             // 执行入库操作
-            srvcBannerService.insert(srvcBanner);
+            srvcModuleService.insert(srvcModule);
         } catch (ApplicationException e) {
-            return Result.error(BannerErrorCode.SRVC_BANNER_SAVE_APP_ERROR_CODE, BannerErrorCode.SRVC_BANNER_SAVE_APP_ERROR_MESSAGE);
+            return Result.error(ModuleErrorCode.SRVC_MODULE_SAVE_APP_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(BannerErrorCode.SRVC_BANNER_SAVE_ERROR_CODE, BannerErrorCode.SRVC_BANNER_SAVE_ERROR_MESSAGE);
+            return Result.error(ModuleErrorCode.SRVC_MODULE_SAVE_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_SAVE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -94,22 +94,22 @@ public class BannerCtl {
     /**
      * 修改操作
      *
-     * @param srvcBanner 请求数据对象
+     * @param srvcModule 请求数据对象
      * @return 结果对象
      */
     @RequestMapping("/update")
-    public Result update(@RequestBody SrvcBanner srvcBanner) {
+    public Result update(@RequestBody SrvcModule srvcModule) {
 
         try {
             // 校验参数
             // TODO: 2018/3/14
 
             // 执行修改
-            srvcBannerService.update(srvcBanner);
+            srvcModuleService.update(srvcModule);
         } catch (RuntimeException e) {
-            return Result.error(BannerErrorCode.SRVC_BANNER_UPDATE_APP_ERROR_CODE, BannerErrorCode.SRVC_BANNER_UPDATE_APP_ERROR_MESSAGE);
+            return Result.error(ModuleErrorCode.SRVC_MODULE_UPDATE_APP_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
-            return Result.error(BannerErrorCode.SRVC_BANNER_UPDATE_ERROR_CODE, BannerErrorCode.SRVC_BANNER_UPDATE_ERROR_MESSAGE);
+            return Result.error(ModuleErrorCode.SRVC_MODULE_UPDATE_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_UPDATE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -126,7 +126,7 @@ public class BannerCtl {
 
         try {
             // 校验参数 todo
-            srvcBannerService.deleteByIds(ids);
+            srvcModuleService.deleteByIds(ids);
         } catch (ApplicationException e) {
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {

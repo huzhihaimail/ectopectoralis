@@ -1,5 +1,6 @@
-package cn.com.njdhy.muscle.biceps.model;
+package cn.com.njdhy.muscle.biceps.model.srvc;
 
+import cn.com.njdhy.muscle.biceps.model.BaseModel;
 import lombok.Data;
 
 /**

@@ -2,15 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 配置dao接口路径-->
-<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcBannerDao">
+<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcDecorateGuideDao">
 
     <!-- type配置model层实体类名-->
-    <resultMap id="SrvcBannerMap" type="SrvcBanner">
+    <resultMap id="SrvcDecorateGuideMap" type="SrvcDecorateGuide">
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="title" column="title"></result>
-        <result property="imgUrl" column="img_url"></result>
-        <result property="linkUrl" column="link_url"></result>
+        <result property="content" column="content"></result>
+        <result property="imageUrl" column="image_url"></result>
+        <result property="type" column="type"></result>
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
@@ -18,26 +19,26 @@
 
     <!-- 配置表名 -->
     <sql id="tableName">
-        srvc_banner
+        srvc_decorate_guide
     </sql>
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, img_url, title, link_url,create_date, update_date, delete_flag
+        id, title, content, image_url, `type` ,create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{title}, #{imgUrl}, #{linkUrl}, NOW(),#{updateDate}, 0
+        #{id}, #{title},#{content}, #{imageUrl}, #{type}, NOW(),#{updateDate}, 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        title=#{title}, img_url=#{imgUrl}, link_url=#{linkUrl}, update_date=NOW(), delete_flag=#{deleteFlag}
+        title=#{title},content=#{content}, image_url=#{imageUrl}, `type`=#{type}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
-    <select id="queryByName" resultMap="SrvcBannerMap" parameterType="String">
+    <select id="queryByName" resultMap="SrvcDecorateGuideMap" parameterType="String">
         SELECT
         <include refid="columns"/>
         FROM
@@ -49,7 +50,7 @@
     </select>
 
     <!-- 根据ID查询-->
-    <select id="queryById" resultMap="SrvcBannerMap" parameterType="String">
+    <select id="queryById" resultMap="SrvcDecorateGuideMap" parameterType="String">
         SELECT
         <include refid="columns"/>
         FROM
@@ -70,7 +71,7 @@
     </delete>
 
     <!-- 新建  useGeneratedKeys="true" 用于返回新增后的id值-->
-    <insert id="insert" parameterType="SrvcBanner" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="SrvcDecorateGuide" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         <include refid="tableName"/>
         (<include refid="columns"/>)
@@ -79,7 +80,7 @@
     </insert>
 
     <!-- 修改 -->
-    <update id="update" parameterType="SrvcBanner">
+    <update id="update" parameterType="SrvcDecorateGuide">
         UPDATE
         <include refid="tableName"/>
         SET
@@ -89,7 +90,7 @@
     </update>
 
     <!-- 根据条件查询 -->
-    <select id="queryList" resultMap="SrvcBannerMap" parameterType="map">
+    <select id="queryList" resultMap="SrvcDecorateGuideMap" parameterType="map">
 
         SELECT
         <include refid="columns"/>

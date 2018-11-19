@@ -11,42 +11,32 @@ public interface BannerErrorCode {
     /**
      * 首页
      */
-    String SYS_USER = "2000";
+    String SRVC_BANNER = "4000";
 
 
     /**
      * 新建用户系统异常
      */
-    String SYS_USER_SAVE_APP_ERROR_CODE = SYS_USER + "1";
-    String SYS_USER_SAVE_APP_ERROR_MESSAGE = "新建用户出现系统异常";
+    String SRVC_BANNER_SAVE_APP_ERROR_CODE = SRVC_BANNER + "1";
+    String SRVC_BANNER_SAVE_APP_ERROR_MESSAGE = "新建banner图出现系统异常";
 
     /**
      * 新建用户根异常
      */
-    String SYS_USER_SAVE_ERROR_CODE = SYS_USER + "2";
-    String SYS_USER_SAVE_ERROR_MESSAGE = "新建用户出现根异常";
+    String SRVC_BANNER_SAVE_ERROR_CODE = SRVC_BANNER + "2";
+    String SRVC_BANNER_SAVE_ERROR_MESSAGE = "新建banner图出现根异常";
 
     /**
      * 更新用户系统异常
      */
-    String SYS_USER_UPDATE_APP_ERROR_CODE = SYS_USER + "3";
-    String SYS_USER_UPDATE_APP_ERROR_MESSAGE = "更新用户出现系统异常";
+    String SRVC_BANNER_UPDATE_APP_ERROR_CODE = SRVC_BANNER + "3";
+    String SRVC_BANNER_UPDATE_APP_ERROR_MESSAGE = "更新banner图出现系统异常";
 
     /**
      * 更新用户根异常
      */
-    String SYS_USER_UPDATE_ERROR_CODE = SYS_USER + "4";
-    String SYS_USER_UPDATE_ERROR_MESSAGE = "更新用户出现根异常";
+    String SRVC_BANNER_UPDATE_ERROR_CODE = SRVC_BANNER + "4";
+    String SRVC_BANNER_UPDATE_ERROR_MESSAGE = "更新banner图出现根异常";
 
-    /**
-     * 加载角色系统异常
-     */
-    String SYS_USER_LOAD_ROLES_APP_ERROR_CODE = SYS_USER + "5";
-    String SYS_USER_LOAD_ROLES_APP_ERROR_MESSAGE = "查询角色出现系统异常";
 
-    /**
-     * 加载角色异常
-     */
-    String SYS_USER_LOAD_ROLES_ERROR_CODE = SYS_USER + "6";
-    String SYS_USER_LOAD_ROLES_ERROR_MESSAGE = "查询角色出现根异常";
 }

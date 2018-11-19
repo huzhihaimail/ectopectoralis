@@ -20,7 +20,7 @@
         <div class="row-fluid">
             <div class="col-md-10 form-inline">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="请输入关键字查询" @keyup.enter="query"
+                    <input type="text" class="form-control" placeholder="请输入模块名称查询" @keyup.enter="query"
                            v-model="vueQueryParam.keyword">
                     <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" @click="query">
@@ -70,34 +70,21 @@
             <div class="form-horizontal col-md-8">
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">广告标题<span class="text-danger">*</span></div>
+                    <div class="col-sm-3 control-label">模块名称<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.title"
-                               placeholder="请输入广告标题"/>
+                        <input type="text" class="form-control" v-model="model.moduleName"
+                               placeholder="请输入模块名称"/>
                     </div>
                 </div>
 
                 <!--<div class="form-group">-->
-                    <!--<div class="col-sm-3 control-label">上传图片<span class="text-danger">*</span></div>-->
+                    <!--<div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>-->
                     <!--<div class="col-sm-6">-->
-                        <!--<input type="file" class="form-control" v-model="model.imgUrl" placeholder=""/>-->
+                        <!--<form enctype="multipart/form-data">-->
+                            <!--<input id="file" name="file" type="file" multiple>-->
+                        <!--</form>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="form-group">
-                    <div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>
-                    <div class="col-sm-6">
-                        <form enctype="multipart/form-data">
-                            <input id="file" name="file" type="file" multiple>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-3 control-label">跳转地址<span class="text-danger">*</span></div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.linkUrl" placeholder="请输入跳转地址"/>
-                    </div>
-                </div>
 
                 <div class="form-group text-center">
                     <a type="button" class="btn btn-success" @click="commit"><i class="fa fa-check-square-o"></i>&nbsp;确定</a>&nbsp;&nbsp;
@@ -132,6 +119,6 @@
 
 
 <!-- 业务js -->
-<script src="../../vue/srvc/banner.js"></script>
+<script src="../../vue/srvc/module.js"></script>
 
 </html>
