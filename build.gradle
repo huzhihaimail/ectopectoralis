@@ -38,6 +38,7 @@ ext {
     swaggerVersion = "2.6.1"
     lombokVersion = "1.16.18"
     quartzVersion = '2.2.1'
+    jsonVersion = '1.2.47'
 }
 
 
@@ -64,6 +65,9 @@ dependencies {
     compile "org.quartz-scheduler:quartz:${quartzVersion}"
     // 监控
     compile "org.springframework.boot:spring-boot-starter-actuator"
+    //fastjson
+    compile "com.alibaba:fastjson:${jsonVersion}"
+
     // mysql
     runtime "mysql:mysql-connector-java"
     // 热部署

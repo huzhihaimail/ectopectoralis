@@ -38,4 +38,10 @@ public interface CustomerErrorCode {
     String SRVC_CUSTOMER_UPDATE_ERROR_CODE = SRVC_CUSTOMER + "4";
     String SRVC_CUSTOMER_UPDATE_ERROR_MESSAGE = "更新顾客出现根异常";
 
+    /**
+     * 入参校验
+     */
+    String SRVC_CUSTOMER_PARAMS_ERROR_CODE = SRVC_CUSTOMER + "5";
+    String SRVC_CUSTOMER_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
+
 }

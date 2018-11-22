@@ -15,4 +15,18 @@ public class SrvcModule extends BaseModel{
      * 模块名称
      */
     private String moduleName;
+
+    //以下关联srvc_module_sub表
+    /**
+     * 子标题
+     */
+    private String title;
+    /**
+     * 跳转地址
+     */
+    private String imageUrl;
+    /**
+     * 类型 1主图 2 辅图
+     */
+    private Integer imageType;
 }

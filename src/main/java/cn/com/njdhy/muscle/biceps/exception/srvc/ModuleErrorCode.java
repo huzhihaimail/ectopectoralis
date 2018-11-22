@@ -38,4 +38,10 @@ public interface ModuleErrorCode {
     String SRVC_MODULE_UPDATE_ERROR_CODE = SRVC_MODULE + "4";
     String SRVC_MODULE_UPDATE_ERROR_MESSAGE = "更新十大模块出现根异常";
 
+    /**
+     * 入参校验
+     */
+    String SRVC_MODULE_PARAMS_ERROR_CODE = SRVC_MODULE + "5";
+    String SRVC_MODULE_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
+
 }

@@ -109,6 +109,14 @@
         ) t
     </select>
 
+    <!--api 查询video视频列表-->
+    <select id="selectVideoList" resultMap="SrvcVideoMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE delete_flag = 0
+    </select>
 
 </mapper>
 

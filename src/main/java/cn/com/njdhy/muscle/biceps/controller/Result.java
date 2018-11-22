@@ -39,6 +39,17 @@ public class Result extends HashMap<String, Object> {
         return r;
     }
 
+    /**
+     * 查询返回的list集合
+     * @param list
+     * @return
+     */
+    public static Result success( List list) {
+        Result r = new Result();
+        r.put("rows", list);
+        return r;
+    }
+
     public static Result success(String msg) {
         Result r = new Result();
         r.put("msg", msg);
@@ -62,6 +73,7 @@ public class Result extends HashMap<String, Object> {
         return new Result();
     }
 
+    @Override
     public Result put(String key, Object value) {
         super.put(key, value);
         return this;

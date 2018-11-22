@@ -26,7 +26,7 @@ import java.util.Map;
 @RequestMapping("/srvc/video")
 public class VideoCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleCtl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VideoCtl.class);
 
     @Autowired
     private SrvcVideoService srvcVideoService;

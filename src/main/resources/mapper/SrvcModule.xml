@@ -9,6 +9,11 @@
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="moduleName" column="module_name"></result>
+
+        <result property="title" column="title"></result>
+        <result property="imageUrl" column="image_url"></result>
+        <result property="imageType" column="image_type"></result>
+
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
@@ -17,6 +22,10 @@
     <!-- 配置表名 -->
     <sql id="tableName">
         srvc_module
+    </sql>
+
+    <sql id="tableName2">
+        srvc_module_sub
     </sql>
 
     <!-- for insert columns -->
@@ -107,6 +116,35 @@
         ) t
     </select>
 
+    <!--backend关联查询-->
+    <select id="selectModuleList" resultMap="SrvcModuleMap" parameterType="map">
+        SELECT
+        m.*,
+        s.id,s.title,s.image_url,s.image_type
+        FROM
+        <include refid="tableName"/> m
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON m.id = s.module_id
+        <where>
+            AND m.delete_flag = 0
+            <if test="keyword!=null and keyword!=''">
+                AND m.module_name LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
 
+    <!--api关联查询-->
+    <select id="selectModuleInfo" resultMap="SrvcModuleMap" parameterType="String">
+        SELECT
+        m.*,
+        s.id,s.title,s.image_url,s.image_type
+        FROM
+        <include refid="tableName"/> m
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON m.id = s.module_id
+        WHERE m.delete_flag = 0 AND m.module_name =#{moduleName}
+    </select>
 </mapper>
 

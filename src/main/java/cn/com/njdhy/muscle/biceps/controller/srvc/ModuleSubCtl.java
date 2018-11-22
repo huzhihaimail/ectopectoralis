@@ -2,7 +2,6 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
-import cn.com.njdhy.muscle.biceps.controller.sys.RoleCtl;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.sys.UserErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModuleSub;
@@ -26,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/srvc/module/sub")
 public class ModuleSubCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleCtl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ModuleSubCtl.class);
 
     @Autowired
     private SrvcModuleSubService srvcModuleSubService;

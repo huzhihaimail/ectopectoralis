@@ -38,4 +38,10 @@ public interface HousesErrorCode {
     String SRVC_HOUSES_UPDATE_ERROR_CODE = SRVC_HOUSES + "4";
     String SRVC_HOUSES_UPDATE_ERROR_MESSAGE = "更新楼盘情况出现根异常";
 
+    /**
+     * 入参校验
+     */
+    String SRVC_HOUSES_PARAMS_ERROR_CODE = SRVC_HOUSES + "5";
+    String SRVC_HOUSES_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
+
 }

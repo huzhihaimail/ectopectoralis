@@ -38,4 +38,10 @@ public interface CompanyDescErrorCode {
     String SRVC_COMPANYDESC_UPDATE_ERROR_CODE = SRVC_COMPANYDESC + "4";
     String SRVC_COMPANYDESC_UPDATE_ERROR_MESSAGE = "更新banner图出现根异常";
 
+    /**
+     * 入参校验
+     */
+    String SRVC_COMPANYDESC_PARAMS_ERROR_CODE = SRVC_COMPANYDESC + "5";
+    String SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
+
 }

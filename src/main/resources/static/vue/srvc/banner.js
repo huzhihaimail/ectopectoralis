@@ -18,8 +18,6 @@ var showColumns = [
         field: "title",
         title: "广告标题",
         width: "10%"
-        //sortable: true,
-        //sortName: "title" // sortName的值，需配置和数据库保持一致
     }
     , {
         field: "imgUrl",
@@ -251,16 +249,54 @@ $(function () {
 /**
  * 文件上传
  */
-$('#file').fileinput({
+$('#input-id').fileinput({
     // 设置语言
     language: 'zh',
     // 设置url地址
-    uploadUrl: '#',
+    uploadUrl: '/files/upload',
     // 是否显示预览图
     showPreview: true,
+    //默认异步上传
+    uploadAsync: true,
     // 最大上传文件数
     maxFileCount: 1,
-    // 设置图片格式
-    allowedFileExtensions: ['jpg', 'png', 'gif']
+    // 设置图片格式,即接收的文件后缀
+    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    //显示移除按钮
+    showRemove : true,
+    //是否显示预览
+    showPreview : true,
+    //是否显示标题
+    showCaption: false,
+    //按钮样式
+    browseClass: "btn btn-primary",
+    //是否显示拖拽区域
+    dropZoneEnabled: false,
+    enctype: 'multipart/form-data',
+    validateInitialCount:true,
+    slugCallback : function(filename) {
+        return filename.replace('(', '_').replace(']', '_');
+    }
 });
+//上传前
+$('#input-id').on('filepreupload', function(event, data, previewId, index) {
+    var form = data.form, files = data.files, extra = data.extra,
+        response = data.response, reader = data.reader;
+});
+
+//异步上传返回结果处理
+$("#input-id").on("fileuploaded", function (event, data, previewId, index) {
+    //后台返回的json
+    var response = data.response;
+    var path = JSON.stringify(response.data.path);
+    console.log("response----"+path);
+
+    // var title = $('#input-id1').val();
+    // var imgUrl =path;
+    // console.log("imgUrl--------------"+imgUrl);
+    // var linkUrl = $('#input-id3').val();
+    // var newValue = {"title":title,"imgUrl":imgUrl,"linkUrl":linkUrl};
+    // Vue.set(vm,"data.model",newValue);
+});
+
 

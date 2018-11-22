@@ -2,7 +2,6 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
-import cn.com.njdhy.muscle.biceps.controller.sys.RoleCtl;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.BannerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
@@ -26,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/srvc/banner")
 public class BannerCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleCtl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BannerCtl.class);
 
     @Autowired
     private SrvcBannerService srvcBannerService;
@@ -48,16 +47,18 @@ public class BannerCtl {
     }
 
     /**
-     * 根据id查询用户信息
+     * 根据id查询信息
      *
-     * @param id 用户ID
-     * @return 用户实体
+     * @param id
+     * @return
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
 
-        // todo 参数校验
-
+        //  参数校验
+        if(id == null || id.length()<=0){
+            return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+        }
         SrvcBanner model = srvcBannerService.queryById(id);
 
         if (ObjectUtils.isEmpty(model)) {
@@ -78,10 +79,23 @@ public class BannerCtl {
     public Result insert(@RequestBody SrvcBanner srvcBanner) {
 
         try {
-
+            // 校验参数
+            String title = srvcBanner.getTitle();
+            String imgUrl = srvcBanner.getImgUrl();
+            String linkUrl = srvcBanner.getLinkUrl();
+            if(title==null || title.length()<=0){
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            }
+            if(imgUrl==null || imgUrl.length()<=0){
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            }
+            if(linkUrl==null || linkUrl.length()<=0){
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcBannerService.insert(srvcBanner);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(BannerErrorCode.SRVC_BANNER_SAVE_APP_ERROR_CODE, BannerErrorCode.SRVC_BANNER_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,8 +116,18 @@ public class BannerCtl {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
-
+            String title = srvcBanner.getTitle();
+            String imgUrl = srvcBanner.getImgUrl();
+            String linkUrl = srvcBanner.getLinkUrl();
+            if(title==null || title.length()<=0){
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            }
+            if(imgUrl==null || imgUrl.length()<=0){
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            }
+            if(linkUrl==null || linkUrl.length()<=0){
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            }
             // 执行修改
             srvcBannerService.update(srvcBanner);
         } catch (RuntimeException e) {
@@ -125,7 +149,12 @@ public class BannerCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            // 校验参数
+            for(String id : ids){
+                if(id == null || id.length()<=0){
+                    return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcBannerService.deleteByIds(ids);
         } catch (ApplicationException e) {
             return Result.error(e.getCode(), e.getMsg());

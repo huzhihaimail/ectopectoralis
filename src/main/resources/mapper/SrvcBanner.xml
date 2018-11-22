@@ -109,6 +109,14 @@
         ) t
     </select>
 
+    <!--api 查询banner图列表-->
+    <select id="selectBannerList" resultMap="SrvcBannerMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE delete_flag = 0
+    </select>
 
 </mapper>
 

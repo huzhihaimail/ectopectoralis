@@ -3,6 +3,8 @@ package cn.com.njdhy.muscle.biceps.service.srvc;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
 import cn.com.njdhy.muscle.biceps.service.BaseService;
 
+import java.util.List;
+
 /**
  * banner图管理业务处理接口
  * @author rain
@@ -10,13 +12,9 @@ import cn.com.njdhy.muscle.biceps.service.BaseService;
  **/
 public interface SrvcBannerService extends BaseService<SrvcBanner>{
 
-//    /**
-//     * 根据条件查询banner图列表
-//     * @param map
-//     * @param pageNum
-//     * @param pageSize
-//     * @return
-//     */
-//    PageInfo<SrvcBanner> queryBannerList(Map<String, Object> map, Integer pageNum, Integer pageSize);
-
+    /**
+     * 查询banner图列表
+     * @return
+     */
+    List<SrvcBanner> selectBannerList();
 }

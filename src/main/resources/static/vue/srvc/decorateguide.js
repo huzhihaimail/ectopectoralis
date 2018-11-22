@@ -32,7 +32,19 @@ var showColumns = [
     , {
         field: "type",
         title: "文章类型",
-        width: "20%"
+        width: "20%",
+        formatter: function (value, row, index) { //显示主辅图 1.主图 2.辅图
+            var role = '';
+            switch (value){
+                case 1:
+                    role = '企业新闻'
+                    break;
+                case 2:
+                    role = '装修科普'
+                    break;
+            }
+            return role;
+        }
     }
     , {
         field: "createDate",

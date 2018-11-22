@@ -9,7 +9,6 @@
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="housesId" column="houses_id"></result>
-        <result property="progressTitle" column="progress_title"></result>
         <result property="imageUrl" column="image_url"></result>
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>

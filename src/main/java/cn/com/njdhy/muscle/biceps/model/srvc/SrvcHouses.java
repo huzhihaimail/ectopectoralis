@@ -31,4 +31,14 @@ public class SrvcHouses extends BaseModel{
      * 楼盘所在区域
      */
     private String area;
+    /**
+     * 案例类型：1装修案例 2施工案例
+     */
+    private Integer progressTitle;
+
+    //以下关联srvc_houses_sub表
+    /**
+     * 图片地址
+     */
+    private String imageUrl;
 }

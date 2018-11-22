@@ -15,10 +15,7 @@ public class SrvcHousesSub extends BaseModel {
      * 关联srvc_houses
      */
     private Integer housesId;
-    /**
-     * 进度标题
-     */
-    private String progressTitle;
+
     /**
      * 图片地址
      */

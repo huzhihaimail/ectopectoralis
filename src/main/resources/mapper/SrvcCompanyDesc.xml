@@ -9,6 +9,12 @@
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="name" column="name"></result>
+
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="imageUrl" column="image_url"></result>
+        <result property="author" column="author"></result>
+
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
@@ -17,6 +23,10 @@
     <!-- 配置表名 -->
     <sql id="tableName">
         srvc_companydesc
+    </sql>
+
+    <sql id="tableName2">
+        srvc_companydesc_sub
     </sql>
 
     <!-- for insert columns -->
@@ -107,6 +117,36 @@
         ) t
     </select>
 
+    <!--backend关联查询-->
+    <select id="selectCompanyDescList" resultMap="SrvcCompanyDescMap" parameterType="map">
+        SELECT
+        m.*,
+        s.id,s.title,s.content,s.image_url,s.author
+        FROM
+        <include refid="tableName"/> d
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON d.id = s.company_desc_id
+        <where>
+            AND d.delete_flag = 0
+            <if test="keyword!=null and keyword!=''">
+                AND d.name LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--api关联查询-->
+    <select id="selectCompanyDescInfo" resultMap="SrvcCompanyDescMap" parameterType="String">
+        SELECT
+        d.*,
+        s.id,s.title,s.content,s.image_url,s.author
+        FROM
+        <include refid="tableName"/> d
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON d.id = s.company_desc_id
+        WHERE d.delete_flag = 0 AND d.name =#{name}
+    </select>
 
 </mapper>
 

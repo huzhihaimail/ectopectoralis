@@ -19,16 +19,33 @@ var showColumns = [
         title: "模块名称",
         width: "10%"
     }
-    // , {
-    //     field: "imgUrl",
-    //     title: "图片地址",
-    //     width: "10%"
-    // }
-    // , {
-    //     field: "linkUrl",
-    //     title: "图片跳转链接",
-    //     width: "20%"
-    // }
+    , {
+        field: "title",
+        title: "标题",
+        width: "10%"
+    }
+    , {
+        field: "imageUrl",
+        title: "图片地址",
+        width: "20%"
+    }
+    , {
+        field: "imageType",
+        title: "图片类型",
+        width: "10%",
+        formatter: function (value, row, index) { //显示主辅图 1.主图 2.辅图
+            var role = '';
+            switch (value){
+                case 1:
+                    role = '主图'
+                    break;
+                case 2:
+                    role = '辅图'
+                    break;
+            }
+            return role;
+        }
+    }
 
     , {
         field: "createDate",

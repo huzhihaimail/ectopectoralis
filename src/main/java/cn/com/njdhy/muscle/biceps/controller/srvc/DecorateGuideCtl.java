@@ -2,7 +2,6 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
-import cn.com.njdhy.muscle.biceps.controller.sys.RoleCtl;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.DecorateGuideErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDecorateGuide;
@@ -26,7 +25,7 @@ import java.util.Map;
 @RequestMapping("/srvc/decorate/guide")
 public class DecorateGuideCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleCtl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DecorateGuideCtl.class);
 
     @Autowired
     private SrvcDecorateGuideService srvcDecorateGuideService;
@@ -37,7 +36,7 @@ public class DecorateGuideCtl {
      * @param params     参数列表
      * @param pageNumber 当前页码
      * @param pageSize   每页大小
-     * @return 用户列表
+     * @return banner列表
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {

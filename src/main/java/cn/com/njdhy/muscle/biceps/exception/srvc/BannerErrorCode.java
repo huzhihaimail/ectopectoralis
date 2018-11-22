@@ -38,5 +38,9 @@ public interface BannerErrorCode {
     String SRVC_BANNER_UPDATE_ERROR_CODE = SRVC_BANNER + "4";
     String SRVC_BANNER_UPDATE_ERROR_MESSAGE = "更新banner图出现根异常";
 
-
+    /**
+     * 入参校验
+     */
+    String SRVC_BANNER_PARAMS_ERROR_CODE = SRVC_BANNER + "5";
+    String SRVC_BANNER_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
 }

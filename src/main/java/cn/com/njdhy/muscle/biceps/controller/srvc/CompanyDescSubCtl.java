@@ -2,7 +2,6 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
-import cn.com.njdhy.muscle.biceps.controller.sys.RoleCtl;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.BannerErrorCode;
 import cn.com.njdhy.muscle.biceps.exception.sys.UserErrorCode;
@@ -27,7 +26,7 @@ import java.util.Map;
 @RequestMapping("/srvc/company/desc/sub")
 public class CompanyDescSubCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RoleCtl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDescSubCtl.class);
 
     @Autowired
     private SrvcCompanyDescSubService srvcCompanyDescSubService;
@@ -81,6 +80,7 @@ public class CompanyDescSubCtl {
         try {
 
             // 执行入库操作
+            // 参数要验证
             srvcCompanyDescSubService.insert(srvcCompanyDescSub);
         } catch (ApplicationException e) {
             return Result.error(BannerErrorCode.SRVC_BANNER_SAVE_APP_ERROR_CODE, BannerErrorCode.SRVC_BANNER_SAVE_APP_ERROR_MESSAGE);

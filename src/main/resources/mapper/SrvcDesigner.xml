@@ -112,6 +112,15 @@
         ) t
     </select>
 
+    <!--api 查询设计师列表-->
+    <select id="selectDesignerList" resultMap="SrvcDesignerMap">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE delete_flag = 0
+    </select>
+
 
 </mapper>
 
