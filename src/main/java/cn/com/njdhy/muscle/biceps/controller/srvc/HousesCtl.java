@@ -1,11 +1,9 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
-import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCompanyDesc;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHousesSub;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesService;
@@ -14,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +22,7 @@ import java.util.Map;
 
 /**
  * 楼盘情况控制器
+ *
  * @author rain
  * @date 2018/11/17 22:11
  **/
@@ -38,6 +38,24 @@ public class HousesCtl {
     private SrvcHousesSubService srvcHousesSubService;
 
     /**
+     * 文件存储路径
+     */
+    @Value("app.file.upload.dir")
+    private String fileUploadDir;
+
+    /**
+     * 服务端ip地址
+     */
+    @Value("server.address")
+    private String host;
+
+    /**
+     * 服务端端口号
+     */
+    @Value("server.port")
+    private String port;
+
+    /**
      * 查询banner图列表
      *
      * @param params     参数列表
@@ -50,8 +68,8 @@ public class HousesCtl {
         Query queryParam = new Query(params);
         PageInfo<SrvcHouses> result = srvcHousesService.selectHousesList(queryParam, pageNumber, pageSize);
         List<SrvcHouses> list = result.getList();
-        for(SrvcHouses srvcHouses: list) {
-            String s = SystemConstant.SYSTEM_CONSTANT+srvcHouses.getImageUrl();
+        for (SrvcHouses srvcHouses : list) {
+            String s = "http://" + host + ":" + port + "/" + srvcHouses.getImageUrl();
             srvcHouses.setImageUrl(s);
         }
         result.setList(list);
@@ -70,7 +88,7 @@ public class HousesCtl {
         // todo 参数校验
 
         SrvcHouses model = srvcHousesService.queryById(id);
-        String img = SystemConstant.SYSTEM_CONSTANT+model.getImageUrl();
+        String img = "http://" + host + ":" + port + "/" + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcHouses();

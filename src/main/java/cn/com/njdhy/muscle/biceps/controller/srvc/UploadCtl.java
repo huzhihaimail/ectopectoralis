@@ -1,9 +1,10 @@
-package cn.com.njdhy.muscle.biceps.controller;
+package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.config.SystemConstant;
+import cn.com.njdhy.muscle.biceps.controller.AjaxResult;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,23 +21,44 @@ import java.util.UUID;
  * Description：
  * <功能简介>--
  * 公共控制器，提供上传文件等功能
+ *
  * @author rain
  * @date 2018/11/21 11:02
  **/
 @Controller
 @RequestMapping("/files")
-public class UploadController {
+public class UploadCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UploadController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UploadCtl.class);
+
+    /**
+     * 文件存储路径
+     */
+    @Value("app.file.upload.dir")
+    private String fileUploadDir;
+
+    /**
+     * 服务端ip地址
+     */
+    @Value("server.address")
+    private String host;
+
+    /**
+     * 服务端端口号
+     */
+    @Value("server.port")
+    private String port;
+
 
     /**
      * 上传文件
+     *
      * @param file
      * @return
      */
-    @RequestMapping(value = "/upload", method = RequestMethod.POST ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public AjaxResult upload(@RequestParam("file")MultipartFile file, HttpServletRequest request){
+    public AjaxResult upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         AjaxResult ajaxResult = new AjaxResult(true);
         String tag = "/images";
         tag = replace(tag);
@@ -45,7 +67,7 @@ public class UploadController {
 //
 //        LOGGER.debug("param is path =============>{}",paths);
         String filename = uploadFile(file, tag);
-        filename = filename.replace("\\","/");
+        filename = filename.replace("\\", "/");
         JSONObject data = new JSONObject();
         data.put("path", filename);
         ajaxResult.setData(data);
@@ -79,18 +101,18 @@ public class UploadController {
 //    }
 
 
-    private String replace(String type){
+    private String replace(String type) {
         if (type == null || "".equals(type)) {
             return "";
         }
         return type.replace("/", File.separator) + File.separator;
     }
 
-    private String uploadFile(MultipartFile file, String tag){
-        try{
-            String suffix  = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+    private String uploadFile(MultipartFile file, String tag) {
+        try {
+            String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             String randomFileName = UUID.randomUUID().toString().replace("-", "");
-            saveFile(tag,randomFileName + suffix, file);
+            saveFile(tag, randomFileName + suffix, file);
             return tag + randomFileName + suffix;
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,9 +120,9 @@ public class UploadController {
         return "";
     }
 
-    private void saveFile(String type,String fileName,MultipartFile file){
-        String filePath = SystemConstant.FILE_DIRECTORY+ File.separator + type + fileName;
-        String tempDirPath = SystemConstant.FILE_DIRECTORY+ File.separator + type;
+    private void saveFile(String type, String fileName, MultipartFile file) {
+        String filePath = fileUploadDir + File.separator + type + fileName;
+        String tempDirPath = fileUploadDir + File.separator + type;
         final File targetFile = new File(filePath);
         final File tempDir = new File(tempDirPath);
         if (!tempDir.exists()) {

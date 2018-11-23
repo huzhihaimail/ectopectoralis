@@ -1,6 +1,5 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -11,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +19,7 @@ import java.util.Map;
 
 /**
  * 三大模块控制器
+ *
  * @author rain
  * @date 2018/11/17 22:18
  **/
@@ -30,6 +31,24 @@ public class CompanyDescCtl {
 
     @Autowired
     private SrvcCompanyDescService srvcCompanyDescService;
+
+    /**
+     * 文件存储路径
+     */
+    @Value("app.file.upload.dir")
+    private String fileUploadDir;
+
+    /**
+     * 服务端ip地址
+     */
+    @Value("server.address")
+    private String host;
+
+    /**
+     * 服务端端口号
+     */
+    @Value("server.port")
+    private String port;
 
     /**
      * 查询三大模块列表
@@ -44,9 +63,9 @@ public class CompanyDescCtl {
         Query queryParam = new Query(params);
         PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcCompanyDesc> list = result.getList();
-        for(SrvcCompanyDesc srvcCompanyDesc: list) {
-            String s = SystemConstant.SYSTEM_CONSTANT+srvcCompanyDesc.getImageUrl();
-            srvcCompanyDesc.setImageUrl(s);
+        for (SrvcCompanyDesc srvcCompanyDesc : list) {
+            String imgUrl = "http://" + host + ":" + port + "/" + srvcCompanyDesc.getImageUrl();
+            srvcCompanyDesc.setImageUrl(imgUrl);
         }
         result.setList(list);
         return Result.success(result.getTotal(), result.getList());
@@ -64,7 +83,7 @@ public class CompanyDescCtl {
         // todo 参数校验
 
         SrvcCompanyDesc model = srvcCompanyDescService.queryById(id);
-        String img = SystemConstant.SYSTEM_CONSTANT+model.getImageUrl();
+        String img = "http://" + host + ":" + port + "/"  + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcCompanyDesc();

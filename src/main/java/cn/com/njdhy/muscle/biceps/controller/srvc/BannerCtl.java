@@ -1,6 +1,5 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -8,9 +7,8 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.BannerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcBannerService;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +17,7 @@ import java.util.Map;
 
 /**
  * banner图管理控制器
+ *
  * @author rain
  * @date 2018/11/16 10:46
  **/
@@ -26,7 +25,23 @@ import java.util.Map;
 @RequestMapping("/srvc/banner")
 public class BannerCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BannerCtl.class);
+    /**
+     * 文件存储路径
+     */
+    @Value("app.file.upload.dir")
+    private String fileUploadDir;
+
+    /**
+     * 服务端ip地址
+     */
+    @Value("server.address")
+    private String host;
+
+    /**
+     * 服务端端口号
+     */
+    @Value("server.port")
+    private String port;
 
     @Autowired
     private SrvcBannerService srvcBannerService;
@@ -44,9 +59,9 @@ public class BannerCtl {
         Query queryParam = new Query(params);
         PageInfo<SrvcBanner> result = srvcBannerService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcBanner> list = result.getList();
-        for(SrvcBanner srvcBanner: list) {
-            String s = SystemConstant.SYSTEM_CONSTANT+srvcBanner.getImgUrl();
-            srvcBanner.setImgUrl(s);
+        for (SrvcBanner srvcBanner : list) {
+            String imagePath = "http://" + host + ":" + port + "/" + srvcBanner.getImgUrl();
+            srvcBanner.setImgUrl(imagePath);
         }
         result.setList(list);
         return Result.success(result.getTotal(), result.getList());
@@ -62,12 +77,12 @@ public class BannerCtl {
     public Result queryById(@PathVariable String id) {
 
         //  参数校验
-        if(id == null || id.length()<=0){
-            return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+        if (id == null || id.length() <= 0) {
+            return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
         }
         SrvcBanner model = srvcBannerService.queryById(id);
-        String img = SystemConstant.SYSTEM_CONSTANT+model.getImgUrl();
-        model.setImgUrl(img);
+        String imgUrl = "http://" + host + ":" + port + "/" + model.getImgUrl();
+        model.setImgUrl(imgUrl);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcBanner();
         }
@@ -90,14 +105,14 @@ public class BannerCtl {
             String title = srvcBanner.getTitle();
             String imgUrl = srvcBanner.getImgUrl();
             String linkUrl = srvcBanner.getLinkUrl();
-            if(title==null || title.length()<=0){
-                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            if (title == null || title.length() <= 0) {
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
-            if(imgUrl==null || imgUrl.length()<=0){
-                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            if (imgUrl == null || imgUrl.length() <= 0) {
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
-            if(linkUrl==null || linkUrl.length()<=0){
-                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            if (linkUrl == null || linkUrl.length() <= 0) {
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
             // 执行入库操作
 
@@ -127,14 +142,14 @@ public class BannerCtl {
             String title = srvcBanner.getTitle();
             String imgUrl = srvcBanner.getImgUrl();
             String linkUrl = srvcBanner.getLinkUrl();
-            if(title==null || title.length()<=0){
-                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            if (title == null || title.length() <= 0) {
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
-            if(imgUrl==null || imgUrl.length()<=0){
-                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            if (imgUrl == null || imgUrl.length() <= 0) {
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
-            if(linkUrl==null || linkUrl.length()<=0){
-                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            if (linkUrl == null || linkUrl.length() <= 0) {
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
             // 执行修改
             srvcBannerService.update(srvcBanner);
@@ -158,9 +173,9 @@ public class BannerCtl {
 
         try {
             // 校验参数
-            for(String id : ids){
-                if(id == null || id.length()<=0){
-                    return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
                 }
             }
             srvcBannerService.deleteByIds(ids);

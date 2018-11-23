@@ -1,6 +1,5 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -13,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +37,25 @@ public class ModuleCtl {
     private SrvcModuleSubService srvcModuleSubService;
 
     /**
+     * 文件存储路径
+     */
+    @Value("app.file.upload.dir")
+    private String fileUploadDir;
+
+    /**
+     * 服务端ip地址
+     */
+    @Value("server.address")
+    private String host;
+
+    /**
+     * 服务端端口号
+     */
+    @Value("server.port")
+    private String port;
+
+
+    /**
      * 查询banner图列表
      *
      * @param params     参数列表
@@ -50,7 +69,7 @@ public class ModuleCtl {
         PageInfo<SrvcModule> result = srvcModuleService.selectModuleList(queryParam, pageNumber, pageSize);
         List<SrvcModule> list = result.getList();
         for (SrvcModule srvcModule : list) {
-            String image = SystemConstant.SYSTEM_CONSTANT+srvcModule.getImageUrl();
+            String image = "http://" + host + ":" + port + "/"+srvcModule.getImageUrl();
             srvcModule.setImageUrl(image);
         }
         result.setList(list);

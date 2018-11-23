@@ -1,17 +1,14 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.DecorateGuideErrorCode;
-import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDecorateGuide;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDecorateGuideService;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +17,7 @@ import java.util.Map;
 
 /**
  * 装修指南控制器
+ *
  * @author rain
  * @date 2018/11/17 22:23
  **/
@@ -27,10 +25,26 @@ import java.util.Map;
 @RequestMapping("/srvc/decorate/guide")
 public class DecorateGuideCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DecorateGuideCtl.class);
-
     @Autowired
     private SrvcDecorateGuideService srvcDecorateGuideService;
+
+    /**
+     * 文件存储路径
+     */
+    @Value("app.file.upload.dir")
+    private String fileUploadDir;
+
+    /**
+     * 服务端ip地址
+     */
+    @Value("server.address")
+    private String host;
+
+    /**
+     * 服务端端口号
+     */
+    @Value("server.port")
+    private String port;
 
     /**
      * 查询banner图列表
@@ -45,8 +59,8 @@ public class DecorateGuideCtl {
         Query queryParam = new Query(params);
         PageInfo<SrvcDecorateGuide> result = srvcDecorateGuideService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcDecorateGuide> list = result.getList();
-        for(SrvcDecorateGuide srvcDecorateGuide: list) {
-            String s = SystemConstant.SYSTEM_CONSTANT+srvcDecorateGuide.getImageUrl();
+        for (SrvcDecorateGuide srvcDecorateGuide : list) {
+            String s = "http://" + host + ":" + port + "/" + srvcDecorateGuide.getImageUrl();
             srvcDecorateGuide.setImageUrl(s);
         }
         result.setList(list);
@@ -65,7 +79,7 @@ public class DecorateGuideCtl {
         // todo 参数校验
 
         SrvcDecorateGuide model = srvcDecorateGuideService.queryById(id);
-        String img = SystemConstant.SYSTEM_CONSTANT+model.getImageUrl();
+        String img ="http://" + host + ":" + port + "/" + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDecorateGuide();
