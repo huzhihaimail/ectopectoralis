@@ -11,6 +11,7 @@ import cn.com.njdhy.muscle.biceps.service.srvc.*;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-@Api(tags = "各模块相关接口")
+@Api(value = "test", description = "test the swagger API")
 public class ApiController {
 
 
@@ -58,9 +59,9 @@ public class ApiController {
      * @param srvcCustomer 请求数据对象
      * @return 结果对象
      */
-    @ApiOperation("保存顾客的信息")
+    @ApiOperation(value = "保存顾客的信息", notes = "get the hotel by the city id", response = ApiController.class)
     @RequestMapping("/customer/insert")
-    public Result insert(@RequestBody SrvcCustomer srvcCustomer) {
+    public Result insert( @ApiParam(value = "The id of the city" ,required=true ) @RequestBody SrvcCustomer srvcCustomer) {
 
         try {
             //参数校验

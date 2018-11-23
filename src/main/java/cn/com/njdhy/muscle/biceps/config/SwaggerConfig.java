@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig extends WebMvcConfigurationSupport{
+public class SwaggerConfig{
     @Bean
     public Docket createRestApi() {
         List apiKeys = new ArrayList<ApiKey>();
@@ -30,7 +30,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(springfox.documentation.builders.PathSelectors.regex("cn.com.njdhy.muscle.biceps.api"))
+                .paths(springfox.documentation.builders.PathSelectors.regex("/.*"))
                 .build()
                 .apiInfo(apiInfo())
                 .securitySchemes(apiKeys);
@@ -54,16 +54,5 @@ public class SwaggerConfig extends WebMvcConfigurationSupport{
 
     }
 
-    /**
-     * 配置静态资源 解决访问404问题
-     * @param registry
-     */
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-        super.addResourceHandlers(registry);
-    }
+
 }
