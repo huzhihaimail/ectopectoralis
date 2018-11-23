@@ -119,7 +119,25 @@
         ) t
     </select>
 
-    <!--关联查询-->
+    <!--backend关联查询-->
+    <select id="selectHousesList" resultMap="SrvcHousesMap" parameterType="map">
+        SELECT
+        h.*,
+        s.id,s.image_url
+        FROM
+        <include refid="tableName"/> h
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON h.id = s.houses_id
+        <where>
+            AND h.delete_flag = 0
+            <if test="keyword!=null and keyword!=''">
+                AND h.name LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--api关联查询-->
     <select id="selectHousesInfo" resultMap="SrvcHousesMap" parameterType="Integer">
         SELECT
         h.*,

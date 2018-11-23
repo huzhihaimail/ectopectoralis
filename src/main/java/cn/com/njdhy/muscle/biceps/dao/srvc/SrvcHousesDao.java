@@ -4,6 +4,7 @@ import cn.com.njdhy.muscle.biceps.dao.BaseDao;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 楼盘情况数据访问层接口
@@ -13,7 +14,13 @@ import java.util.List;
 public interface SrvcHousesDao extends BaseDao<SrvcHouses> {
 
     /**
-     * 查询楼盘情况及图片
+     * backend 查询所有楼盘情况图片列表
+     * @param map
+     * @return
+     */
+    List<SrvcHouses> selectHousesList(Map<String,Object> map);
+    /**
+     * api查询楼盘情况及图片
      * @param progressTitle
      * @return
      */

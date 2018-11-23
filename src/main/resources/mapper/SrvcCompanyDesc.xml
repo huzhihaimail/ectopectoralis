@@ -120,7 +120,7 @@
     <!--backend关联查询-->
     <select id="selectCompanyDescList" resultMap="SrvcCompanyDescMap" parameterType="map">
         SELECT
-        m.*,
+        d.*,
         s.id,s.title,s.content,s.image_url,s.author
         FROM
         <include refid="tableName"/> d

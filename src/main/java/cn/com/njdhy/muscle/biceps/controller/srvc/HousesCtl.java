@@ -1,9 +1,11 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCompanyDesc;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesService;
 import com.github.pagehelper.PageInfo;
@@ -41,8 +43,13 @@ public class HousesCtl {
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
-        PageInfo<SrvcHouses> result = srvcHousesService.queryList(queryParam, pageNumber, pageSize);
-
+        PageInfo<SrvcHouses> result = srvcHousesService.selectHousesList(queryParam, pageNumber, pageSize);
+        List<SrvcHouses> list = result.getList();
+        for(SrvcHouses srvcHouses: list) {
+            String s = SystemConstant.SYSTEM_CONSTANT+srvcHouses.getImageUrl();
+            srvcHouses.setImageUrl(s);
+        }
+        result.setList(list);
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -58,7 +65,8 @@ public class HousesCtl {
         // todo 参数校验
 
         SrvcHouses model = srvcHousesService.queryById(id);
-
+        String img = SystemConstant.SYSTEM_CONSTANT+model.getImageUrl();
+        model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcHouses();
         }

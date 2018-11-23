@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -41,8 +42,13 @@ public class CompanyDescCtl {
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
-        PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.queryList(queryParam, pageNumber, pageSize);
-
+        PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.selectCompanyDescList(queryParam, pageNumber, pageSize);
+        List<SrvcCompanyDesc> list = result.getList();
+        for(SrvcCompanyDesc srvcCompanyDesc: list) {
+            String s = SystemConstant.SYSTEM_CONSTANT+srvcCompanyDesc.getImageUrl();
+            srvcCompanyDesc.setImageUrl(s);
+        }
+        result.setList(list);
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -58,7 +64,8 @@ public class CompanyDescCtl {
         // todo 参数校验
 
         SrvcCompanyDesc model = srvcCompanyDescService.queryById(id);
-
+        String img = SystemConstant.SYSTEM_CONSTANT+model.getImageUrl();
+        model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcCompanyDesc();
         }

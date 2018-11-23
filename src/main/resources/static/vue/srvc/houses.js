@@ -27,17 +27,34 @@ var showColumns = [
     , {
         field: "floorSpace",
         title: "房屋面积",
-        width: "20%"
+        width: "10%"
     }
     , {
         field: "style",
         title: "房屋风格",
+        width: "15%"
+    }
+    , {
+        field: "imageUrl",
+        title: "图片显示",
         width: "20%"
     }
     , {
-        field: "area",
-        title: "所在地区",
-        width: "20%"
+        field: "progressTitle",
+        title: "案例类型",
+        width: "10%",
+        formatter:function (value,row,index) {
+            var role = '';
+            switch (value){
+                case 1:
+                    role = '装修案例'
+                    break;
+                case 2:
+                    role = '施工案例'
+                    break;
+            }
+            return role;
+        }
     }
 
     , {

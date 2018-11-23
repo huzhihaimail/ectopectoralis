@@ -23,7 +23,7 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, img_url, title, link_url,create_date, update_date, delete_flag
+        id, title, img_url, link_url,create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->

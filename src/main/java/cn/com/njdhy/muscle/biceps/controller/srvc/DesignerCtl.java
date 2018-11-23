@@ -1,9 +1,11 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.DesignerErrorCode;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDesignerService;
 import com.github.pagehelper.PageInfo;
@@ -42,7 +44,12 @@ public class DesignerCtl {
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
         PageInfo<SrvcDesigner> result = srvcDesignerService.queryList(queryParam, pageNumber, pageSize);
-
+        List<SrvcDesigner> list = result.getList();
+        for(SrvcDesigner srvcDesigner: list) {
+            String s = SystemConstant.SYSTEM_CONSTANT+srvcDesigner.getHeadUrl();
+            srvcDesigner.setHeadUrl(s);
+        }
+        result.setList(list);
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -58,7 +65,8 @@ public class DesignerCtl {
         // todo 参数校验
 
         SrvcDesigner model = srvcDesignerService.queryById(id);
-
+        String head = SystemConstant.SYSTEM_CONSTANT+model.getHeadUrl();
+        model.setHeadUrl(head);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDesigner();
         }

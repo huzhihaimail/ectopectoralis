@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -42,7 +43,12 @@ public class BannerCtl {
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
         PageInfo<SrvcBanner> result = srvcBannerService.queryList(queryParam, pageNumber, pageSize);
-
+        List<SrvcBanner> list = result.getList();
+        for(SrvcBanner srvcBanner: list) {
+            String s = SystemConstant.SYSTEM_CONSTANT+srvcBanner.getImgUrl();
+            srvcBanner.setImgUrl(s);
+        }
+        result.setList(list);
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -60,7 +66,8 @@ public class BannerCtl {
             return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
         }
         SrvcBanner model = srvcBannerService.queryById(id);
-
+        String img = SystemConstant.SYSTEM_CONSTANT+model.getImgUrl();
+        model.setImgUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcBanner();
         }
@@ -93,6 +100,7 @@ public class BannerCtl {
                 return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE,BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
             // 执行入库操作
+
             srvcBannerService.insert(srvcBanner);
         } catch (ApplicationException e) {
             e.printStackTrace();

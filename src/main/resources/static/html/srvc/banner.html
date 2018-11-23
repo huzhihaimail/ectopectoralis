@@ -72,9 +72,8 @@
                 <div class="form-group">
                     <div class="col-sm-3 control-label">广告标题<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <input id="input-id1" type="text" class="form-control" v-model="model.title"
+                        <input type="text" class="form-control" v-model="model.title"
                                placeholder="请输入广告标题"/>
-                        <!--<input type="hidden" id="id-imgUrl" class="form-control" v-model="model.imgUrl" />-->
                     </div>
                 </div>
 
@@ -82,7 +81,8 @@
                     <div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
                         <form id="form" enctype="multipart/form-data">
-                            <input type="file" id="input-id" name="file" v-model="model.imgUrl" multiple data-show-caption="true">
+                            <input type="file" id="input-id" name="file" multiple data-show-caption="true">
+                            <input type="hidden" name="imgUrl" v-model="model.imgUrl"/>
                         </form>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                 <div class="form-group">
                     <div class="col-sm-3 control-label">跳转地址<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <input id="input-id3" type="text" class="form-control" v-model="model.linkUrl" placeholder="请输入跳转地址"/>
+                        <input type="text" class="form-control" v-model="model.linkUrl" placeholder="请输入跳转地址"/>
                     </div>
                 </div>
 

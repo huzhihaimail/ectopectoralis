@@ -19,21 +19,31 @@ var showColumns = [
         title: "模块标题",
         width: "10%"
     }
-    // , {
-    //     field: "imgUrl",
-    //     title: "图片地址",
-    //     width: "10%"
-    // }
-    // , {
-    //     field: "linkUrl",
-    //     title: "图片跳转链接",
-    //     width: "20%"
-    // }
+    , {
+        field: "title",
+        title: "标题",
+        width: "10%"
+    }
+    , {
+        field: "content",
+        title: "文章内容",
+        width: "20%"
+    }
+    , {
+        field: "imageUrl",
+        title: "图片显示",
+        width: "20%"
+    }
+    , {
+        field: "author",
+        title: "文章作者",
+        width: "10%"
+    }
 
     , {
         field: "createDate",
         title: "创建时间",
-        width: "20%",
+        width: "15%",
         formatter: function (value, row, index) {
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
@@ -41,7 +51,7 @@ var showColumns = [
     , {
         field: "updateDate",
         title: "最近修改时间",
-        width: "20%",
+        width: "15%",
         formatter: function (value, row, index) {
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
@@ -246,19 +256,5 @@ $(function () {
     bsTable.createBootStrapTable(vm.columns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
-/**
- * 文件上传
- */
-// $('#file').fileinput({
-//     // 设置语言
-//     language: 'zh',
-//     // 设置url地址
-//     uploadUrl: '#',
-//     // 是否显示预览图
-//     showPreview: true,
-//     // 最大上传文件数
-//     maxFileCount: 1,
-//     // 设置图片格式
-//     allowedFileExtensions: ['jpg', 'png', 'gif']
-// });
+
 

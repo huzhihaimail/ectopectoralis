@@ -88,8 +88,9 @@
                 <div class="form-group">
                     <div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <form enctype="multipart/form-data">
-                            <input id="file" name="file" type="file" multiple>
+                        <form id="form" enctype="multipart/form-data">
+                            <input type="file" id="input-id" name="file" multiple data-show-caption="true">
+                            <input type="hidden" name="imageUrl" v-model="model.imageUrl"/>
                         </form>
                     </div>
                 </div>

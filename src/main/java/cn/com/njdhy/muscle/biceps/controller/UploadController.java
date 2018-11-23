@@ -41,9 +41,9 @@ public class UploadController {
         String tag = "/images";
         tag = replace(tag);
 
-        String paths = request.getSession().getServletContext().getRealPath("/");
-
-        LOGGER.debug("param is path =============>{}",paths);
+//        String paths = request.getSession().getServletContext().getRealPath("/");
+//
+//        LOGGER.debug("param is path =============>{}",paths);
         String filename = uploadFile(file, tag);
         filename = filename.replace("\\","/");
         JSONObject data = new JSONObject();

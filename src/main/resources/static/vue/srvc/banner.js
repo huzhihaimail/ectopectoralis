@@ -22,18 +22,22 @@ var showColumns = [
     , {
         field: "imgUrl",
         title: "图片地址",
-        width: "10%"
+        width: "20%",
+        formatter:function (value,row,index) {
+            var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'
+            return img;
+        }
     }
     , {
         field: "linkUrl",
         title: "图片跳转链接",
-        width: "20%"
+        width: "15%"
     }
 
     , {
         field: "createDate",
         title: "创建时间",
-        width: "20%",
+        width: "15%",
         formatter: function (value, row, index) {
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
@@ -129,6 +133,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.model),
                 success: function (r) {
+
                     if (r.code === 0) {
                         alert(PAGE_OPERATOR_SUCCESS, function (index) {
                             vm.reload();
@@ -288,15 +293,10 @@ $('#input-id').on('filepreupload', function(event, data, previewId, index) {
 $("#input-id").on("fileuploaded", function (event, data, previewId, index) {
     //后台返回的json
     var response = data.response;
-    var path = JSON.stringify(response.data.path);
-    console.log("response----"+path);
+    var path = response.data.path;
+    //返回上传的图片地址，赋值给vm model
+    vm.model.imgUrl=path;
 
-    // var title = $('#input-id1').val();
-    // var imgUrl =path;
-    // console.log("imgUrl--------------"+imgUrl);
-    // var linkUrl = $('#input-id3').val();
-    // var newValue = {"title":title,"imgUrl":imgUrl,"linkUrl":linkUrl};
-    // Vue.set(vm,"data.model",newValue);
 });
 
 
