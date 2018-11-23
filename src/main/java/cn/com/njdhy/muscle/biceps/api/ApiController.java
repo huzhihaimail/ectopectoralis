@@ -9,6 +9,9 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.ModuleErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.*;
 import cn.com.njdhy.muscle.biceps.service.srvc.*;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +30,10 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/api")
+@Slf4j
+@Api(tags = "各模块相关接口")
 public class ApiController {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(ApiController.class);
 
     @Autowired
     private SrvcCustomerService srvcCustomerService;
@@ -54,6 +58,7 @@ public class ApiController {
      * @param srvcCustomer 请求数据对象
      * @return 结果对象
      */
+    @ApiOperation("保存顾客的信息")
     @RequestMapping("/customer/insert")
     public Result insert(@RequestBody SrvcCustomer srvcCustomer) {
 
@@ -81,6 +86,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/banner/query")
+    @ApiOperation("查询banner图列表")
     public List<SrvcBanner> bannerQuery() {
 
         List<SrvcBanner> list = srvcBannerService.selectBannerList();
@@ -93,6 +99,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/video/query")
+    @ApiOperation("查询video视频列表")
     public List<SrvcVideo> videoQuery() {
 
         List<SrvcVideo> list = srvcVideoService.selectVideoList();
@@ -105,6 +112,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/designer/query")
+    @ApiOperation("查询设计师信息列表")
     public List<SrvcDesigner> designerQuery() {
 
         List<SrvcDesigner> list = srvcDesignerService.selectDesignerList();
@@ -121,6 +129,7 @@ public class ApiController {
      * @return 装修指南列表
      */
     @RequestMapping("/decorate/guide/list")
+    @ApiOperation("查询装修指南列表")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
         PageInfo<SrvcDecorateGuide> result = srvcDecorateGuideService.queryList(queryParam, pageNumber, pageSize);
@@ -133,6 +142,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/module/list")
+    @ApiOperation("查询十大模块信息列表")
     public Result moduleQuery(@RequestParam String moduleName) {
         List<SrvcModule> list =null;
         try {
@@ -152,6 +162,7 @@ public class ApiController {
      * @return
      */
 //    @RequestMapping("/company/desc/list")
+//    @ApiOperation("查询banner图列表")
 //    public Result companyDescQuery(@RequestParam Map<String,Object> map,Integer pageNumber,Integer pageSize) {
 //        List<SrvcCompanyDesc> list =null;
 //        try {
@@ -171,6 +182,7 @@ public class ApiController {
      * @return
      */
     @RequestMapping("/houses/list")
+    @ApiOperation("查询楼盘情况及图片信息列表")
     public Result housesQuery(@RequestParam Integer progressTitle) {
         List<SrvcHouses> list =null;
         try {

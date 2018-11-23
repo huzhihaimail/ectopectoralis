@@ -2,6 +2,8 @@ package cn.com.njdhy.muscle.biceps.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
@@ -19,7 +21,7 @@ import java.util.List;
  */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfig extends WebMvcConfigurationSupport{
     @Bean
     public Docket createRestApi() {
         List apiKeys = new ArrayList<ApiKey>();
@@ -28,9 +30,10 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(springfox.documentation.builders.PathSelectors.regex("/.*"))
+                .paths(springfox.documentation.builders.PathSelectors.regex("cn.com.njdhy.muscle.biceps.api"))
                 .build()
-                .apiInfo(apiInfo()).securitySchemes(apiKeys);
+                .apiInfo(apiInfo())
+                .securitySchemes(apiKeys);
     }
 
     private ApiKey apiKey() {
@@ -39,14 +42,28 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         ApiInfo apiInfo = new ApiInfo(
-                "海航项目REST API",
-                "Dev environment",
-                "v1",
+                "奥米巴项目REST API",
+                "奥米巴项目接口文档",
+                "v1.0",
                 "",
                 new Contact("", "", ""),
                 "",
                 ""
         );
         return apiInfo;
+
+    }
+
+    /**
+     * 配置静态资源 解决访问404问题
+     * @param registry
+     */
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        super.addResourceHandlers(registry);
     }
 }
