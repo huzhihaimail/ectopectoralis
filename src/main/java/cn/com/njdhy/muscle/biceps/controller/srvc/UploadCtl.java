@@ -74,33 +74,6 @@ public class UploadCtl {
         return ajaxResult;
     }
 
-//
-//
-//    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ResponseBody
-//    public JSONObject uploadImg(@RequestParam("img")MultipartFile file, HttpServletRequest request){
-//
-//        JSONObject result = new JSONObject();
-//
-//        String tag = "/product/";
-//        try {
-//            String filename = uploadFile(file, tag);
-//            JSONObject data = new JSONObject();
-//            data.put("url", SystemConstant.SYSTEM_CONSTANT +  filename);
-//            data.put("path", filename);
-//            result.put("data", data);
-//            result.put("result",0);
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            result.put("message", e.getMessage());
-//            result.put("result", -1);
-//        }
-//
-//        return result;
-//    }
-
-
     private String replace(String type) {
         if (type == null || "".equals(type)) {
             return "";
