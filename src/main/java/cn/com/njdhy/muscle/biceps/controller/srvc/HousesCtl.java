@@ -7,11 +7,14 @@ import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCompanyDesc;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHousesSub;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesService;
+import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesSubService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +34,8 @@ public class HousesCtl {
 
     @Autowired
     private SrvcHousesService srvcHousesService;
+    @Autowired
+    private SrvcHousesSubService srvcHousesSubService;
 
     /**
      * 查询banner图列表
@@ -82,12 +87,16 @@ public class HousesCtl {
      * @return 结果对象
      */
     @RequestMapping("/insert")
+    @Transactional(rollbackFor = Exception.class)
     public Result insert(@RequestBody SrvcHouses srvcHouses) {
 
         try {
-
             // 执行入库操作
             srvcHousesService.insert(srvcHouses);
+            SrvcHousesSub srvcHousesSub = new SrvcHousesSub();
+            srvcHousesSub.setHousesId(srvcHouses.getId());
+            srvcHousesSub.setImageUrl(srvcHouses.getImageUrl());
+            srvcHousesSubService.insert(srvcHousesSub);
         } catch (ApplicationException e) {
             return Result.error(HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {

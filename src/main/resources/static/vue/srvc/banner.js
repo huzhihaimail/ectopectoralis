@@ -17,7 +17,8 @@ var showColumns = [
     , {
         field: "title",
         title: "广告标题",
-        width: "10%"
+        width: "10%",
+        visible:false
     }
     , {
         field: "imgUrl",

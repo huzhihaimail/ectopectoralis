@@ -9,7 +9,7 @@
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="moduleName" column="module_name"></result>
-
+        <result property="moduleSubId" column="module_sub_id"></result>
         <result property="title" column="title"></result>
         <result property="imageUrl" column="image_url"></result>
         <result property="imageType" column="image_type"></result>
@@ -58,11 +58,14 @@
     <!-- 根据ID查询-->
     <select id="queryById" resultMap="SrvcModuleMap" parameterType="String">
         SELECT
-        <include refid="columns"/>
+        m.*,s.id module_sub_id,s.title,s.image_url,s.image_type
         FROM
-        <include refid="tableName"/>
+        <include refid="tableName"/> m
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON m.id = s.module_id
         WHERE 1 = 1
-        AND id=#{id}
+        AND m.id=#{id}
     </select>
 
     <!-- 批量删除-->
@@ -120,7 +123,7 @@
     <select id="selectModuleList" resultMap="SrvcModuleMap" parameterType="map">
         SELECT
         m.*,
-        s.id,s.title,s.image_url,s.image_type
+        s.id module_sub_id,s.title,s.image_url,s.image_type
         FROM
         <include refid="tableName"/> m
         LEFT JOIN
@@ -138,7 +141,7 @@
     <select id="selectModuleInfo" resultMap="SrvcModuleMap" parameterType="String">
         SELECT
         m.*,
-        s.id,s.title,s.image_url,s.image_type
+        s.id module_sub_id,s.title,s.image_url,s.image_type
         FROM
         <include refid="tableName"/> m
         LEFT JOIN

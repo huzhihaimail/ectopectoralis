@@ -18,6 +18,10 @@ public class SrvcModule extends BaseModel{
 
     //以下关联srvc_module_sub表
     /**
+     *  id
+     */
+    private Integer moduleSubId;
+    /**
      * 子标题
      */
     private String title;

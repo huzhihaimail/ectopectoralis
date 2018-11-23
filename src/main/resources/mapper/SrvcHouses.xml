@@ -33,17 +33,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, `name`, houses_type, floor_space, style, area, create_date, update_date, delete_flag
+        id, `name`, houses_type, floor_space, style, progress_title, area, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{name}, #{housesType}, #{floorSpace}, #{style}, #{area}, NOW(),#{updateDate}, 0
+        #{id}, #{name}, #{housesType}, #{floorSpace}, #{style}, #{progressTitle}, #{area}, NOW(),#{updateDate}, 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        `name`=#{name}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style}, area=#{area}, update_date=NOW(), delete_flag=#{deleteFlag}
+        `name`=#{name}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style}, progress_title=#{progressTitle}, area=#{area}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
@@ -112,6 +112,7 @@
         WHERE 1=1
         <if test="keyword!=null and keyword!=''">
             AND `name` LIKE CONCAT('%',#{keyword},'%')
+            OR progress_title LIKE CONCAT('%',#{keyword},'%')
         </if>
         ORDER BY
         create_date

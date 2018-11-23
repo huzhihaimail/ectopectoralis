@@ -14,23 +14,16 @@ public class SrvcCompanyDesc extends BaseModel{
     /**
      * 模块标题
      */
-    private String name;
-
-    // 以下关联srvc_companydesc_sub表
-    /**
-     * 标题
-     */
     private String title;
+
+    /**
+     * 模块图片地址
+     */
+    private String imageUrl;
+
     /**
      * 内容
      */
-    private String content;
-    /**
-     * 图片地址
-     */
-    private String imageUrl;
-    /**
-     * 作者
-     */
-    private String author;
+    private Integer type;
+
 }

@@ -42,7 +42,7 @@ public class CompanyDescCtl {
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
-        PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.selectCompanyDescList(queryParam, pageNumber, pageSize);
+        PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcCompanyDesc> list = result.getList();
         for(SrvcCompanyDesc srvcCompanyDesc: list) {
             String s = SystemConstant.SYSTEM_CONSTANT+srvcCompanyDesc.getImageUrl();

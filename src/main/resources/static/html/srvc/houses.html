@@ -20,8 +20,10 @@
         <div class="row-fluid">
             <div class="col-md-10 form-inline">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="请输入关键字查询" @keyup.enter="query"
-                           v-model="vueQueryParam.keyword">
+                    <select class="form-control" v-model="vueQueryParam.keyword" @keyup.enter="query">
+                        <option value="1">装修案例</option>
+                        <option value="2">施工案例</option>
+                    </select>
                     <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" @click="query">
                                 <i class="fa fa-search"></i>查询
@@ -98,14 +100,26 @@
                                placeholder="请输入房屋风格"/>
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>-->
-                    <!--<div class="col-sm-6">-->
-                        <!--<form enctype="multipart/form-data">-->
-                            <!--<input id="file" name="file" type="file" multiple>-->
-                        <!--</form>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="form-group">
+                    <div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>
+                    <div class="col-sm-6">
+                        <form id="form" enctype="multipart/form-data">
+                            <input type="file" id="input-id" name="file" multiple data-show-caption="true">
+                            <input type="hidden" name="imageUrl" v-model="model.imageUrl"/>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">案例类型<span class="text-danger">*</span></div>
+                    <div class="col-sm-6">
+                        <select class="form-control" v-model="model.progressTitle">
+                            <option value="" selected>请选择案例类型</option>
+                            <option value="1">装修案例</option>
+                            <option value="2">施工案例</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <div class="col-sm-3 control-label">所在区域<span class="text-danger">*</span></div>

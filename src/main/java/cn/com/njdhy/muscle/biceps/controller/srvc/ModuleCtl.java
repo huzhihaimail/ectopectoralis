@@ -1,15 +1,19 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.config.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.ModuleErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModule;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModuleSub;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcModuleService;
+import cn.com.njdhy.muscle.biceps.service.srvc.SrvcModuleSubService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +33,8 @@ public class ModuleCtl {
 
     @Autowired
     private SrvcModuleService srvcModuleService;
+    @Autowired
+    private SrvcModuleSubService srvcModuleSubService;
 
     /**
      * 查询banner图列表
@@ -41,9 +47,13 @@ public class ModuleCtl {
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
-//        PageInfo<SrvcModule> result = srvcModuleService.queryList(queryParam, pageNumber, pageSize);
         PageInfo<SrvcModule> result = srvcModuleService.selectModuleList(queryParam, pageNumber, pageSize);
-
+        List<SrvcModule> list = result.getList();
+        for (SrvcModule srvcModule : list) {
+            String image = SystemConstant.SYSTEM_CONSTANT+srvcModule.getImageUrl();
+            srvcModule.setImageUrl(image);
+        }
+        result.setList(list);
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -59,7 +69,6 @@ public class ModuleCtl {
         // todo 参数校验
 
         SrvcModule model = srvcModuleService.queryById(id);
-
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcModule();
         }
@@ -75,12 +84,19 @@ public class ModuleCtl {
      * @return 结果对象
      */
     @RequestMapping("/insert")
+    @Transactional(rollbackFor = Exception.class)
     public Result insert(@RequestBody SrvcModule srvcModule) {
 
         try {
 
             // 执行入库操作
             srvcModuleService.insert(srvcModule);
+            SrvcModuleSub srvcModuleSub = new SrvcModuleSub();
+            srvcModuleSub.setTitle(srvcModule.getTitle());
+            srvcModuleSub.setImageUrl(srvcModule.getImageUrl());
+            srvcModuleSub.setImageType(srvcModule.getImageType());
+            srvcModuleSub.setModuleId(srvcModule.getId());
+            srvcModuleSubService.insert(srvcModuleSub);
         } catch (ApplicationException e) {
             return Result.error(ModuleErrorCode.SRVC_MODULE_SAVE_APP_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
@@ -98,6 +114,7 @@ public class ModuleCtl {
      * @return 结果对象
      */
     @RequestMapping("/update")
+    @Transactional(rollbackFor = Exception.class)
     public Result update(@RequestBody SrvcModule srvcModule) {
 
         try {
@@ -106,6 +123,12 @@ public class ModuleCtl {
 
             // 执行修改
             srvcModuleService.update(srvcModule);
+            SrvcModuleSub srvcModuleSub = new SrvcModuleSub();
+            srvcModuleSub.setTitle(srvcModule.getTitle());
+            srvcModuleSub.setImageUrl(srvcModule.getImageUrl());
+            srvcModuleSub.setImageType(srvcModule.getImageType());
+            srvcModuleSub.setId(srvcModule.getModuleSubId());
+            srvcModuleSubService.update(srvcModuleSub);
         } catch (RuntimeException e) {
             return Result.error(ModuleErrorCode.SRVC_MODULE_UPDATE_APP_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {

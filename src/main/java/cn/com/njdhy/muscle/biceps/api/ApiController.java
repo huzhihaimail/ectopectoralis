@@ -151,20 +151,20 @@ public class ApiController {
      * 查询三大模块信息列表
      * @return
      */
-    @RequestMapping("/company/desc/list")
-    public Result companyDescQuery(@RequestParam String name) {
-        List<SrvcCompanyDesc> list =null;
-        try {
-            if(name == null || name.length()<=0){
-                return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
-            }
-            list = srvcCompanyDescService.selectCompanyDescInfo(name);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return Result.success(list);
-    }
+//    @RequestMapping("/company/desc/list")
+//    public Result companyDescQuery(@RequestParam Map<String,Object> map,Integer pageNumber,Integer pageSize) {
+//        List<SrvcCompanyDesc> list =null;
+//        try {
+//            if(name == null || name.length()<=0){
+//                return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
+//            }
+//            list = srvcCompanyDescService.queryList(map,pageNumber,pageSize);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        return Result.success(list);
+//    }
 
     /**
      * 查询楼盘情况及图片信息列表

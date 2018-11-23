@@ -9,7 +9,7 @@
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="title" column="title"></result>
-        <result property="imgUrl" column="img_url"></result>
+        <result property="imageUrl" column="image_url"></result>
         <result property="imageType" column="image_type"></result>
         <result property="moduleId" column="module_id"></result>
         <result property="deleteFlag" column="delete_flag"></result>
@@ -24,17 +24,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, title, img_url, image_type, module_id, create_date, update_date, delete_flag
+        id, title, image_url, image_type, module_id, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{title}, #{imgUrl}, #{imageType}, #{moduleId}, NOW(),#{updateDate}, 0
+        #{id}, #{title}, #{imageUrl}, #{imageType}, #{moduleId}, NOW(),#{updateDate}, 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        title=#{title}, img_url=#{imgUrl}, update_date=NOW(), delete_flag=#{deleteFlag}
+        title=#{title}, image_url=#{imageUrl}, image_type=#{imageType}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->

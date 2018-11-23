@@ -21,13 +21,23 @@ var showColumns = [
     }
     , {
         field: "title",
-        title: "标题",
+        title: "图片标题",
         width: "10%"
+    }
+    , {
+        field: "moduleSubId",
+        title: "子模块id",
+        width: "10%",
+        visible:false
     }
     , {
         field: "imageUrl",
         title: "图片地址",
-        width: "20%"
+        width: "20%",
+        formatter:function (value,row,index) {
+            var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'
+            return img;
+        }
     }
     , {
         field: "imageType",
@@ -180,7 +190,6 @@ var vm = new Vue({
                 vm.model = r.model;
             });
         }
-
         // 执行修改操作
         , doUpdate: function () {
 
@@ -263,19 +272,51 @@ $(function () {
     bsTable.createBootStrapTable(vm.columns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
-// /**
-//  * 文件上传
-//  */
-// $('#file').fileinput({
-//     // 设置语言
-//     language: 'zh',
-//     // 设置url地址
-//     uploadUrl: '#',
-//     // 是否显示预览图
-//     showPreview: true,
-//     // 最大上传文件数
-//     maxFileCount: 1,
-//     // 设置图片格式
-//     allowedFileExtensions: ['jpg', 'png', 'gif']
-// });
+/**
+ * 文件上传
+ */
+$('#input-id').fileinput({
+    // 设置语言
+    language: 'zh',
+    // 设置url地址
+    uploadUrl: '/files/upload',
+    // 是否显示预览图
+    showPreview: true,
+    //默认异步上传
+    uploadAsync: true,
+    // 最大上传文件数
+    maxFileCount: 1,
+    // 设置图片格式,即接收的文件后缀
+    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    //显示移除按钮
+    showRemove : true,
+    //是否显示预览
+    showPreview : true,
+    //是否显示标题
+    showCaption: false,
+    //按钮样式
+    browseClass: "btn btn-primary",
+    //是否显示拖拽区域
+    dropZoneEnabled: false,
+    enctype: 'multipart/form-data',
+    validateInitialCount:true,
+    slugCallback : function(filename) {
+        return filename.replace('(', '_').replace(']', '_');
+    }
+});
+//上传前
+$('#input-id').on('filepreupload', function(event, data, previewId, index) {
+    var form = data.form, files = data.files, extra = data.extra,
+        response = data.response, reader = data.reader;
+});
+
+//异步上传返回结果处理
+$("#input-id").on("fileuploaded", function (event, data, previewId, index) {
+    //后台返回的json
+    var response = data.response;
+    var path = response.data.path;
+    //返回上传的图片地址，赋值给vm model
+    vm.model.imageUrl=path;
+
+});
 
