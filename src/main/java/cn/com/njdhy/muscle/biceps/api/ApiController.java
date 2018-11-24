@@ -83,7 +83,7 @@ public class ApiController {
      * 查询banner图列表
      * @return
      */
-    @RequestMapping(value ="/banner/query",method = RequestMethod.GET )
+    @RequestMapping(value ="/banners",method = RequestMethod.GET )
     @ApiOperation("查询banner图列表")
     public List<SrvcBanner> bannerQuery() {
 
@@ -96,7 +96,7 @@ public class ApiController {
      * 查询video视频列表
      * @return
      */
-    @RequestMapping(value = "/video/query",method = RequestMethod.POST)
+    @RequestMapping(value = "/videos",method = RequestMethod.POST)
     @ApiOperation("查询video视频列表")
     public List<SrvcVideo> videoQuery() {
 
@@ -109,7 +109,7 @@ public class ApiController {
      * 查询设计师信息列表
      * @return
      */
-    @RequestMapping(value = "/designer/query",method = RequestMethod.GET)
+    @RequestMapping(value = "/designers",method = RequestMethod.GET)
     @ApiOperation("查询设计师信息列表")
     public List<SrvcDesigner> designerQuery() {
 
@@ -126,7 +126,7 @@ public class ApiController {
      * @param pageSize   每页大小
      * @return 装修指南列表
      */
-    @RequestMapping(value = "/decorate/guide/list",method = RequestMethod.POST)
+    @RequestMapping(value = "/guides",method = RequestMethod.POST)
     @ApiOperation("查询装修指南列表")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
@@ -139,8 +139,8 @@ public class ApiController {
      * 查询十大模块信息列表
      * @return
      */
-    @RequestMapping(value = "/module/list",method = RequestMethod.POST)
-    @ApiOperation("查询十大模块信息列表")
+    @RequestMapping(value = "/modules",method = RequestMethod.POST)
+    @ApiOperation("查询首页十大模块列表")
     public Result moduleQuery(@RequestParam String moduleName) {
         List<SrvcModule> list =null;
         try {
@@ -179,7 +179,7 @@ public class ApiController {
      * 查询楼盘情况及图片信息列表
      * @return
      */
-    @RequestMapping(value = "/houses/list",method = RequestMethod.POST)
+    @RequestMapping(value = "/houses",method = RequestMethod.POST)
     @ApiOperation("查询楼盘情况及图片信息列表")
     public Result housesQuery(@RequestParam Integer progressTitle) {
         List<SrvcHouses> list =null;
