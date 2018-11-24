@@ -16,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -59,8 +56,8 @@ public class ApiController {
      * @param srvcCustomer 请求数据对象
      * @return 结果对象
      */
-    @ApiOperation(value = "保存顾客的信息", notes = "get the hotel by the city id", response = ApiController.class)
-    @RequestMapping("/customer/insert")
+    @ApiOperation(value = "保存顾客的信息", notes = "get the hotel by the city id")
+    @RequestMapping(value = "/customer/insert",method = RequestMethod.POST)
     public Result insert( @ApiParam(value = "The id of the city" ,required=true ) @RequestBody SrvcCustomer srvcCustomer) {
 
         try {
@@ -86,7 +83,7 @@ public class ApiController {
      * 查询banner图列表
      * @return
      */
-    @RequestMapping("/banner/query")
+    @RequestMapping(value ="/banner/query",method = RequestMethod.GET )
     @ApiOperation("查询banner图列表")
     public List<SrvcBanner> bannerQuery() {
 
@@ -99,7 +96,7 @@ public class ApiController {
      * 查询video视频列表
      * @return
      */
-    @RequestMapping("/video/query")
+    @RequestMapping(value = "/video/query",method = RequestMethod.POST)
     @ApiOperation("查询video视频列表")
     public List<SrvcVideo> videoQuery() {
 
@@ -112,7 +109,7 @@ public class ApiController {
      * 查询设计师信息列表
      * @return
      */
-    @RequestMapping("/designer/query")
+    @RequestMapping(value = "/designer/query",method = RequestMethod.GET)
     @ApiOperation("查询设计师信息列表")
     public List<SrvcDesigner> designerQuery() {
 
@@ -129,7 +126,7 @@ public class ApiController {
      * @param pageSize   每页大小
      * @return 装修指南列表
      */
-    @RequestMapping("/decorate/guide/list")
+    @RequestMapping(value = "/decorate/guide/list",method = RequestMethod.POST)
     @ApiOperation("查询装修指南列表")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
@@ -142,7 +139,7 @@ public class ApiController {
      * 查询十大模块信息列表
      * @return
      */
-    @RequestMapping("/module/list")
+    @RequestMapping(value = "/module/list",method = RequestMethod.POST)
     @ApiOperation("查询十大模块信息列表")
     public Result moduleQuery(@RequestParam String moduleName) {
         List<SrvcModule> list =null;
@@ -182,7 +179,7 @@ public class ApiController {
      * 查询楼盘情况及图片信息列表
      * @return
      */
-    @RequestMapping("/houses/list")
+    @RequestMapping(value = "/houses/list",method = RequestMethod.POST)
     @ApiOperation("查询楼盘情况及图片信息列表")
     public Result housesQuery(@RequestParam Integer progressTitle) {
         List<SrvcHouses> list =null;

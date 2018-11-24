@@ -29,7 +29,7 @@ public class SwaggerConfig{
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("cn.com.njdhy.muscle.biceps.api"))
                 .paths(springfox.documentation.builders.PathSelectors.regex("/.*"))
                 .build()
                 .apiInfo(apiInfo())
@@ -46,7 +46,7 @@ public class SwaggerConfig{
                 "奥米巴项目接口文档",
                 "v1.0",
                 "",
-                new Contact("", "", ""),
+                new Contact("Mr.zhu", "www.taobao.com", "njzhuyuyp@163.com"),
                 "",
                 ""
         );
