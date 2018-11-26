@@ -35,7 +35,7 @@ public class CompanyDescController {
      * 查询三大模块信息列表
      * @return
      */
-    @RequestMapping("/companys/{type}")
+    @RequestMapping(value = "/companys/{type}",method = RequestMethod.POST)
     @ApiOperation("查询三大模块及图片列表")
     public Result companyDescQuery(@PathVariable Integer type) {
         List<SrvcCompanyDesc> list =null;

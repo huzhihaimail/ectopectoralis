@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Data
 public class SystemConstant {
 
-    @Value("${server.domain}")
+    @Value("${app.static.images.url.prefix}")
     private String domain;
 
     @Value("${app.file.upload.dir}")
