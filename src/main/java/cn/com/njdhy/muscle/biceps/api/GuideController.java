@@ -21,6 +21,7 @@ import java.util.Map;
  * @date 2018/11/20 9:19
  **/
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 @Slf4j
 @Api(tags = "装修指南模块接口")

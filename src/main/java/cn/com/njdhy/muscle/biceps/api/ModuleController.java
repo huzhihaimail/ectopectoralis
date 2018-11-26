@@ -19,6 +19,7 @@ import java.util.List;
  * @date 2018/11/20 9:19
  **/
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 @Slf4j
 @Api(tags = "十大模块接口")

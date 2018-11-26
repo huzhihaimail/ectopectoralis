@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2018/11/20 9:19
  **/
 @RestController
+@CrossOrigin
 @RequestMapping("/api")
 @Slf4j
 @Api(tags = "顾客模块接口")
