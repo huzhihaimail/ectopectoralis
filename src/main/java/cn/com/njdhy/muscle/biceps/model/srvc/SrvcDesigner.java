@@ -2,13 +2,16 @@ package cn.com.njdhy.muscle.biceps.model.srvc;
 
 import cn.com.njdhy.muscle.biceps.model.BaseModel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 设计师实体类
  * @author rain
  * @date 2018/11/17 17:54
  **/
-@Data
+@Getter
+@Setter
 public class SrvcDesigner extends BaseModel{
 
     /**

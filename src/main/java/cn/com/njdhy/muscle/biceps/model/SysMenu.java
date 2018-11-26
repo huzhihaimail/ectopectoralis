@@ -10,7 +10,8 @@ import lombok.Setter;
  *
  * @author 胡志海
  */
-@Data
+@Getter
+@Setter
 public class SysMenu extends BaseModel {
 
     /**
