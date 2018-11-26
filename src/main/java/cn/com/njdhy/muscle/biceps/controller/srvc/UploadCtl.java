@@ -1,10 +1,9 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.AjaxResult;
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,26 +28,8 @@ import java.util.UUID;
 @RequestMapping("/files")
 public class UploadCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UploadCtl.class);
-
-    /**
-     * 文件存储路径
-     */
-    @Value("app.file.upload.dir")
-    private String fileUploadDir;
-
-    /**
-     * 服务端ip地址
-     */
-    @Value("server.address")
-    private String host;
-
-    /**
-     * 服务端端口号
-     */
-    @Value("server.port")
-    private String port;
-
+    @Autowired
+    private SystemConstant systemConstant;
 
     /**
      * 上传文件
@@ -62,10 +43,6 @@ public class UploadCtl {
         AjaxResult ajaxResult = new AjaxResult(true);
         String tag = "/images";
         tag = replace(tag);
-
-//        String paths = request.getSession().getServletContext().getRealPath("/");
-//
-//        LOGGER.debug("param is path =============>{}",paths);
         String filename = uploadFile(file, tag);
         filename = filename.replace("\\", "/");
         JSONObject data = new JSONObject();
@@ -94,8 +71,8 @@ public class UploadCtl {
     }
 
     private void saveFile(String type, String fileName, MultipartFile file) {
-        String filePath = fileUploadDir + File.separator + type + fileName;
-        String tempDirPath = fileUploadDir + File.separator + type;
+        String filePath = systemConstant.getFileUploadDir() + File.separator + type + fileName;
+        String tempDirPath = systemConstant.getFileUploadDir() + File.separator + type;
         final File targetFile = new File(filePath);
         final File tempDir = new File(tempDirPath);
         if (!tempDir.exists()) {

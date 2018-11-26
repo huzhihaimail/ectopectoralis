@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -7,10 +8,7 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.VideoErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcVideo;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcVideoService;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,28 +24,10 @@ import java.util.Map;
 @RequestMapping("/srvc/video")
 public class VideoCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VideoCtl.class);
-
     @Autowired
     private SrvcVideoService srvcVideoService;
-
-    /**
-     * 文件存储路径
-     */
-    @Value("app.file.upload.dir")
-    private String fileUploadDir;
-
-    /**
-     * 服务端ip地址
-     */
-    @Value("server.address")
-    private String host;
-
-    /**
-     * 服务端端口号
-     */
-    @Value("server.port")
-    private String port;
+    @Autowired
+    private SystemConstant systemConstant;
 
     /**
      * 查询banner图列表
@@ -63,7 +43,7 @@ public class VideoCtl {
         PageInfo<SrvcVideo> result = srvcVideoService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcVideo> list = result.getList();
         for(SrvcVideo srvcVideo: list) {
-            String s =  "http://" + host + ":" + port + "/"+srvcVideo.getVideoUrl();
+            String s =  systemConstant.getDomain()+srvcVideo.getVideoUrl();
             srvcVideo.setVideoUrl(s);
         }
         result.setList(list);
@@ -82,7 +62,7 @@ public class VideoCtl {
         // todo 参数校验
 
         SrvcVideo model = srvcVideoService.queryById(id);
-        String video =  "http://" + host + ":" + port + "/"+model.getVideoUrl();
+        String video =  systemConstant.getDomain() +model.getVideoUrl();
         model.setVideoUrl(video);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcVideo();

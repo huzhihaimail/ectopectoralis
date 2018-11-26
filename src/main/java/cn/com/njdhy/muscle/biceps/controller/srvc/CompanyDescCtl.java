@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -7,10 +8,7 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.CompanyDescErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCompanyDesc;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcCompanyDescService;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,28 +25,11 @@ import java.util.Map;
 @RequestMapping("/srvc/company/desc")
 public class CompanyDescCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDescCtl.class);
-
     @Autowired
     private SrvcCompanyDescService srvcCompanyDescService;
 
-    /**
-     * 文件存储路径
-     */
-    @Value("app.file.upload.dir")
-    private String fileUploadDir;
-
-    /**
-     * 服务端ip地址
-     */
-    @Value("server.address")
-    private String host;
-
-    /**
-     * 服务端端口号
-     */
-    @Value("server.port")
-    private String port;
+    @Autowired
+    private SystemConstant systemConstant;
 
     /**
      * 查询三大模块列表
@@ -64,7 +45,7 @@ public class CompanyDescCtl {
         PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcCompanyDesc> list = result.getList();
         for (SrvcCompanyDesc srvcCompanyDesc : list) {
-            String imgUrl = "http://" + host + ":" + port + "/" + srvcCompanyDesc.getImageUrl();
+            String imgUrl = systemConstant.getDomain() + srvcCompanyDesc.getImageUrl();
             srvcCompanyDesc.setImageUrl(imgUrl);
         }
         result.setList(list);
@@ -83,7 +64,7 @@ public class CompanyDescCtl {
         // todo 参数校验
 
         SrvcCompanyDesc model = srvcCompanyDescService.queryById(id);
-        String img = "http://" + host + ":" + port + "/"  + model.getImageUrl();
+        String img = systemConstant.getDomain()  + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcCompanyDesc();

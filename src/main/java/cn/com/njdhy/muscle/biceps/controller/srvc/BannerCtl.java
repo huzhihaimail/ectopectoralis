@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -8,7 +9,6 @@ import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcBannerService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,24 +25,8 @@ import java.util.Map;
 @RequestMapping("/srvc/banner")
 public class BannerCtl {
 
-    /**
-     * 文件存储路径
-     */
-    @Value("app.file.upload.dir")
-    private String fileUploadDir;
-
-    /**
-     * 服务端ip地址
-     */
-    @Value("server.address")
-    private String host;
-
-    /**
-     * 服务端端口号
-     */
-    @Value("server.port")
-    private String port;
-
+    @Autowired
+    private SystemConstant systemConstant;
     @Autowired
     private SrvcBannerService srvcBannerService;
 
@@ -60,7 +44,7 @@ public class BannerCtl {
         PageInfo<SrvcBanner> result = srvcBannerService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcBanner> list = result.getList();
         for (SrvcBanner srvcBanner : list) {
-            String imagePath = "http://" + host + ":" + port + "/" + srvcBanner.getImgUrl();
+            String imagePath = systemConstant.getDomain()+ srvcBanner.getImgUrl();
             srvcBanner.setImgUrl(imagePath);
         }
         result.setList(list);
@@ -81,7 +65,7 @@ public class BannerCtl {
             return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
         }
         SrvcBanner model = srvcBannerService.queryById(id);
-        String imgUrl = "http://" + host + ":" + port + "/" + model.getImgUrl();
+        String imgUrl = systemConstant.getDomain() + model.getImgUrl();
         model.setImgUrl(imgUrl);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcBanner();

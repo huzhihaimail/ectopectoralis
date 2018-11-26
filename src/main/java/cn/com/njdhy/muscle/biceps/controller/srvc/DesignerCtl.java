@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -7,10 +8,7 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.DesignerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDesignerService;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,28 +24,11 @@ import java.util.Map;
 @RequestMapping("/srvc/designer")
 public class DesignerCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesignerCtl.class);
-
     @Autowired
     private SrvcDesignerService srvcDesignerService;
 
-    /**
-     * 文件存储路径
-     */
-    @Value("app.file.upload.dir")
-    private String fileUploadDir;
-
-    /**
-     * 服务端ip地址
-     */
-    @Value("server.address")
-    private String host;
-
-    /**
-     * 服务端端口号
-     */
-    @Value("server.port")
-    private String port;
+    @Autowired
+    private SystemConstant systemConstant;
 
     /**
      * 查询banner图列表
@@ -63,7 +44,7 @@ public class DesignerCtl {
         PageInfo<SrvcDesigner> result = srvcDesignerService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcDesigner> list = result.getList();
         for(SrvcDesigner srvcDesigner: list) {
-            String s = "http://" + host + ":" + port + "/"+srvcDesigner.getHeadUrl();
+            String s = systemConstant.getDomain()+srvcDesigner.getHeadUrl();
             srvcDesigner.setHeadUrl(s);
         }
         result.setList(list);
@@ -82,7 +63,7 @@ public class DesignerCtl {
         // todo 参数校验
 
         SrvcDesigner model = srvcDesignerService.queryById(id);
-        String head = "http://" + host + ":" + port + "/"+model.getHeadUrl();
+        String head = systemConstant.getDomain()+model.getHeadUrl();
         model.setHeadUrl(head);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDesigner();

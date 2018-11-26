@@ -41,7 +41,7 @@ public class SrvcModuleServiceImpl extends BaseServiceImpl<SrvcModuleDao,SrvcMod
      * @return
      */
     @Override
-    public List<SrvcModule> selectModuleInfo(String moduleName) {
-        return srvcModuleDao.selectModuleInfo(moduleName);
+    public List<SrvcModule> selectModuleInfo(String moduleName,Integer imageType) {
+        return srvcModuleDao.selectModuleInfo(moduleName,imageType);
     }
 }

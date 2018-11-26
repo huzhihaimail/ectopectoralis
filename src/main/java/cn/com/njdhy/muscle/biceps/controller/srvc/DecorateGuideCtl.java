@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -8,7 +9,6 @@ import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDecorateGuide;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDecorateGuideService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,23 +28,8 @@ public class DecorateGuideCtl {
     @Autowired
     private SrvcDecorateGuideService srvcDecorateGuideService;
 
-    /**
-     * 文件存储路径
-     */
-    @Value("app.file.upload.dir")
-    private String fileUploadDir;
-
-    /**
-     * 服务端ip地址
-     */
-    @Value("server.address")
-    private String host;
-
-    /**
-     * 服务端端口号
-     */
-    @Value("server.port")
-    private String port;
+    @Autowired
+    private SystemConstant systemConstant;
 
     /**
      * 查询banner图列表
@@ -60,7 +45,7 @@ public class DecorateGuideCtl {
         PageInfo<SrvcDecorateGuide> result = srvcDecorateGuideService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcDecorateGuide> list = result.getList();
         for (SrvcDecorateGuide srvcDecorateGuide : list) {
-            String s = "http://" + host + ":" + port + "/" + srvcDecorateGuide.getImageUrl();
+            String s = systemConstant.getDomain() + srvcDecorateGuide.getImageUrl();
             srvcDecorateGuide.setImageUrl(s);
         }
         result.setList(list);
@@ -79,7 +64,7 @@ public class DecorateGuideCtl {
         // todo 参数校验
 
         SrvcDecorateGuide model = srvcDecorateGuideService.queryById(id);
-        String img ="http://" + host + ":" + port + "/" + model.getImageUrl();
+        String img =systemConstant.getDomain() + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDecorateGuide();

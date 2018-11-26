@@ -28,5 +28,5 @@ public interface SrvcModuleService extends BaseService<SrvcModule>{
      * @param moduleName
      * @return
      */
-    List<SrvcModule> selectModuleInfo(String moduleName);
+    List<SrvcModule> selectModuleInfo(String moduleName,Integer ImageType);
 }

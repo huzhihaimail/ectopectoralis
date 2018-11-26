@@ -1,5 +1,6 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -7,8 +8,6 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.CustomerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCustomer;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcCustomerService;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,8 @@ import java.util.Map;
 @RequestMapping("/srvc/customer")
 public class CustomerCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerCtl.class);
+    @Autowired
+    private SystemConstant systemConstant;
 
     @Autowired
     private SrvcCustomerService srvcCustomerService;

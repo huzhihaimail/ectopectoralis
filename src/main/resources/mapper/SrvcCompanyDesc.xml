@@ -58,6 +58,16 @@
         AND id=#{id}
     </select>
 
+    <!-- 根据type查询-->
+    <select id="queryByType" resultMap="SrvcCompanyDescMap" parameterType="Integer">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND type=#{type}
+    </select>
+
     <!-- 批量删除-->
     <delete id="deleteByIds" parameterType="java.util.List">
         DELETE FROM

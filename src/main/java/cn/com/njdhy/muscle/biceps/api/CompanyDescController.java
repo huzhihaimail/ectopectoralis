@@ -1,0 +1,59 @@
+package cn.com.njdhy.muscle.biceps.api;
+
+import cn.com.njdhy.muscle.biceps.common.SystemConstant;
+import cn.com.njdhy.muscle.biceps.controller.Result;
+import cn.com.njdhy.muscle.biceps.exception.srvc.CompanyDescErrorCode;
+import cn.com.njdhy.muscle.biceps.model.srvc.*;
+import cn.com.njdhy.muscle.biceps.service.srvc.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * 前台所需接口
+ * @author rain
+ * @date 2018/11/20 9:19
+ **/
+@RestController
+@RequestMapping("/api")
+@Slf4j
+@Api(tags = "三大模块接口")
+public class CompanyDescController {
+
+    @Autowired
+    private SystemConstant systemConstant;
+
+    @Autowired
+    private SrvcCompanyDescService srvcCompanyDescService;
+
+
+    /**
+     * 查询三大模块信息列表
+     * @return
+     */
+    @RequestMapping("/companys/{type}")
+    @ApiOperation("查询三大模块及图片列表")
+    public Result companyDescQuery(@PathVariable Integer type) {
+        List<SrvcCompanyDesc> list =null;
+        try {
+            if(type == null){
+                return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
+            }
+            list = srvcCompanyDescService.queryByType(type);
+            for (SrvcCompanyDesc srvcCompanyDesc : list) {
+                String img =systemConstant.getDomain()+srvcCompanyDesc.getImageUrl();
+                srvcCompanyDesc.setImageUrl(img);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return Result.success(list);
+    }
+
+
+}

@@ -2,6 +2,7 @@ package cn.com.njdhy.muscle.biceps.dao.srvc;
 
 import cn.com.njdhy.muscle.biceps.dao.BaseDao;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModule;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -25,5 +26,5 @@ public interface SrvcModuleDao extends BaseDao<SrvcModule> {
      * @param moduleName
      * @return
      */
-    List<SrvcModule> selectModuleInfo(String moduleName);
+    List<SrvcModule> selectModuleInfo(@Param("moduleName") String moduleName,@Param("imageType") Integer imageType);
 }

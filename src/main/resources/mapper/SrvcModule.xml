@@ -138,7 +138,7 @@
     </select>
 
     <!--api关联查询-->
-    <select id="selectModuleInfo" resultMap="SrvcModuleMap" parameterType="String">
+    <select id="selectModuleInfo" resultMap="SrvcModuleMap">
         SELECT
         m.*,
         s.id module_sub_id,s.title,s.image_url,s.image_type
@@ -147,7 +147,11 @@
         LEFT JOIN
         <include refid="tableName2"/> s
         ON m.id = s.module_id
-        WHERE m.delete_flag = 0 AND m.module_name =#{moduleName}
+        <where>
+            AND m.delete_flag = 0
+            AND m.module_name =#{moduleName}
+            AND s.image_type =#{imageType}
+        </where>
     </select>
 </mapper>
 
