@@ -39,10 +39,7 @@ public class DesignerController {
         List<SrvcDesigner> list=null;
         try {
             list = srvcDesignerService.selectDesignerList();
-            for (SrvcDesigner srvcDesigner : list) {
-                String img =systemConstant.getDomain()+srvcDesigner.getHeadUrl();
-                srvcDesigner.setHeadUrl(img);
-            }
+
         }catch (Exception e){
            e.printStackTrace();
         }

@@ -45,10 +45,7 @@ public class CompanyDescController {
                 return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
             }
             list = srvcCompanyDescService.queryByType(type);
-            for (SrvcCompanyDesc srvcCompanyDesc : list) {
-                String img =systemConstant.getDomain()+srvcCompanyDesc.getImageUrl();
-                srvcCompanyDesc.setImageUrl(img);
-            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

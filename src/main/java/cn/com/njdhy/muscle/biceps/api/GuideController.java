@@ -45,12 +45,7 @@ public class GuideController {
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
         PageInfo<SrvcDecorateGuide> result = srvcDecorateGuideService.queryList(queryParam, pageNumber, pageSize);
-        List<SrvcDecorateGuide> list = result.getList();
-        for (SrvcDecorateGuide srvcDecorateGuide : list) {
-            String s = systemConstant.getDomain() + srvcDecorateGuide.getImageUrl();
-            srvcDecorateGuide.setImageUrl(s);
-        }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 

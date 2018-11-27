@@ -44,10 +44,7 @@ public class HousesController {
                 return Result.error(HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_MESSAGE);
             }
             list = srvcHousesService.selectHousesInfo(progressTitle);
-            for (SrvcHouses srvcHouses : list) {
-                String img = systemConstant.getDomain()+srvcHouses.getImageUrl();
-                srvcHouses.setImageUrl(img);
-            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

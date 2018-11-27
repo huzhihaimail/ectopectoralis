@@ -44,10 +44,7 @@ public class BannerController {
         List<SrvcBanner> list=null;
         try {
             list = srvcBannerService.selectBannerList();
-            for (SrvcBanner srvcBanner : list) {
-                String img =systemConstant.getDomain()+srvcBanner.getImgUrl();
-                srvcBanner.setImgUrl(img);
-            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

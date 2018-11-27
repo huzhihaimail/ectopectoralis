@@ -48,10 +48,7 @@ public class ModuleController {
                 return Result.error(ModuleErrorCode.SRVC_MODULE_PARAMS_ERROR_CODE,ModuleErrorCode.SRVC_MODULE_PARAMS_ERROR_MESSAGE);
             }
             list = srvcModuleService.selectModuleInfo(moduleName,imageType);
-            for (SrvcModule srvcModule : list) {
-                String img = systemConstant.getDomain()+srvcModule.getImageUrl();
-                srvcModule.setImageUrl(img);
-            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

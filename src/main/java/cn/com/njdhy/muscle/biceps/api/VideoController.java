@@ -39,10 +39,7 @@ public class VideoController {
         List<SrvcVideo> list =null;
         try {
             list = srvcVideoService.selectVideoList();
-            for (SrvcVideo srvcVideo : list) {
-                String video = systemConstant.getDomain()+srvcVideo.getVideoUrl();
-                srvcVideo.setVideoUrl(video);
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
