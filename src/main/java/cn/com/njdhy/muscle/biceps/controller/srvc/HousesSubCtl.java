@@ -25,8 +25,6 @@ import java.util.Map;
 @RequestMapping("/srvc/houses/sub")
 public class HousesSubCtl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HousesSubCtl.class);
-
     @Autowired
     private SrvcHousesSubService srvcHousesSubService;
 

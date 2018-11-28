@@ -1,6 +1,5 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
@@ -23,9 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/srvc/customer")
 public class CustomerCtl {
-
-    @Autowired
-    private SystemConstant systemConstant;
 
     @Autowired
     private SrvcCustomerService srvcCustomerService;

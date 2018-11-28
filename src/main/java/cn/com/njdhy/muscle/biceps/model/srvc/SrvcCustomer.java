@@ -21,4 +21,8 @@ public class SrvcCustomer extends BaseModel{
      * 顾客手机号
      */
     private String mobile;
+    /**
+     * 顾客选择的模块类型（十大模块）
+     */
+    private String moduleType;
 }

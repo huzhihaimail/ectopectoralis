@@ -1,11 +1,11 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.CompanyDescErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCompanyDesc;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcCompanyDescService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,9 @@ import java.util.Map;
 public class CompanyDescCtl {
 
     @Autowired
-    private SrvcCompanyDescService srvcCompanyDescService;
-
+    private AppCommonProperties appCommonProperties;
     @Autowired
-    private SystemConstant systemConstant;
+    private SrvcCompanyDescService srvcCompanyDescService;
 
     /**
      * 查询三大模块列表
@@ -45,7 +44,7 @@ public class CompanyDescCtl {
         PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcCompanyDesc> list = result.getList();
         for (SrvcCompanyDesc srvcCompanyDesc : list) {
-            String imgUrl = systemConstant.getDomain() + srvcCompanyDesc.getImageUrl();
+            String imgUrl = appCommonProperties.getImagesPrefix() + srvcCompanyDesc.getImageUrl();
             srvcCompanyDesc.setImageUrl(imgUrl);
         }
         result.setList(list);
@@ -64,7 +63,7 @@ public class CompanyDescCtl {
         // todo 参数校验
 
         SrvcCompanyDesc model = srvcCompanyDescService.queryById(id);
-        String img = systemConstant.getDomain()  + model.getImageUrl();
+        String img = appCommonProperties.getImagesPrefix()  + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcCompanyDesc();

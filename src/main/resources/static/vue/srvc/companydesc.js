@@ -37,12 +37,21 @@ var showColumns = [
             var role = '';
             switch (value){
                 case 1:
-                    role = '六大精英设计风格'
+                    role = '整屋装修'
                     break;
                 case 2:
-                    role = '5h关注工程'
+                    role = '卓尔高端设计'
                     break;
                 case 3:
+                    role = '房点装'
+                    break;
+                case 4:
+                    role = '六大精英设计风格'
+                    break;
+                case 5:
+                    role = '5h关注工程'
+                    break;
+                case 6:
                     role = '装修好管家'
                     break;
             }

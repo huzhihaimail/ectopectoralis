@@ -1,6 +1,5 @@
 package cn.com.njdhy.muscle.biceps.api;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.model.srvc.*;
@@ -12,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,8 +25,6 @@ import java.util.Map;
 @Api(tags = "装修指南模块接口")
 public class GuideController {
 
-    @Autowired
-    private SystemConstant systemConstant;
     @Autowired
     private SrvcDecorateGuideService srvcDecorateGuideService;
 

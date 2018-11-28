@@ -1,12 +1,12 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHousesSub;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesService;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesSubService;
 import com.github.pagehelper.PageInfo;
@@ -28,14 +28,12 @@ import java.util.Map;
 @RequestMapping("/srvc/houses")
 public class HousesCtl {
 
-
+    @Autowired
+    private AppCommonProperties appCommonProperties;
     @Autowired
     private SrvcHousesService srvcHousesService;
     @Autowired
     private SrvcHousesSubService srvcHousesSubService;
-
-    @Autowired
-    private SystemConstant systemConstant;
 
     /**
      * 查询banner图列表
@@ -51,7 +49,7 @@ public class HousesCtl {
         PageInfo<SrvcHouses> result = srvcHousesService.selectHousesList(queryParam, pageNumber, pageSize);
         List<SrvcHouses> list = result.getList();
         for (SrvcHouses srvcHouses : list) {
-            String s = systemConstant.getDomain() + srvcHouses.getImageUrl();
+            String s = appCommonProperties.getImagesPrefix() + srvcHouses.getImageUrl();
             srvcHouses.setImageUrl(s);
         }
         result.setList(list);
@@ -70,7 +68,7 @@ public class HousesCtl {
         // todo 参数校验
 
         SrvcHouses model = srvcHousesService.queryById(id);
-        String img = systemConstant.getDomain() + model.getImageUrl();
+        String img = appCommonProperties.getImagesPrefix() + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcHouses();

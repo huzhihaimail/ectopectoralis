@@ -70,10 +70,13 @@
 
     <!-- 批量删除-->
     <delete id="deleteByIds" parameterType="java.util.List">
-        DELETE FROM
-        <include refid="tableName"/>
+        DELETE h.*,s.* FROM
+        <include refid="tableName"/> h
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON h.id = s.houses_id
         WHERE 1=1
-        AND id IN
+        AND h.id IN
         <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>

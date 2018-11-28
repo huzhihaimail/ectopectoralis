@@ -10,6 +10,7 @@
         <result property="id" column="id"></result>
         <result property="floorSpace" column="floor_space"></result>
         <result property="mobile" column="mobile"></result>
+        <result property="moduleType" column="module_type"></result>
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
@@ -22,17 +23,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, floor_space, mobile,create_date, update_date, delete_flag
+        id, floor_space, mobile,module_type,create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{floorSpace}, #{mobile}, NOW(),#{updateDate}, 0
+        #{id}, #{floorSpace}, #{mobile},#{moduleType}, NOW(),#{updateDate}, 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        floor_space=#{floorSpace}, mobile=#{mobile}, update_date=NOW(), delete_flag=#{deleteFlag}
+        floor_space=#{floorSpace}, mobile=#{mobile}, module_type=#{moduleType}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->

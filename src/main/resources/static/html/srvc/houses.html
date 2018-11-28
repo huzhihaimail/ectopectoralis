@@ -21,6 +21,7 @@
             <div class="col-md-10 form-inline">
                 <div class="input-group">
                     <select class="form-control" v-model="vueQueryParam.keyword" @keyup.enter="query">
+                        <option value="" selected>请选择案例类型</option>
                         <option value="1">装修案例</option>
                         <option value="2">施工案例</option>
                     </select>

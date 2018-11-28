@@ -7,8 +7,6 @@ import cn.com.njdhy.muscle.biceps.exception.sys.UserErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModuleSub;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcModuleSubService;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/srvc/module/sub")
 public class ModuleSubCtl {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ModuleSubCtl.class);
 
     @Autowired
     private SrvcModuleSubService srvcModuleSubService;

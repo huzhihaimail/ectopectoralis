@@ -1,11 +1,11 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.DecorateGuideErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDecorateGuide;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDecorateGuideService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,10 @@ import java.util.Map;
 public class DecorateGuideCtl {
 
     @Autowired
-    private SrvcDecorateGuideService srvcDecorateGuideService;
+    private AppCommonProperties appCommonProperties;
 
     @Autowired
-    private SystemConstant systemConstant;
+    private SrvcDecorateGuideService srvcDecorateGuideService;
 
     /**
      * 查询banner图列表
@@ -45,7 +45,7 @@ public class DecorateGuideCtl {
         PageInfo<SrvcDecorateGuide> result = srvcDecorateGuideService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcDecorateGuide> list = result.getList();
         for (SrvcDecorateGuide srvcDecorateGuide : list) {
-            String s = systemConstant.getDomain() + srvcDecorateGuide.getImageUrl();
+            String s = appCommonProperties.getImagesPrefix() + srvcDecorateGuide.getImageUrl();
             srvcDecorateGuide.setImageUrl(s);
         }
         result.setList(list);
@@ -64,7 +64,7 @@ public class DecorateGuideCtl {
         // todo 参数校验
 
         SrvcDecorateGuide model = srvcDecorateGuideService.queryById(id);
-        String img =systemConstant.getDomain() + model.getImageUrl();
+        String img =appCommonProperties.getImagesPrefix() + model.getImageUrl();
         model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDecorateGuide();

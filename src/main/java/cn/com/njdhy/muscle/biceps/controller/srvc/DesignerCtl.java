@@ -1,11 +1,11 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.DesignerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDesignerService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ import java.util.Map;
 public class DesignerCtl {
 
     @Autowired
-    private SrvcDesignerService srvcDesignerService;
+    private AppCommonProperties appCommonProperties;
 
     @Autowired
-    private SystemConstant systemConstant;
+    private SrvcDesignerService srvcDesignerService;
 
     /**
      * 查询banner图列表
@@ -44,7 +44,7 @@ public class DesignerCtl {
         PageInfo<SrvcDesigner> result = srvcDesignerService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcDesigner> list = result.getList();
         for(SrvcDesigner srvcDesigner: list) {
-            String s = systemConstant.getDomain()+srvcDesigner.getHeadUrl();
+            String s = appCommonProperties.getImagesPrefix()+srvcDesigner.getHeadUrl();
             srvcDesigner.setHeadUrl(s);
         }
         result.setList(list);
@@ -63,7 +63,7 @@ public class DesignerCtl {
         // todo 参数校验
 
         SrvcDesigner model = srvcDesignerService.queryById(id);
-        String head = systemConstant.getDomain()+model.getHeadUrl();
+        String head = appCommonProperties.getImagesPrefix()+model.getHeadUrl();
         model.setHeadUrl(head);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDesigner();

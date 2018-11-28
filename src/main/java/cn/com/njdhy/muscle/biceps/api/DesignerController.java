@@ -25,8 +25,6 @@ import java.util.List;
 public class DesignerController {
 
     @Autowired
-    private SystemConstant systemConstant;
-    @Autowired
     private SrvcDesignerService srvcDesignerService;
 
     /**

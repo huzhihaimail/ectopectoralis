@@ -1,11 +1,11 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.BannerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBanner;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcBannerService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class BannerCtl {
 
     @Autowired
-    private SystemConstant systemConstant;
+    private AppCommonProperties appCommonProperties;
     @Autowired
     private SrvcBannerService srvcBannerService;
 
@@ -44,7 +44,7 @@ public class BannerCtl {
         PageInfo<SrvcBanner> result = srvcBannerService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcBanner> list = result.getList();
         for (SrvcBanner srvcBanner : list) {
-            String imagePath = systemConstant.getDomain()+ srvcBanner.getImgUrl();
+            String imagePath = appCommonProperties.getImagesPrefix()+ srvcBanner.getImgUrl();
             srvcBanner.setImgUrl(imagePath);
         }
         result.setList(list);
@@ -65,7 +65,7 @@ public class BannerCtl {
             return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
         }
         SrvcBanner model = srvcBannerService.queryById(id);
-        String imgUrl = systemConstant.getDomain() + model.getImgUrl();
+        String imgUrl = appCommonProperties.getImagesPrefix() + model.getImgUrl();
         model.setImgUrl(imgUrl);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcBanner();

@@ -1,6 +1,5 @@
 package cn.com.njdhy.muscle.biceps.api;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.*;
@@ -24,9 +23,6 @@ import java.util.List;
 @Slf4j
 @Api(tags = "房屋案例模块接口")
 public class HousesController {
-
-    @Autowired
-    private SystemConstant systemConstant;
 
     @Autowired
     private SrvcHousesService srvcHousesService;

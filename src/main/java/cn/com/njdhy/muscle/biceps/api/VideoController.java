@@ -1,6 +1,5 @@
 package cn.com.njdhy.muscle.biceps.api;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.model.srvc.*;
 import cn.com.njdhy.muscle.biceps.service.srvc.*;
@@ -24,8 +23,6 @@ import java.util.List;
 @Api(tags = "视频模块接口")
 public class VideoController {
 
-    @Autowired
-    private SystemConstant systemConstant;
     @Autowired
     private SrvcVideoService srvcVideoService;
 

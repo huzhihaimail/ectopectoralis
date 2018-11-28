@@ -1,11 +1,11 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.VideoErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcVideo;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcVideoService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ import java.util.Map;
 public class VideoCtl {
 
     @Autowired
-    private SrvcVideoService srvcVideoService;
+    private AppCommonProperties appCommonProperties;
     @Autowired
-    private SystemConstant systemConstant;
+    private SrvcVideoService srvcVideoService;
 
     /**
      * 查询banner图列表
@@ -43,7 +43,7 @@ public class VideoCtl {
         PageInfo<SrvcVideo> result = srvcVideoService.queryList(queryParam, pageNumber, pageSize);
         List<SrvcVideo> list = result.getList();
         for(SrvcVideo srvcVideo: list) {
-            String s =  systemConstant.getDomain()+srvcVideo.getVideoUrl();
+            String s =  appCommonProperties.getImagesPrefix()+srvcVideo.getVideoUrl();
             srvcVideo.setVideoUrl(s);
         }
         result.setList(list);
@@ -62,7 +62,7 @@ public class VideoCtl {
         // todo 参数校验
 
         SrvcVideo model = srvcVideoService.queryById(id);
-        String video =  systemConstant.getDomain() +model.getVideoUrl();
+        String video =  appCommonProperties.getImagesPrefix() +model.getVideoUrl();
         model.setVideoUrl(video);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcVideo();

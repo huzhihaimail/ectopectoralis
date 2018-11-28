@@ -1,7 +1,7 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.AjaxResult;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,7 +29,7 @@ import java.util.UUID;
 public class UploadCtl {
 
     @Autowired
-    private SystemConstant systemConstant;
+    private AppCommonProperties appCommonProperties;
 
     /**
      * 上传文件
@@ -71,8 +71,8 @@ public class UploadCtl {
     }
 
     private void saveFile(String type, String fileName, MultipartFile file) {
-        String filePath = systemConstant.getFileUploadDir() + File.separator + type + fileName;
-        String tempDirPath = systemConstant.getFileUploadDir() + File.separator + type;
+        String filePath = appCommonProperties.getFileUrl() + File.separator + type + fileName;
+        String tempDirPath = appCommonProperties.getFileUrl() + File.separator + type;
         final File targetFile = new File(filePath);
         final File tempDir = new File(tempDirPath);
         if (!tempDir.exists()) {

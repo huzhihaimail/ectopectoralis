@@ -1,12 +1,12 @@
 package cn.com.njdhy.muscle.biceps.controller.srvc;
 
-import cn.com.njdhy.muscle.biceps.common.SystemConstant;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.ModuleErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModule;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModuleSub;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcModuleService;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcModuleSubService;
 import com.github.pagehelper.PageInfo;
@@ -28,12 +28,11 @@ import java.util.Map;
 public class ModuleCtl {
 
     @Autowired
+    private AppCommonProperties appCommonProperties;
+    @Autowired
     private SrvcModuleService srvcModuleService;
     @Autowired
     private SrvcModuleSubService srvcModuleSubService;
-
-    @Autowired
-    private SystemConstant systemConstant;
 
 
     /**
@@ -50,7 +49,7 @@ public class ModuleCtl {
         PageInfo<SrvcModule> result = srvcModuleService.selectModuleList(queryParam, pageNumber, pageSize);
         List<SrvcModule> list = result.getList();
         for (SrvcModule srvcModule : list) {
-            String image = systemConstant.getDomain() +srvcModule.getImageUrl();
+            String image = appCommonProperties.getImagesPrefix() +srvcModule.getImageUrl();
             srvcModule.setImageUrl(image);
         }
         result.setList(list);
