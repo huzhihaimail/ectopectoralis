@@ -44,4 +44,10 @@ public interface CompanyDescErrorCode {
     String SRVC_COMPANYDESC_PARAMS_ERROR_CODE = SRVC_COMPANYDESC + "5";
     String SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
 
+    /**
+     * 查询三大模块
+     */
+    String SRVC_COMPANYDESC_SELECT_ERROR_CODE = SRVC_COMPANYDESC + "6";
+    String SRVC_COMPANYDESC_SELECT_ERROR_MESSAGE = "查询三大模块出现异常";
+
 }

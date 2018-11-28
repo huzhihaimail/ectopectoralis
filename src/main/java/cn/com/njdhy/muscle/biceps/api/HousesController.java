@@ -43,6 +43,7 @@ public class HousesController {
 
         }catch (Exception e){
             e.printStackTrace();
+            return Result.error(HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success(list);

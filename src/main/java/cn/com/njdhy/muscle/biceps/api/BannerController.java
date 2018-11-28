@@ -1,6 +1,7 @@
 package cn.com.njdhy.muscle.biceps.api;
 
 import cn.com.njdhy.muscle.biceps.controller.Result;
+import cn.com.njdhy.muscle.biceps.exception.srvc.BannerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.*;
 import cn.com.njdhy.muscle.biceps.service.srvc.*;
 import io.swagger.annotations.Api;
@@ -39,6 +40,7 @@ public class BannerController {
 
         }catch (Exception e){
             e.printStackTrace();
+            return Result.error(BannerErrorCode.SRVC_BANNER_SELECT_ERROR_CODE, BannerErrorCode.SRVC_BANNER_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success(list);

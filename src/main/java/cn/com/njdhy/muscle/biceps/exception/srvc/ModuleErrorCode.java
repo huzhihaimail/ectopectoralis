@@ -44,4 +44,9 @@ public interface ModuleErrorCode {
     String SRVC_MODULE_PARAMS_ERROR_CODE = SRVC_MODULE + "5";
     String SRVC_MODULE_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
 
+    /**
+     * 查询十大模块信息列表
+     */
+    String SRVC_MODULE_SELECT_ERROR_CODE = SRVC_MODULE + "6";
+    String SRVC_MODULE_SELECT_ERROR_MESSAGE = "查询十大模块信息列表异常";
 }

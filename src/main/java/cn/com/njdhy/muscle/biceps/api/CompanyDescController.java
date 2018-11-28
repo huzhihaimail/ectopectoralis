@@ -44,6 +44,7 @@ public class CompanyDescController {
 
         }catch (Exception e){
             e.printStackTrace();
+            return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_SELECT_ERROR_CODE, CompanyDescErrorCode.SRVC_COMPANYDESC_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success(list);

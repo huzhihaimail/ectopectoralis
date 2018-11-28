@@ -43,4 +43,10 @@ public interface BannerErrorCode {
      */
     String SRVC_BANNER_PARAMS_ERROR_CODE = SRVC_BANNER + "5";
     String SRVC_BANNER_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
+
+    /**
+     * 查询banner图列表
+     */
+    String SRVC_BANNER_SELECT_ERROR_CODE = SRVC_BANNER + "6";
+    String SRVC_BANNER_SELECT_ERROR_MESSAGE = "查询banner图列表出现异常";
 }

@@ -38,4 +38,10 @@ public interface VideoErrorCode {
     String SRVC_VIDEO_UPDATE_ERROR_CODE = SRVC_VIDEO + "4";
     String SRVC_VIDEO_UPDATE_ERROR_MESSAGE = "更新视频模块出现根异常";
 
+    /**
+     * 查询视频模块根异常
+     */
+    String SRVC_VIDEO_SELECT_ERROR_CODE = SRVC_VIDEO + "5";
+    String SRVC_VIDEO_SELECT_ERROR_MESSAGE = "查询视频模块出现异常";
+
 }

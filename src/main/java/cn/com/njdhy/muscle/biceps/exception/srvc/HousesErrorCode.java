@@ -44,4 +44,9 @@ public interface HousesErrorCode {
     String SRVC_HOUSES_PARAMS_ERROR_CODE = SRVC_HOUSES + "5";
     String SRVC_HOUSES_PARAMS_ERROR_MESSAGE = "入参校验出现异常";
 
+    /**
+     * 查询楼盘情况及图片信息列表
+     */
+    String SRVC_HOUSES_SELECT_ERROR_CODE = SRVC_HOUSES + "6";
+    String SRVC_HOUSES_SELECT_ERROR_MESSAGE = "查询楼盘情况出现异常";
 }

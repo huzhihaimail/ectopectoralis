@@ -38,4 +38,10 @@ public interface DesignerErrorCode {
     String SRVC_DESIGNER_UPDATE_ERROR_CODE = SRVC_DESIGNER + "4";
     String SRVC_DESIGNER_UPDATE_ERROR_MESSAGE = "更新设计师信息出现根异常";
 
+    /**
+     * 查询设计师异常
+     */
+    String SRVC_DESIGNER_SELECT_ERROR_CODE = SRVC_DESIGNER + "5";
+    String SRVC_DESIGNER_SELECT_ERROR_MESSAGE = "查询设计师信息出现异常";
+
 }
