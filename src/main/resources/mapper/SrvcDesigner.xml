@@ -31,7 +31,7 @@
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{housesId}, #{headUrl}, #{name}, #{position},#{motto},#{workingExperience}, NOW(),#{updateDate}, 0
+        #{id}, #{housesId}, #{headUrl}, #{name}, #{position},#{motto},#{workingExperience}, NOW(),NOW(), 0
     </sql>
 
     <!-- for update set -->

@@ -28,7 +28,7 @@
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{title}, #{imageUrl}, #{type}, NOW(),#{updateDate}, 0
+        #{id}, #{title}, #{imageUrl}, #{type}, NOW(), NOW(), 0
     </sql>
 
     <!-- for update set -->

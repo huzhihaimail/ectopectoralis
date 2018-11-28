@@ -29,7 +29,7 @@
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{title},#{content}, #{imageUrl}, #{type}, NOW(),#{updateDate}, 0
+        #{id}, #{title},#{content}, #{imageUrl}, #{type}, NOW(), NOW(), 0
     </sql>
 
     <!-- for update set -->

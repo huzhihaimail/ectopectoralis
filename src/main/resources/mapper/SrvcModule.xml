@@ -35,7 +35,7 @@
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{moduleName}, NOW(),#{updateDate}, 0
+        #{id}, #{moduleName}, NOW(), NOW(), 0
     </sql>
 
     <!-- for update set -->
