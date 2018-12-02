@@ -20,31 +20,56 @@ var showColumns = [
         width: "10%"
     }
     , {
-        field: "housesType",
-        title: "房屋户型",
-        width: "10%"
-    }
-    , {
-        field: "floorSpace",
-        title: "房屋面积",
-        width: "5%"
-    }
-    , {
-        field: "style",
-        title: "房屋风格",
-        width: "15%"
-    }
-    , {
-        field: "designerName",
-        title: "设计师",
+        field: "progress",
+        title: "施工进度",
         width: "10%",
-
+        //1.形象保护 2.开工仪式 3.拆改项目 4.水电施工 5.瓦工施工
+        //6.木工施工 7.油工施工 8.安装项目 9.竣工验收 10.售后服务
+        formatter: function (value, row, index) {
+            var role = '';
+            switch (value){
+                case 1:
+                    role = '形象保护'
+                    break;
+                case 2:
+                    role = '开工仪式'
+                    break;
+                case 3:
+                    role = '拆改项目'
+                    break;
+                case 4:
+                    role = '水电施工'
+                    break;
+                case 5:
+                    role = '瓦工施工'
+                    break;
+                case 6:
+                    role = '木工施工'
+                    break;
+                case 7:
+                    role = '油工施工'
+                    break;
+                case 8:
+                    role = '安装项目'
+                    break;
+                case 9:
+                    role = '竣工验收'
+                    break;
+                case 10:
+                    role = '售后服务'
+                    break;
+            }
+            return role;
+        }
     }
     , {
-        field: "area",
-        title: "地区",
-        width: "5%",
-
+        field: "imageUrl",
+        title: "图片显示",
+        width: "20%",
+        formatter:function (value,row,index) {
+            var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'
+            return img;
+        }
     }
     , {
         field: "createDate",
@@ -96,10 +121,9 @@ var vm = new Vue({
             keyword: null,
         }
         , model: {} //实体对象(用于新建、修改页面)
-        //查询出所有设计师
-        , designers:{}
+        , houses:{} // 房屋
         // 定义模块名称
-        , moduleName: "/srvc/houses"
+        , moduleName: "/srvc/place"
     }
     // 定义方法
     , methods: {
@@ -119,7 +143,8 @@ var vm = new Vue({
             vm.title = PAGE_INSERT_TITLE;
             // 3. 清空表单数据
             vm.model = {};
-            vm.queryDesigners();
+            // 4.查询所有的房屋
+            vm.queryHouses();
         }
 
         // 点击“确定”按钮
@@ -250,20 +275,21 @@ var vm = new Vue({
             // 刷新表格数据
             bsTable.createBootStrapTable(showColumns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
         }
-        , queryDesigners:function () {
+
+        // 查询所有的
+        , queryHouses:function(){
             $.ajax({
                 type: "POST",
-                url: APP_NAME + vm.moduleName + "/designers",
+                url: APP_NAME + "/srvc/case/houses",
                 contentType: "application/json",
                 data: JSON.stringify(vm.model),
                 success: function (r) {
-                    if (r.code == 0) {
-                        vm.designers = r.designers;
+                    if (r.code === 0) {
+                        vm.houses = r.houses;
                     }
                 }
             });
         }
-
 
     }
 });
@@ -277,4 +303,51 @@ $(function () {
     bsTable.createBootStrapTable(vm.columns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
+/**
+ * 文件上传
+ */
+$('#input-id').fileinput({
+    // 设置语言
+    language: 'zh',
+    // 设置url地址
+    uploadUrl: '/files/upload',
+    // 是否显示预览图
+    showPreview: true,
+    //默认异步上传
+    uploadAsync: true,
+    // 最大上传文件数
+    maxFileCount: 1,
+    // 设置图片格式,即接收的文件后缀
+    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    //显示移除按钮
+    showRemove : true,
+    //是否显示预览
+    showPreview : true,
+    //是否显示标题
+    showCaption: false,
+    //按钮样式
+    browseClass: "btn btn-primary",
+    //是否显示拖拽区域
+    dropZoneEnabled: false,
+    enctype: 'multipart/form-data',
+    validateInitialCount:true,
+    slugCallback : function(filename) {
+        return filename.replace('(', '_').replace(']', '_');
+    }
+});
+//上传前
+$('#input-id').on('filepreupload', function(event, data, previewId, index) {
+    var form = data.form, files = data.files, extra = data.extra,
+        response = data.response, reader = data.reader;
+});
+
+//异步上传返回结果处理
+$("#input-id").on("fileuploaded", function (event, data, previewId, index) {
+    //后台返回的json
+    var response = data.response;
+    var path = response.data.path;
+    //返回上传的图片地址，赋值给vm model
+    vm.model.imageUrl=path;
+
+});
 

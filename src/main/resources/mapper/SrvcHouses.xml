@@ -9,13 +9,13 @@
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="name" column="name"></result>
+        <result property="designerId" column="designer_id"></result>
         <result property="housesType" column="houses_type"></result>
         <result property="floorSpace" column="floor_space"></result>
         <result property="style" column="style"></result>
         <result property="area" column="area"></result>
-        <result property="progressTitle" column="progress_title"></result>
 
-        <result property="imageUrl" column="image_url"></result>
+        <result property="designerName" column="designer_name"></result>
 
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
@@ -28,22 +28,22 @@
     </sql>
 
     <sql id="tableName2">
-        srvc_houses_sub
+        srvc_designer
     </sql>
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, `name`, houses_type, floor_space, style, progress_title, area, create_date, update_date, delete_flag
+        id, `name`, designer_id, houses_type, floor_space, style, area, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{name}, #{housesType}, #{floorSpace}, #{style}, #{progressTitle}, #{area}, NOW(),NOW(), 0
+        #{id}, #{name}, #{designerId}, #{housesType}, #{floorSpace}, #{style}, #{area}, NOW(),NOW(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        `name`=#{name}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style}, progress_title=#{progressTitle}, area=#{area}, update_date=NOW(), delete_flag=#{deleteFlag}
+        `name`=#{name}, designer_id=#{designerId}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style},  area=#{area}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
@@ -55,6 +55,19 @@
         t
         WHERE 1=1
         AND t.name=#{name}
+
+    </select>
+    <!-- 根据条件查询所有楼盘名，用于装修案例模块和在施工地模块调用 -->
+    <select id="queryHouses" resultMap="SrvcHousesMap" parameterType="map">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        t
+        WHERE 1=1
+        <if test="name!=null and name != ''">
+            AND t.name=#{name}
+        </if>
 
     </select>
 
@@ -70,13 +83,10 @@
 
     <!-- 批量删除-->
     <delete id="deleteByIds" parameterType="java.util.List">
-        DELETE h.*,s.* FROM
-        <include refid="tableName"/> h
-        LEFT JOIN
-        <include refid="tableName2"/> s
-        ON h.id = s.houses_id
+        DELETE FROM
+        <include refid="tableName"/>
         WHERE 1=1
-        AND h.id IN
+        AND id IN
         <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -115,7 +125,6 @@
         WHERE 1=1
         <if test="keyword!=null and keyword!=''">
             AND `name` LIKE CONCAT('%',#{keyword},'%')
-            OR progress_title LIKE CONCAT('%',#{keyword},'%')
         </if>
         ORDER BY
         create_date
@@ -126,13 +135,12 @@
     <!--backend关联查询-->
     <select id="selectHousesList" resultMap="SrvcHousesMap" parameterType="map">
         SELECT
-        h.*,
-        s.id,s.image_url
+        h.*,d.name designer_name
         FROM
         <include refid="tableName"/> h
         LEFT JOIN
-        <include refid="tableName2"/> s
-        ON h.id = s.houses_id
+        <include refid="tableName2"/> d
+        ON h.designer_id = d.id
         <where>
             AND h.delete_flag = 0
             <if test="keyword!=null and keyword!=''">
@@ -141,18 +149,18 @@
         </where>
     </select>
 
-    <!--api关联查询-->
-    <select id="selectHousesInfo" resultMap="SrvcHousesMap" parameterType="Integer">
-        SELECT
-        h.*,
-        s.id,s.image_url
-        FROM
-        <include refid="tableName"/> h
-        LEFT JOIN
-        <include refid="tableName2"/> s
-        ON h.id = s.houses_id
-        WHERE h.delete_flag = 0 AND h.progress_title =#{progressTitle}
-    </select>
+    <!--&lt;!&ndash;api关联查询&ndash;&gt;-->
+    <!--<select id="selectHousesInfo" resultMap="SrvcHousesMap" parameterType="Integer">-->
+        <!--SELECT-->
+        <!--h.*,-->
+        <!--s.id,s.image_url-->
+        <!--FROM-->
+        <!--<include refid="tableName"/> h-->
+        <!--LEFT JOIN-->
+        <!--<include refid="tableName2"/> s-->
+        <!--ON h.id = s.houses_id-->
+        <!--WHERE h.delete_flag = 0 -->
+    <!--</select>-->
 
 </mapper>
 

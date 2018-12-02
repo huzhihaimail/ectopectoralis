@@ -34,8 +34,8 @@ var showColumns = [
         width: "10%"
     }
     , {
-        field: "motto",
-        title: "个性签名",
+        field: "concept",
+        title: "设计理念",
         width: "15%"
     }
     , {
@@ -43,7 +43,11 @@ var showColumns = [
         title: "从业经验",
         width: "6%"
     }
-
+    , {
+        field: "style",
+        title: "设计风格",
+        width: "10%"
+    }
     , {
         field: "createDate",
         title: "创建时间",

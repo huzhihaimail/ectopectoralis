@@ -6,7 +6,7 @@ package cn.com.njdhy.muscle.biceps.exception.srvc;
  *
  * @author rain
  */
-public interface DecorateGuideErrorCode {
+public interface GuideErrorCode {
 
     /**
      * 首页
@@ -37,5 +37,11 @@ public interface DecorateGuideErrorCode {
      */
     String SRVC_DECORATEGUIDE_UPDATE_ERROR_CODE = SRVC_DECORATEGUIDE + "4";
     String SRVC_DECORATEGUIDE_UPDATE_ERROR_MESSAGE = "更新装修指南出现根异常";
+
+    /**
+     * 查询装修指南异常
+     */
+    String SRVC_DECORATEGUIDE_SELECT_ERROR_CODE = SRVC_DECORATEGUIDE + "5";
+    String SRVC_DECORATEGUIDE_SELECT_ERROR_MESSAGE = "查询装修指南出现异常";
 
 }

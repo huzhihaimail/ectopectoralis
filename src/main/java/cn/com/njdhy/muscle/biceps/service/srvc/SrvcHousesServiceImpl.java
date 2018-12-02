@@ -22,15 +22,27 @@ public class SrvcHousesServiceImpl extends BaseServiceImpl<SrvcHousesDao,SrvcHou
     @Autowired
     private SrvcHousesDao srvcHousesDao;
 
-
+    /**
+     * backend 查询所有楼盘情及其设计师列表
+     * @param map
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
     @Override
     public PageInfo<SrvcHouses> selectHousesList(Map<String, Object> map, Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber,pageSize);
         return new PageInfo<SrvcHouses>(srvcHousesDao.selectHousesList(map));
     }
 
+    /**
+     * 根据条件查询所有楼盘名，用于装修案例模块和在施工地模块调用
+     * @param map
+     * @return
+     */
     @Override
-    public List<SrvcHouses> selectHousesInfo(Integer progressTitle) {
-        return srvcHousesDao.selectHousesInfo(progressTitle);
+    public List<SrvcHouses> queryHouses(Map<String, Object> map) {
+        return srvcHousesDao.queryHouses(map);
     }
+
 }

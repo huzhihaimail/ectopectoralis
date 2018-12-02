@@ -3,15 +3,13 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
-import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
+import cn.com.njdhy.muscle.biceps.exception.srvc.VideoErrorCode;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
-import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHousesSub;
-import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
+import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDesignerService;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesService;
-import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesSubService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,21 +17,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 楼盘情况控制器
- *
+ * 视频管理控制器
  * @author rain
- * @date 2018/11/17 22:11
+ * @date 2018/11/17 22:22
  **/
 @RestController
 @RequestMapping("/srvc/houses")
 public class HousesCtl {
 
-    @Autowired
-    private AppCommonProperties appCommonProperties;
+
     @Autowired
     private SrvcHousesService srvcHousesService;
     @Autowired
-    private SrvcHousesSubService srvcHousesSubService;
+    private SrvcDesignerService srvcDesignerService;
 
     /**
      * 查询banner图列表
@@ -47,12 +43,7 @@ public class HousesCtl {
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
         Query queryParam = new Query(params);
         PageInfo<SrvcHouses> result = srvcHousesService.selectHousesList(queryParam, pageNumber, pageSize);
-        List<SrvcHouses> list = result.getList();
-        for (SrvcHouses srvcHouses : list) {
-            String s = appCommonProperties.getImagesPrefix() + srvcHouses.getImageUrl();
-            srvcHouses.setImageUrl(s);
-        }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -65,11 +56,8 @@ public class HousesCtl {
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
 
-        // todo 参数校验
-
         SrvcHouses model = srvcHousesService.queryById(id);
-        String img = appCommonProperties.getImagesPrefix() + model.getImageUrl();
-        model.setImageUrl(img);
+        List<SrvcDesigner> designers = srvcDesignerService.selectDesignerList();
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcHouses();
         }
@@ -85,21 +73,17 @@ public class HousesCtl {
      * @return 结果对象
      */
     @RequestMapping("/insert")
-    @Transactional(rollbackFor = Exception.class)
     public Result insert(@RequestBody SrvcHouses srvcHouses) {
 
         try {
+
             // 执行入库操作
             srvcHousesService.insert(srvcHouses);
-            SrvcHousesSub srvcHousesSub = new SrvcHousesSub();
-            srvcHousesSub.setHousesId(srvcHouses.getId());
-            srvcHousesSub.setImageUrl(srvcHouses.getImageUrl());
-            srvcHousesSubService.insert(srvcHousesSub);
         } catch (ApplicationException e) {
-            return Result.error(HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_MESSAGE);
+            return Result.error(VideoErrorCode.SRVC_VIDEO_SAVE_APP_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(HousesErrorCode.SRVC_HOUSES_SAVE_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SAVE_ERROR_MESSAGE);
+            return Result.error(VideoErrorCode.SRVC_VIDEO_SAVE_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_SAVE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -121,9 +105,9 @@ public class HousesCtl {
             // 执行修改
             srvcHousesService.update(srvcHouses);
         } catch (RuntimeException e) {
-            return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_MESSAGE);
+            return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
-            return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_MESSAGE);
+            return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -148,5 +132,21 @@ public class HousesCtl {
         }
 
         return Result.success();
+    }
+
+    /**
+     * 查询所有设计师
+     * @param map
+     * @return
+     */
+    @RequestMapping("/designers")
+    public Result queryDesigner(@RequestParam Map<String, Object> map) {
+        List<SrvcDesigner> srvcDesigners = null;
+        try {
+            srvcDesigners = srvcDesignerService.queryDesigners(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.success().put("designers",srvcDesigners);
     }
 }

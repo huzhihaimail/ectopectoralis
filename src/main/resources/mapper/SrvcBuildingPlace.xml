@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置dao接口路径-->
+<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcBuildingPlaceDao">
+
+    <!-- type配置model层实体类名-->
+    <resultMap id="SrvcBuildingPlaceMap" type="SrvcBuildingPlace">
+        <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
+        <result property="id" column="id"></result>
+        <result property="housesId" column="houses_id"></result>
+        <result property="progress" column="progress"></result>
+
+        <result property="name" column="name"></result>
+        <result property="housesType" column="houses_type"></result>
+        <result property="floorSpace" column="floor_space"></result>
+        <result property="style" column="style"></result>
+        <result property="area" column="area"></result>
+        <result property="imageUrl" column="image_url"></result>
+
+        <result property="deleteFlag" column="delete_flag"></result>
+        <result property="createDate" column="create_date"></result>
+        <result property="updateDate" column="update_date"></result>
+    </resultMap>
+
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        srvc_building_place
+    </sql>
+    <sql id="tableName1">
+        srvc_houses
+    </sql>
+    <sql id="tableName2">
+        srvc_place_img
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+        id, houses_id, progress, create_date, update_date, delete_flag
+    </sql>
+
+    <!-- for insert value -->
+    <sql id="values">
+        #{id}, #{housesId}, #{progress}, NOW(),NOW(), 0
+    </sql>
+
+    <!-- for update set -->
+    <sql id="updates">
+        houses_id=#{housesId}, progress=#{progress}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style}, progress_title=#{progressTitle}, area=#{area}, update_date=NOW(), delete_flag=#{deleteFlag}
+    </sql>
+
+    <!-- 根据名称查询 -->
+    <select id="queryByName" resultMap="SrvcBuildingPlaceMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        t
+        WHERE 1=1
+        AND t.progress=#{progress}
+
+    </select>
+
+    <!-- 根据ID查询-->
+    <select id="queryById" resultMap="SrvcBuildingPlaceMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND id=#{id}
+    </select>
+
+    <!-- 批量删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE b.*,i.* FROM
+        <include refid="tableName"/> b
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON b.id = i.place_id
+        WHERE 1=1
+        AND b.id IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 新建  useGeneratedKeys="true" 用于返回新增后的id值-->
+    <insert id="insert" parameterType="SrvcBuildingPlace" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="tableName"/>
+        (<include refid="columns"/>)
+        VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="SrvcBuildingPlace">
+        UPDATE
+        <include refid="tableName"/>
+        SET
+        <include refid="updates"/>
+        WHERE 1=1
+        AND id = #{id}
+    </update>
+
+    <!-- 根据条件查询 -->
+    <select id="queryList" resultMap="SrvcBuildingPlaceMap" parameterType="map">
+
+        SELECT
+        <include refid="columns"/>
+        FROM
+        (
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1=1
+        <if test="keyword!=null and keyword!=''">
+            AND progress LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        ORDER BY
+        create_date
+        DESC
+        ) t
+    </select>
+
+    <!--backend关联查询-->
+    <select id="selectBuildingPlaceList" resultMap="SrvcBuildingPlaceMap" parameterType="map">
+        SELECT
+        b.*,h.name,i.image_url
+        FROM
+        <include refid="tableName"/> b
+        LEFT JOIN
+        <include refid="tableName1"/> h
+        ON b.houses_id = h.id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON i.place_id = b.id
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                AND b.progress LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+    <!--api关联查询-->
+    <select id="selectBuildingPlaceParams" resultMap="SrvcBuildingPlaceMap" parameterType="map">
+        SELECT
+        h.id,h.name,h.houses_type,h.floor_space,
+        h.style ,h.area,b.progress,i.image_url
+        FROM
+        <include refid="tableName1"/> h
+        LEFT JOIN
+        <include refid="tableName"/> b
+        ON h.id = b.houses_id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON b.id = i.place_id
+        <where>
+            <if test="progress!=null and progress!=''">
+                AND b.progress LIKE CONCAT('%',#{progress},'%')
+            </if>
+            <if test="id !=null ">
+                AND h.id =#{id}
+            </if>
+            <if test="housesType !=null and housesType !='' ">
+                AND h.houses_type LIKE CONCAT('%',#{housesType},'%')
+            </if>
+
+        </where>
+    </select>
+
+    <!--api 查询设计师及其案例作品信息列表-->
+    <select id="selectBuildingPlaceById" resultMap="SrvcBuildingPlaceMap" parameterType="Integer">
+        SELECT
+        b.*,h.name,h.houses_type,h.floor_space,
+        h.style ,h.area,i.image_url
+        FROM
+        <include refid="tableName1"/> h
+        LEFT JOIN
+        <include refid="tableName"/> b
+        ON h.id = b.house_id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON b.id = i.place_id
+        WHERE h.id = #{id}
+    </select>
+
+</mapper>
+

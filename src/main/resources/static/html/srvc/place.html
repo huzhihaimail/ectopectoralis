@@ -20,8 +20,7 @@
         <div class="row-fluid">
             <div class="col-md-10 form-inline">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="请输入关键字查询" @keyup.enter="query"
-                           v-model="vueQueryParam.keyword">
+                    <input class="form-control" v-model="vueQueryParam.keyword" @keyup.enter="query" placeholder="请输入房屋名称查找"/>
                     <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" @click="query">
                                 <i class="fa fa-search"></i>查询
@@ -70,32 +69,41 @@
             <div class="form-horizontal col-md-8">
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">广告标题<span class="text-danger">*</span></div>
+                    <div class="col-sm-3 control-label">所在楼盘<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.title"
-                               placeholder="请输入广告标题"/>
+                        <select class="form-control" v-model="model.housesId">
+                            <option  value="" selected>请选择所在楼盘</option>
+                            <option  v-for="item in houses" :value="item.id">{{item.name}}</option>
+                        </select>
                     </div>
                 </div>
 
-                <!--<div class="form-group">-->
-                    <!--<div class="col-sm-3 control-label">上传图片<span class="text-danger">*</span></div>-->
-                    <!--<div class="col-sm-6">-->
-                        <!--<input type="file" class="form-control" v-model="model.imgUrl" placeholder=""/>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">施工进度<span class="text-danger">*</span></div>
+                    <div class="col-sm-6">
+                        <select class="form-control" v-model="model.progress">
+                            <option value="" selected>请选择施工进度</option>
+                            <option value="1">形象保护</option>
+                            <option value="2">开工仪式</option>
+                            <option value="3">拆改项目</option>
+                            <option value="4">水电施工</option>
+                            <option value="5">瓦工施工</option>
+                            <option value="6">木工施工</option>
+                            <option value="7">油工施工</option>
+                            <option value="8">安装项目</option>
+                            <option value="9">竣工验收</option>
+                            <option value="10">售后服务</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <form enctype="multipart/form-data">
-                            <input id="file" name="file" type="file" multiple>
+                        <form id="form" enctype="multipart/form-data">
+                            <input type="file" id="input-id" name="file" multiple data-show-caption="true">
+                            <input type="hidden" name="imageUrl" v-model="model.imageUrl"/>
                         </form>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-3 control-label">跳转地址<span class="text-danger">*</span></div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.linkUrl" placeholder="请输入跳转地址"/>
                     </div>
                 </div>
 
@@ -132,6 +140,6 @@
 
 
 <!-- 业务js -->
-<script src="../../vue/srvc/banner.js"></script>
+<script src="../../vue/srvc/place.js"></script>
 
 </html>

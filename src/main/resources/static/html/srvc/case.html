@@ -20,8 +20,7 @@
         <div class="row-fluid">
             <div class="col-md-10 form-inline">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="请输入文章标题查询" @keyup.enter="query"
-                           v-model="vueQueryParam.keyword">
+                    <input class="form-control" v-model="vueQueryParam.keyword" @keyup.enter="query" placeholder="请输入房屋名称查找"/>
                     <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" @click="query">
                                 <i class="fa fa-search"></i>查询
@@ -70,21 +69,28 @@
             <div class="form-horizontal col-md-8">
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">文章标题<span class="text-danger">*</span></div>
+                    <div class="col-sm-3 control-label">所在楼盘<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.title"
-                               placeholder="请输入文章标题"/>
+                        <select class="form-control" v-model="model.housesId">
+                            <option  value="" selected>请选择所在楼盘</option>
+                            <option  v-for="item in houses" :value="item.id">{{item.name}}</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">文章内容<span class="text-danger">*</span></div>
+                    <div class="col-sm-3 control-label">房屋位置<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.content"
-                               placeholder="请输入文章内容"/>
+                        <select class="form-control" v-model="model.houseLocation">
+                            <option value="" selected>请选择房屋位置</option>
+                            <option value="1" >房屋结构图</option>
+                            <option value="2" >卫生间</option>
+                            <option value="3" >卧室</option>
+                            <option value="4" >客厅</option>
+                            <option value="5" >厨房</option>
+                        </select>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
@@ -92,17 +98,6 @@
                             <input type="file" id="input-id" name="file" multiple data-show-caption="true">
                             <input type="hidden" name="imageUrl" v-model="model.imageUrl"/>
                         </form>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-3 control-label">文章类型<span class="text-danger">*</span></div>
-                    <div class="col-sm-6">
-                        <select class="form-control" v-model="model.type">
-                            <option value="" selected>请选择模块类型</option>
-                            <option value="1">企业新闻</option>
-                            <option value="2">装修科普</option>
-                        </select>
                     </div>
                 </div>
 
@@ -139,6 +134,6 @@
 
 
 <!-- 业务js -->
-<script src="../../vue/srvc/decorateguide.js"></script>
+<script src="../../vue/srvc/case.js"></script>
 
 </html>

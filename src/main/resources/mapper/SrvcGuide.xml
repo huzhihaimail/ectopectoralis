@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 配置dao接口路径-->
-<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcDecorateGuideDao">
+<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcGuideDao">
 
     <!-- type配置model层实体类名-->
-    <resultMap id="SrvcDecorateGuideMap" type="SrvcDecorateGuide">
+    <resultMap id="SrvcGuideMap" type="SrvcGuide">
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="title" column="title"></result>
@@ -19,7 +19,7 @@
 
     <!-- 配置表名 -->
     <sql id="tableName">
-        srvc_decorate_guide
+        srvc_guide
     </sql>
 
     <!-- for insert columns -->
@@ -38,7 +38,7 @@
     </sql>
 
     <!-- 根据名称查询 -->
-    <select id="queryByName" resultMap="SrvcDecorateGuideMap" parameterType="String">
+    <select id="queryByName" resultMap="SrvcGuideMap" parameterType="String">
         SELECT
         <include refid="columns"/>
         FROM
@@ -50,7 +50,7 @@
     </select>
 
     <!-- 根据ID查询-->
-    <select id="queryById" resultMap="SrvcDecorateGuideMap" parameterType="String">
+    <select id="queryById" resultMap="SrvcGuideMap" parameterType="String">
         SELECT
         <include refid="columns"/>
         FROM
@@ -71,7 +71,7 @@
     </delete>
 
     <!-- 新建  useGeneratedKeys="true" 用于返回新增后的id值-->
-    <insert id="insert" parameterType="SrvcDecorateGuide" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="SrvcGuide" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         <include refid="tableName"/>
         (<include refid="columns"/>)
@@ -80,7 +80,7 @@
     </insert>
 
     <!-- 修改 -->
-    <update id="update" parameterType="SrvcDecorateGuide">
+    <update id="update" parameterType="SrvcGuide">
         UPDATE
         <include refid="tableName"/>
         SET
@@ -90,7 +90,7 @@
     </update>
 
     <!-- 根据条件查询 -->
-    <select id="queryList" resultMap="SrvcDecorateGuideMap" parameterType="map">
+    <select id="queryList" resultMap="SrvcGuideMap" parameterType="map">
 
         SELECT
         <include refid="columns"/>
@@ -103,7 +103,6 @@
         WHERE 1=1
         <if test="keyword!=null and keyword!=''">
             AND title LIKE CONCAT('%',#{keyword},'%')
-
         </if>
         <if test="type != null and type != '' ">
             AND `type` = #{type}
@@ -114,6 +113,32 @@
         ) t
     </select>
 
+    <!-- 根据条件查询 -->
+    <select id="selectGuideList" resultMap="SrvcGuideMap" parameterType="Integer">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        (
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1=1
+        AND `type` = #{type}
+        ORDER BY
+        create_date
+        DESC
+        ) t
+    </select>
 
+    <!-- api根据条件查询 -->
+    <select id="selectGuideListById" resultMap="SrvcGuideMap" parameterType="Integer">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE id =#{id}
+
+    </select>
 </mapper>
 

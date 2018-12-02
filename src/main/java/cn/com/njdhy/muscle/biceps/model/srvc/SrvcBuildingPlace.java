@@ -5,18 +5,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 装修案例实体类
+ * 在施工地进度实体类
  * @author rain
  * @date 2018/11/17 20:18
  **/
 @Getter
 @Setter
-public class SrvcHouses extends BaseModel{
+public class SrvcBuildingPlace extends BaseModel{
+
 
     /**
-     * 设计师id 关联srvc_designer表
+     * 房屋id
      */
-    private Integer designerId;
+    private Integer housesId;
+    /**
+     * 施工进度： 1:开工仪式 2:水电施工 3:木工施工等
+     */
+    private Integer progress;
+
     /**
      * 楼盘名称
      */
@@ -37,10 +43,9 @@ public class SrvcHouses extends BaseModel{
      * 楼盘所在区域
      */
     private String area;
-
     /**
-     * 关联srvc_designer 设计师名字
+     * 图片地址 关联srvc_case_img表
      */
-    private String designerName;
+    private String imageUrl;
 
 }

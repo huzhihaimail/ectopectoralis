@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 配置dao接口路径-->
-<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcHousesSubDao">
+<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcCaseImgDao">
 
     <!-- type配置model层实体类名-->
-    <resultMap id="SrvcHousesSubMap" type="SrvcHousesSub">
+    <resultMap id="SrvcCaseImgMap" type="SrvcCaseImg">
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
-        <result property="housesId" column="houses_id"></result>
+        <result property="caseId" column="case_id"></result>
         <result property="imageUrl" column="image_url"></result>
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
@@ -17,27 +17,27 @@
 
     <!-- 配置表名 -->
     <sql id="tableName">
-        srvc_houses_sub
+        srvc_case_img
     </sql>
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, houses_id, image_url,create_date, update_date, delete_flag
+        id, case_id, image_url, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{housesId}, #{imageUrl}, NOW(), NOW(), 0
+        #{id},#{caseId}, #{imageUrl}, NOW(), NOW(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        houses_id=#{housesId}, image_url=#{imageUrl}, update_date=NOW(), delete_flag=#{deleteFlag}
+        image_url=#{imageUrl}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
 
     <!-- 根据ID查询-->
-    <select id="queryById" resultMap="SrvcHousesSubMap" parameterType="String">
+    <select id="queryById" resultMap="SrvcCaseImgMap" parameterType="String">
         SELECT
         <include refid="columns"/>
         FROM
@@ -58,7 +58,7 @@
     </delete>
 
     <!-- 新建  useGeneratedKeys="true" 用于返回新增后的id值-->
-    <insert id="insert" parameterType="SrvcHousesSub" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="SrvcCaseImg" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         <include refid="tableName"/>
         (<include refid="columns"/>)
@@ -67,7 +67,7 @@
     </insert>
 
     <!-- 修改 -->
-    <update id="update" parameterType="SrvcHousesSub">
+    <update id="update" parameterType="SrvcCaseImg">
         UPDATE
         <include refid="tableName"/>
         SET
@@ -75,28 +75,6 @@
         WHERE 1=1
         AND id = #{id}
     </update>
-
-    <!--&lt;!&ndash; 根据条件查询 &ndash;&gt;-->
-    <!--<select id="queryList" resultMap="SrvcHousesSubMap" parameterType="map">-->
-
-        <!--SELECT-->
-        <!--<include refid="columns"/>-->
-        <!--FROM-->
-        <!--(-->
-        <!--SELECT-->
-        <!--<include refid="columns"/>-->
-        <!--FROM-->
-        <!--<include refid="tableName"/>-->
-        <!--WHERE 1=1-->
-        <!--<if test="keyword!=null and keyword!=''">-->
-            <!--AND progress_title LIKE CONCAT('%',#{keyword},'%')-->
-        <!--</if>-->
-        <!--ORDER BY-->
-        <!--create_date-->
-        <!--DESC-->
-        <!--) t-->
-    <!--</select>-->
-
 
 </mapper>
 

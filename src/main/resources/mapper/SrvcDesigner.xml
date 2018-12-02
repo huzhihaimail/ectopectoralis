@@ -8,12 +8,21 @@
     <resultMap id="SrvcDesignerMap" type="SrvcDesigner">
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
-        <result property="housesId" column="houses_id"></result>
         <result property="headUrl" column="head_url"></result>
         <result property="name" column="name"></result>
         <result property="position" column="position"></result>
-        <result property="motto" column="motto"></result>
+        <result property="introduce" column="introduce"></result>
+        <result property="concept" column="concept"></result>
         <result property="workingExperience" column="working_experience"></result>
+        <result property="style" column="style"></result>
+
+        <result property="houseName" column="house_name"></result>
+        <result property="housesType" column="houses_type"></result>
+        <result property="floorSpace" column="floor_space"></result>
+        <result property="houseStyle" column="house_style"></result>
+        <result property="area" column="area"></result>
+        <result property="imageUrl" column="image_url"></result>
+
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
@@ -23,20 +32,29 @@
     <sql id="tableName">
         srvc_designer
     </sql>
+    <sql id="tableName1">
+        srvc_houses
+    </sql>
+    <sql id="tableName2">
+        srvc_decorate_case
+    </sql>
+    <sql id="tableName3">
+        srvc_case_img
+    </sql>
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, houses_id, head_url, `name`, `position`,motto,working_experience,create_date, update_date, delete_flag
+        id,  head_url, `name`, `position`, introduce, concept, working_experience, style, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{housesId}, #{headUrl}, #{name}, #{position},#{motto},#{workingExperience}, NOW(),NOW(), 0
+        #{id}, #{headUrl}, #{name}, #{position},#{introduce},#{concept},#{workingExperience},#{style}, NOW(),NOW(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        `name`=#{name}, head_url=#{headUrl}, `position`=#{position}, motto=#{motto},working_experience=#{workingExperience}, update_date=NOW(), delete_flag=#{deleteFlag}
+        `name`=#{name}, head_url=#{headUrl}, `position`=#{position}, introduce=#{introduce},concept=#{concept},working_experience=#{workingExperience},style=#{style}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
@@ -48,6 +66,19 @@
         t
         WHERE 1=1
         AND t.name=#{name}
+
+    </select>
+    <!-- 根据条件查询所有设计师 用于楼盘模块调用 -->
+    <select id="queryDesigners" resultMap="SrvcDesignerMap" parameterType="map">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        t
+        WHERE 1=1
+        <if test="name !=null and name !='' ">
+            AND t.name LIKE CONCAT('%',#{name},'%')
+        </if>
 
     </select>
 
@@ -121,6 +152,23 @@
         WHERE delete_flag = 0
     </select>
 
-
+    <!--api 查询设计师及其案例作品信息列表-->
+    <select id="selectDesignerById" resultMap="SrvcDesignerMap" parameterType="Integer">
+        SELECT
+        d.*,h.name house_name,h.houses_type,h.floor_space,
+        h.style house_style,h.area,s.house_location,i.image_url
+        FROM
+        <include refid="tableName"/> d
+        LEFT JOIN
+        <include refid="tableName1"/> h
+        ON d.id = h.designer_id
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON h.id = s.houses_id
+        LEFT JOIN
+        <include refid="tableName3"/> i
+        ON s.id = i.case_id
+        WHERE delete_flag = 0 AND d.id = #{id}
+    </select>
 </mapper>
 

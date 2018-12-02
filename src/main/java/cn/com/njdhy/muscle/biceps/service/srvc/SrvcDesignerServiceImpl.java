@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 设计师业务层实现类
@@ -26,5 +27,24 @@ public class SrvcDesignerServiceImpl extends BaseServiceImpl<SrvcDesignerDao,Srv
     @Override
     public List<SrvcDesigner> selectDesignerList() {
         return srvcDesignerDao.selectDesignerList();
+    }
+    /**
+     * 根据id查询设计师及其案例作品详情
+     * @param id
+     * @return
+     */
+    @Override
+    public List<SrvcDesigner> selectDesignerById(Integer id) {
+        return srvcDesignerDao.selectDesignerById(id);
+    }
+
+    /**
+     * 根据条件查询所有设计师 用于楼盘模块调用
+     * @param map
+     * @return
+     */
+    @Override
+    public List<SrvcDesigner> queryDesigners(Map<String, Object> map) {
+        return srvcDesignerDao.queryDesigners(map);
     }
 }

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 配置dao接口路径-->
+<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcDecorateCaseDao">
+
+    <!-- type配置model层实体类名-->
+    <resultMap id="SrvcDecorateCaseMap" type="SrvcDecorateCase">
+        <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
+        <result property="id" column="id"></result>
+        <result property="housesId" column="houses_id"></result>
+        <result property="houseLocation" column="house_location"></result>
+
+        <result property="name" column="name"></result>
+        <result property="housesType" column="houses_type"></result>
+        <result property="floorSpace" column="floor_space"></result>
+        <result property="style" column="style"></result>
+        <result property="area" column="area"></result>
+        <result property="imageUrl" column="image_url"></result>
+        <result property="designerName" column="designer_name"></result>
+        <result property="position" column="position"></result>
+        <result property="headUrl" column="head_url"></result>
+        <result property="concept" column="concept"></result>
+
+        <result property="deleteFlag" column="delete_flag"></result>
+        <result property="createDate" column="create_date"></result>
+        <result property="updateDate" column="update_date"></result>
+    </resultMap>
+
+    <!-- 配置表名 -->
+    <sql id="tableName">
+        srvc_decorate_case
+    </sql>
+    <sql id="tableName1">
+        srvc_houses
+    </sql>
+    <sql id="tableName2">
+        srvc_case_img
+    </sql>
+    <sql id="tableName3">
+        srvc_designer
+    </sql>
+
+    <!-- for insert columns -->
+    <sql id="columns">
+        id, houses_id, house_location, create_date, update_date, delete_flag
+    </sql>
+
+    <!-- for insert value -->
+    <sql id="values">
+        #{id}, #{housesId}, #{houseLocation}, NOW(),NOW(), 0
+    </sql>
+
+    <!-- for update set -->
+    <sql id="updates">
+        houses_id=#{housesId}, house_location=#{houseLocation}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style}, progress_title=#{progressTitle}, area=#{area}, update_date=NOW(), delete_flag=#{deleteFlag}
+    </sql>
+
+    <!-- 根据名称查询 -->
+    <select id="queryByName" resultMap="SrvcDecorateCaseMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        t
+        WHERE 1=1
+        AND t.house_location=#{houseLocation}
+
+    </select>
+
+    <!-- 根据ID查询-->
+    <select id="queryById" resultMap="SrvcDecorateCaseMap" parameterType="String">
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1 = 1
+        AND id=#{id}
+    </select>
+
+    <!-- 批量删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE d.*,i.* FROM
+        <include refid="tableName"/> d
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON d.id = i.case_id
+        WHERE 1=1
+        AND d.id IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 新建  useGeneratedKeys="true" 用于返回新增后的id值-->
+    <insert id="insert" parameterType="SrvcDecorateCase" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="tableName"/>
+        (<include refid="columns"/>)
+        VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="SrvcDecorateCase">
+        UPDATE
+        <include refid="tableName"/>
+        SET
+        <include refid="updates"/>
+        WHERE 1=1
+        AND id = #{id}
+    </update>
+
+    <!-- 根据条件查询 -->
+    <select id="queryList" resultMap="SrvcDecorateCaseMap" parameterType="map">
+
+        SELECT
+        <include refid="columns"/>
+        FROM
+        (
+        SELECT
+        <include refid="columns"/>
+        FROM
+        <include refid="tableName"/>
+        WHERE 1=1
+        <if test="keyword!=null and keyword!=''">
+            AND house_location LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        ORDER BY
+        create_date
+        DESC
+        ) t
+    </select>
+    <!--backend关联查询-->
+    <select id="selectDecorateCaseList" resultMap="SrvcDecorateCaseMap" parameterType="map">
+        SELECT
+        d.*,h.name,i.image_url
+        FROM
+        <include refid="tableName"/> d
+        LEFT JOIN
+        <include refid="tableName1"/> h
+        ON d.houses_id = h.id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON i.case_id = d.id
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                AND d.house_location LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--api 查询设计师及其案例作品信息列表-->
+    <select id="selectDecorateCaseByParams" resultMap="SrvcDecorateCaseMap" parameterType="map">
+        SELECT
+        d.*,h.name,h.houses_type,h.floor_space,
+        h.style ,h.area,i.image_url,r.position,
+        r.name designer_name,r.head_url,
+        FROM
+        <include refid="tableName1"/> h
+        LEFT JOIN
+        <include refid="tableName"/> d
+        ON h.id = d.house_id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON d.id = i.case_id
+        LEFT JOIN
+        <include refid="tableName3"/> r
+        ON g.id = h.designer_id
+        <where>
+            <if test="name !=null and name !='' ">
+                AND h.name =#{name}
+            </if>
+            <if test="style !=null and style !='' ">
+                AND h.style =#{style}
+            </if>
+            <if test="housesType !=null and housesType !='' ">
+                AND h.houses_type =#{housesType}
+            </if>
+            <if test="floorSpace !=null and floorSpace !='' ">
+                AND h.floor_space =#{floorSpace}
+            </if>
+        </where>
+
+    </select>
+
+    <!--api 查询设计师及其案例作品信息列表-->
+    <select id="selectDecorateCaseById" resultMap="SrvcDecorateCaseMap" parameterType="Integer">
+        SELECT
+        d.*,h.name,h.houses_type,h.floor_space,
+        h.style ,h.area,i.image_url,r.position,
+        r.name designer_name,r.head_url,r.concept
+        FROM
+        <include refid="tableName1"/> h
+        LEFT JOIN
+        <include refid="tableName"/> d
+        ON h.id = d.house_id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON d.id = i.case_id
+        LEFT JOIN
+        <include refid="tableName3"/> r
+        ON g.id = h.designer_id
+        WHERE h.id = #{id}
+    </select>
+
+</mapper>
+

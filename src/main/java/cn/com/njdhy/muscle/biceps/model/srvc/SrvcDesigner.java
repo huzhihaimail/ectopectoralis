@@ -14,10 +14,7 @@ import lombok.Setter;
 @Setter
 public class SrvcDesigner extends BaseModel{
 
-    /**
-     * 楼盘id关联srvc_houses表
-     */
-    private Integer housesId;
+
     /**
      * 设计师头像
      */
@@ -31,11 +28,46 @@ public class SrvcDesigner extends BaseModel{
      */
     private String position;
     /**
-     * 个性签名
+     * 个人简介
      */
-    private String motto;
+    private String introduce;
+    /**
+     * 设计理念
+     */
+    private String concept;
     /**
      * 从业经验
      */
     private Integer workingExperience;
+    /**
+     * 设计风格
+     */
+    private String style;
+
+
+    //以下是关联表的字段
+    /**
+     * 楼盘名称
+     */
+    private String houseName;
+    /**
+     * 户型
+     */
+    private String housesType;
+    /**
+     * 房屋面积
+     */
+    private Double floorSpace;
+    /**
+     * 房屋风格
+     */
+    private String houseStyle;
+    /**
+     * 楼盘所在区域
+     */
+    private String area;
+    /**
+     *
+     */
+    private String imageUrl;
 }

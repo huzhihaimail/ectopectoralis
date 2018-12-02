@@ -15,27 +15,51 @@ var showColumns = [
         }
     }
     , {
-        field: "title",
-        title: "广告标题",
-        width: "10%"
-        //sortable: true,
-        //sortName: "title" // sortName的值，需配置和数据库保持一致
-    }
-    , {
-        field: "imgUrl",
-        title: "图片地址",
+        field: "name",
+        title: "楼盘名称",
         width: "10%"
     }
     , {
-        field: "linkUrl",
-        title: "图片跳转链接",
-        width: "20%"
+        field: "houseLocation",
+        title: "房屋位置",
+        width: "5%",
+        formatter: function (value, row, index) { //1.房屋结构 2.卫生间 3.卧室 4.客厅 5厨房
+            var role = '';
+            switch (value){
+                case 1:
+                    role = '房屋结构'
+                    break;
+                case 2:
+                    role = '卫生间'
+                    break;
+                case 3:
+                    role = '卧室'
+                    break;
+                case 4:
+                    role = '客厅'
+                    break;
+                case 5:
+                    role = '厨房'
+                    break;
+            }
+            return role;
+        }
+    }
+
+    , {
+        field: "imageUrl",
+        title: "图片显示",
+        width: "20%",
+        formatter:function (value,row,index) {
+            var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'
+            return img;
+        }
     }
 
     , {
         field: "createDate",
         title: "创建时间",
-        width: "20%",
+        width: "15%",
         formatter: function (value, row, index) {
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
@@ -43,21 +67,12 @@ var showColumns = [
     , {
         field: "updateDate",
         title: "最近修改时间",
-        width: "20%",
+        width: "15%",
         formatter: function (value, row, index) {
             return new moment(value).format('YYYY-MM-DD HH:mm:ss');
         }
     }
-    /*, {
-        field: "operate",
-        title: "操作",
-        width: "15%",
-        formatter: function () {
-            return '<a class="btn btn-success btn-sm" @click="save"><i class="fa fa-floppy-o"></i></a>\n' +
-                '<a class="btn btn-warning btn-sm" @click="update"><i class="fa fa-pencil-square-o"></i></a>\n' +
-                '<a class="btn btn-danger btn-sm" @click="del"><i class="fa fa-trash"></i></a>';
-        }
-    }*/
+
 ];
 
 // 通用表格对象
@@ -82,9 +97,10 @@ var vm = new Vue({
             keyword: null,
         }
         , model: {} //实体对象(用于新建、修改页面)
+        , houses:{} // 房屋
 
         // 定义模块名称
-        , moduleName: "/srvc/banner"
+        , moduleName: "/srvc/case"
     }
     // 定义方法
     , methods: {
@@ -104,6 +120,8 @@ var vm = new Vue({
             vm.title = PAGE_INSERT_TITLE;
             // 3. 清空表单数据
             vm.model = {};
+            // 4.查询所有的房屋
+            vm.queryHouses();
         }
 
         // 点击“确定”按钮
@@ -235,15 +253,30 @@ var vm = new Vue({
             bsTable.createBootStrapTable(showColumns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
         }
 
-
+        // 查询所有的
+        , queryHouses:function(){
+            $.ajax({
+                type: "POST",
+                url: APP_NAME + vm.moduleName + "/houses",
+                contentType: "application/json",
+                data: JSON.stringify(vm.model),
+                success: function (r) {
+                    if (r.code === 0) {
+                        vm.houses = r.houses;
+                    }
+                }
+            });
+        }
     }
+
+
+
 });
 
 /**
  * 页面初始化执行
  */
 $(function () {
-
     // 创建BootStrapTable
     bsTable.createBootStrapTable(vm.columns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
@@ -251,16 +284,48 @@ $(function () {
 /**
  * 文件上传
  */
-$('#file').fileinput({
+$('#input-id').fileinput({
     // 设置语言
     language: 'zh',
     // 设置url地址
-    uploadUrl: '#',
+    uploadUrl: '/files/upload',
     // 是否显示预览图
     showPreview: true,
+    //默认异步上传
+    uploadAsync: true,
     // 最大上传文件数
     maxFileCount: 1,
-    // 设置图片格式
-    allowedFileExtensions: ['jpg', 'png', 'gif']
+    // 设置图片格式,即接收的文件后缀
+    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    //显示移除按钮
+    showRemove : true,
+    //是否显示预览
+    showPreview : true,
+    //是否显示标题
+    showCaption: false,
+    //按钮样式
+    browseClass: "btn btn-primary",
+    //是否显示拖拽区域
+    dropZoneEnabled: false,
+    enctype: 'multipart/form-data',
+    validateInitialCount:true,
+    slugCallback : function(filename) {
+        return filename.replace('(', '_').replace(']', '_');
+    }
+});
+//上传前
+$('#input-id').on('filepreupload', function(event, data, previewId, index) {
+    var form = data.form, files = data.files, extra = data.extra,
+        response = data.response, reader = data.reader;
+});
+
+//异步上传返回结果处理
+$("#input-id").on("fileuploaded", function (event, data, previewId, index) {
+    //后台返回的json
+    var response = data.response;
+    var path = response.data.path;
+    //返回上传的图片地址，赋值给vm model
+    vm.model.imageUrl=path;
+
 });
 

@@ -1,18 +1,17 @@
 package cn.com.njdhy.muscle.biceps.model.srvc;
 
 import cn.com.njdhy.muscle.biceps.model.BaseModel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 装修指南（多个板块）
+ * 装修指南（企业新闻、装修科普）
  * @author rain
  * @date 2018/11/17 20:44
  **/
 @Getter
 @Setter
-public class SrvcDecorateGuide extends BaseModel {
+public class SrvcGuide extends BaseModel {
 
     /**
      * 文章标题

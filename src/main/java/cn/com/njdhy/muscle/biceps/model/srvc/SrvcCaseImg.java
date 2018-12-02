@@ -1,24 +1,22 @@
 package cn.com.njdhy.muscle.biceps.model.srvc;
 
 import cn.com.njdhy.muscle.biceps.model.BaseModel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 楼盘施工情况实体类
+ * 装修案例房屋位置图片实体类
  * @author rain
  * @date 2018/11/17 20:31
  **/
 @Setter
 @Getter
-public class SrvcHousesSub extends BaseModel {
+public class SrvcCaseImg extends BaseModel {
 
     /**
-     * 关联srvc_houses
+     * 装修案例id
      */
-    private Integer housesId;
-
+    private Integer caseId;
     /**
      * 图片地址
      */

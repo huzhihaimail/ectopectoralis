@@ -32,7 +32,7 @@ public class DesignerController {
      * @return
      */
     @RequestMapping(value = "/designers",method = RequestMethod.GET)
-    @ApiOperation("查询设计师信息列表")
+    @ApiOperation("查询所有设计师列表")
     public Result designerQuery() {
         List<SrvcDesigner> list=null;
         try {
@@ -46,5 +46,22 @@ public class DesignerController {
         return Result.success(list);
     }
 
+    /**
+     * 根据id查询设计师及其案例作品信息详情
+     * @return
+     */
+    @RequestMapping(value = "/designers/{id}",method = RequestMethod.GET)
+    @ApiOperation("根据id查询设计师及其案例作品信息详情")
+    public Result designerInfoQuery(@PathVariable Integer id) {
+        List<SrvcDesigner> list=null;
+        try {
+            list = srvcDesignerService.selectDesignerById(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.error(DesignerErrorCode.SRVC_DESIGNER_SELECT_ERROR_CODE, DesignerErrorCode.SRVC_DESIGNER_SELECT_ERROR_MESSAGE);
+        }
+
+        return Result.success(list);
+    }
 
 }
