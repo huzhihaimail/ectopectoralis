@@ -31,7 +31,6 @@ public class SrvcDecorateCase extends BaseModel{
      */
     private String imageUrl;
 
-
     /**
      * 户型
      */

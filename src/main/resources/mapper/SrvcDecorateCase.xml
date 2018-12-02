@@ -155,18 +155,18 @@
         SELECT
         d.*,h.name,h.houses_type,h.floor_space,
         h.style ,h.area,i.image_url,r.position,
-        r.name designer_name,r.head_url,
+        r.name designer_name,r.head_url
         FROM
         <include refid="tableName1"/> h
         LEFT JOIN
         <include refid="tableName"/> d
-        ON h.id = d.house_id
+        ON h.id = d.houses_id
         LEFT JOIN
         <include refid="tableName2"/> i
         ON d.id = i.case_id
         LEFT JOIN
         <include refid="tableName3"/> r
-        ON g.id = h.designer_id
+        ON r.id = h.designer_id
         <where>
             <if test="name !=null and name !='' ">
                 AND h.name =#{name}
@@ -194,13 +194,13 @@
         <include refid="tableName1"/> h
         LEFT JOIN
         <include refid="tableName"/> d
-        ON h.id = d.house_id
+        ON h.id = d.houses_id
         LEFT JOIN
         <include refid="tableName2"/> i
         ON d.id = i.case_id
         LEFT JOIN
         <include refid="tableName3"/> r
-        ON g.id = h.designer_id
+        ON r.id = h.designer_id
         WHERE h.id = #{id}
     </select>
 

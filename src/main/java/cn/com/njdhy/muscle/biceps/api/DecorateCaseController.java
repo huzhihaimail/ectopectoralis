@@ -33,9 +33,9 @@ public class DecorateCaseController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/cases",method = RequestMethod.GET)
+    @RequestMapping(value = "/cases",method = RequestMethod.POST)
     @ApiOperation("查询所有装修案例信息列表")
-    public Result casesQuery(@RequestParam Map<String,Object> map) {
+    public Result casesQuery(@RequestBody Map<String,Object> map) {
         List<SrvcDecorateCase> list =null;
         try {
             list = srvcDecorateCaseService.selectDecorateCaseByParams(map);

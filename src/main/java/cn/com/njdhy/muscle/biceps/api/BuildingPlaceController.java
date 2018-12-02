@@ -35,7 +35,7 @@ public class BuildingPlaceController {
      */
     @RequestMapping(value = "/places",method = RequestMethod.POST)
     @ApiOperation("查询在施工地及图片信息列表")
-    public Result placeQuery(@RequestParam Map<String,Object> map) {
+    public Result placeQuery(@RequestBody Map<String,Object> map) {
         List<SrvcBuildingPlace> list =null;
         try {
 
