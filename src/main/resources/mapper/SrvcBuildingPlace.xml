@@ -149,9 +149,9 @@
         h.id,h.name,h.houses_type,h.floor_space,
         h.style ,h.area,b.progress,i.image_url
         FROM
-        <include refid="tableName1"/> h
-        LEFT JOIN
         <include refid="tableName"/> b
+        LEFT JOIN
+        <include refid="tableName1"/> h
         ON h.id = b.houses_id
         LEFT JOIN
         <include refid="tableName2"/> i

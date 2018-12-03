@@ -157,9 +157,9 @@
         h.style ,h.area,i.image_url,r.position,
         r.name designer_name,r.head_url
         FROM
-        <include refid="tableName1"/> h
-        LEFT JOIN
         <include refid="tableName"/> d
+        LEFT JOIN
+        <include refid="tableName1"/> h
         ON h.id = d.houses_id
         LEFT JOIN
         <include refid="tableName2"/> i
