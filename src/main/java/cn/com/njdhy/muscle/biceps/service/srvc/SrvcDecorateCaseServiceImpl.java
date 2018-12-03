@@ -36,6 +36,11 @@ public class SrvcDecorateCaseServiceImpl extends BaseServiceImpl<SrvcDecorateCas
     }
 
     @Override
+    public List<SrvcDecorateCase> selectDecorateCaseParams(Map<String, Object> map) {
+        return srvcDecorateCaseDao.selectDecorateCaseParams(map);
+    }
+
+    @Override
     public List<SrvcDecorateCase> selectDecorateCaseById(Integer id) {
         return srvcDecorateCaseDao.selectDecorateCaseById(id);
     }

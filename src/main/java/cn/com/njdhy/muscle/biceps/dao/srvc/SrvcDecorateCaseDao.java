@@ -26,6 +26,13 @@ public interface SrvcDecorateCaseDao extends BaseDao<SrvcDecorateCase> {
      * @return
      */
     List<SrvcDecorateCase> selectDecorateCaseByParams(Map<String, Object> map);
+    /**
+     * 根据条件查询所有的案例数据 api首页搜索接口
+     * @param map
+     * @return
+     */
+    List<SrvcDecorateCase> selectDecorateCaseParams(Map<String, Object> map);
+
 
     /**
      * 根据id查询所有的案例数据

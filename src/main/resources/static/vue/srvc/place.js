@@ -22,45 +22,7 @@ var showColumns = [
     , {
         field: "progress",
         title: "施工进度",
-        width: "10%",
-        //1.形象保护 2.开工仪式 3.拆改项目 4.水电施工 5.瓦工施工
-        //6.木工施工 7.油工施工 8.安装项目 9.竣工验收 10.售后服务
-        formatter: function (value, row, index) {
-            var role = '';
-            switch (value){
-                case 1:
-                    role = '形象保护'
-                    break;
-                case 2:
-                    role = '开工仪式'
-                    break;
-                case 3:
-                    role = '拆改项目'
-                    break;
-                case 4:
-                    role = '水电施工'
-                    break;
-                case 5:
-                    role = '瓦工施工'
-                    break;
-                case 6:
-                    role = '木工施工'
-                    break;
-                case 7:
-                    role = '油工施工'
-                    break;
-                case 8:
-                    role = '安装项目'
-                    break;
-                case 9:
-                    role = '竣工验收'
-                    break;
-                case 10:
-                    role = '售后服务'
-                    break;
-            }
-            return role;
-        }
+        width: "10%"
     }
     , {
         field: "imageUrl",

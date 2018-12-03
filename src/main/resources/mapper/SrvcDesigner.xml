@@ -168,7 +168,7 @@
         LEFT JOIN
         <include refid="tableName3"/> i
         ON s.id = i.case_id
-        WHERE delete_flag = 0 AND d.id = #{id}
+        WHERE  d.id = #{id}
     </select>
 </mapper>
 

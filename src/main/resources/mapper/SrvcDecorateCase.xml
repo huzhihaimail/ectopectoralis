@@ -124,7 +124,7 @@
         <include refid="tableName"/>
         WHERE 1=1
         <if test="keyword!=null and keyword!=''">
-            AND house_location LIKE CONCAT('%',#{keyword},'%')
+            AND house_location =#{keyword}
         </if>
         ORDER BY
         create_date
@@ -145,7 +145,8 @@
         ON i.case_id = d.id
         <where>
             <if test="keyword!=null and keyword!=''">
-                AND d.house_location LIKE CONCAT('%',#{keyword},'%')
+                AND d.house_location =#{keyword}
+                OR h.name LIKE CONCAT('%',#{keyword},'%')
             </if>
         </where>
     </select>
@@ -177,8 +178,42 @@
             <if test="housesType !=null and housesType !='' ">
                 AND h.houses_type =#{housesType}
             </if>
+            <if test="minFloorSpace !=null and minFloorSpace !='' ">
+                AND h.floor_space &gt; #{minFloorSpace}
+            </if>
+            <if test="maxFloorSpace !=null and maxFloorSpace !='' ">
+                AND h.floor_space &lt;= #{maxFloorSpace}
+            </if>
+        </where>
+
+    </select>
+
+    <!--api 首页搜索接口 案例作品信息列表-->
+    <select id="selectDecorateCaseParams" resultMap="SrvcDecorateCaseMap" parameterType="map">
+        SELECT
+        d.*,h.name,h.houses_type,h.floor_space,
+        h.style ,h.area,i.image_url,r.position,
+        r.name designer_name,r.head_url
+        FROM
+        <include refid="tableName"/> d
+        LEFT JOIN
+        <include refid="tableName1"/> h
+        ON h.id = d.houses_id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON d.id = i.case_id
+        LEFT JOIN
+        <include refid="tableName3"/> r
+        ON r.id = h.designer_id
+        <where>
+            <if test="name !=null and name !='' ">
+                AND h.name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="style !=null and style !='' ">
+                AND h.style LIKE CONCAT('%',#{style},'%')
+            </if>
             <if test="floorSpace !=null and floorSpace !='' ">
-                AND h.floor_space =#{floorSpace}
+                AND h.floor_space LIKE CONCAT('%',#{floorSpace},'%')
             </if>
         </where>
 

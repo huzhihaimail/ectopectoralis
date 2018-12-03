@@ -117,7 +117,7 @@
         <include refid="tableName"/>
         WHERE 1=1
         <if test="keyword!=null and keyword!=''">
-            AND progress LIKE CONCAT('%',#{keyword},'%')
+            AND progress =#{keyword}
         </if>
         ORDER BY
         create_date
@@ -139,7 +139,8 @@
         ON i.place_id = b.id
         <where>
             <if test="keyword!=null and keyword!=''">
-                AND b.progress LIKE CONCAT('%',#{keyword},'%')
+                AND b.progress =#{keyword}
+                OR h.name LIKE CONCAT('%',#{keyword},'%')
             </if>
         </where>
     </select>
@@ -157,14 +158,8 @@
         <include refid="tableName2"/> i
         ON b.id = i.place_id
         <where>
-            <if test="progress!=null and progress!=''">
-                AND b.progress LIKE CONCAT('%',#{progress},'%')
-            </if>
-            <if test="id !=null ">
-                AND h.id =#{id}
-            </if>
-            <if test="housesType !=null and housesType !='' ">
-                AND h.houses_type LIKE CONCAT('%',#{housesType},'%')
+            <if test="progress != null and progress != '' ">
+                AND b.progress =#{progress}
             </if>
 
         </where>
@@ -179,7 +174,7 @@
         <include refid="tableName1"/> h
         LEFT JOIN
         <include refid="tableName"/> b
-        ON h.id = b.house_id
+        ON h.id = b.houses_id
         LEFT JOIN
         <include refid="tableName2"/> i
         ON b.id = i.place_id

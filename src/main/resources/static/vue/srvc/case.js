@@ -22,28 +22,7 @@ var showColumns = [
     , {
         field: "houseLocation",
         title: "房屋位置",
-        width: "5%",
-        formatter: function (value, row, index) { //1.房屋结构 2.卫生间 3.卧室 4.客厅 5厨房
-            var role = '';
-            switch (value){
-                case 1:
-                    role = '房屋结构'
-                    break;
-                case 2:
-                    role = '卫生间'
-                    break;
-                case 3:
-                    role = '卧室'
-                    break;
-                case 4:
-                    role = '客厅'
-                    break;
-                case 5:
-                    role = '厨房'
-                    break;
-            }
-            return role;
-        }
+        width: "5%"
     }
 
     , {

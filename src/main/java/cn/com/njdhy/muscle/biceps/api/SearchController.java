@@ -37,7 +37,7 @@ public class SearchController {
     public Result homePageSearch(@RequestBody Map<String,Object> map, Integer param) {
         try {
             if(param ==1){
-                List<SrvcDecorateCase> srvcDecorateCases = srvcDecorateCaseService.selectDecorateCaseByParams(map);
+                List<SrvcDecorateCase> srvcDecorateCases = srvcDecorateCaseService.selectDecorateCaseParams(map);
                 return Result.success(srvcDecorateCases);
             }else if(param == 2){
                 List<SrvcDesigner> srvcDesigners = srvcDesignerService.queryDesigners(map);

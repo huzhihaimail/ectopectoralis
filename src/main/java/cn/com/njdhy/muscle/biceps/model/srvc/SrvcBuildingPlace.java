@@ -21,7 +21,7 @@ public class SrvcBuildingPlace extends BaseModel{
     /**
      * 施工进度： 1:开工仪式 2:水电施工 3:木工施工等
      */
-    private Integer progress;
+    private String progress;
 
     /**
      * 楼盘名称
