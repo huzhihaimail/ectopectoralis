@@ -34,7 +34,8 @@ public class SearchController {
     private SrvcDesignerService srvcDesignerService;
 
     @RequestMapping(value = "/search",method = RequestMethod.POST)
-    public Result homePageSearch(@RequestBody Map<String,Object> map, Integer param) {
+    public Result homePageSearch(@RequestBody Map<String,Object> map) {
+        Integer param = (Integer)map.get("param");
         try {
             if(param ==1){
                 List<SrvcDecorateCase> srvcDecorateCases = srvcDecorateCaseService.selectDecorateCaseParams(map);
