@@ -46,4 +46,9 @@ public class SrvcBuildingPlaceServiceImpl extends BaseServiceImpl<SrvcBuildingPl
     public List<SrvcBuildingPlace> selectBuildingPlaceById(Integer id) {
         return srvcBuildingPlaceDao.selectBuildingPlaceById(id);
     }
+
+    @Override
+    public int selectBuildingCountById(Integer id) {
+        return srvcBuildingPlaceDao.selectBuildingCountById(id);
+    }
 }

@@ -57,7 +57,6 @@ public class HousesCtl {
     public Result queryById(@PathVariable String id) {
 
         SrvcHouses model = srvcHousesService.queryById(id);
-        List<SrvcDesigner> designers = srvcDesignerService.selectDesignerList();
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcHouses();
         }

@@ -69,4 +69,16 @@ public class BuildingPlaceController {
         return Result.success(list);
     }
 
+    @RequestMapping(value = "/count/{id}",method = RequestMethod.GET)
+    @ApiOperation("根据id查询在施工地进度个数")
+    public int queryCountById(@PathVariable Integer id) {
+        Integer number = null;
+        try {
+            number   =  srvcBuildingPlaceService.selectBuildingCountById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return number;
+    }
 }

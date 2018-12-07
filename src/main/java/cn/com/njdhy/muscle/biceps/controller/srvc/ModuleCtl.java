@@ -4,6 +4,7 @@ import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.ModuleErrorCode;
+import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModule;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModuleSub;
 import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
@@ -83,20 +84,19 @@ public class ModuleCtl {
      * @return 结果对象
      */
     @RequestMapping("/insert")
-    @Transactional(rollbackFor = Exception.class)
     public Result insert(@RequestBody SrvcModule srvcModule) {
 
         try {
 
             // 执行入库操作
-            srvcModuleService.insert(srvcModule);
             SrvcModuleSub srvcModuleSub = new SrvcModuleSub();
             srvcModuleSub.setTitle(srvcModule.getTitle());
             srvcModuleSub.setImageUrl(srvcModule.getImageUrl());
             srvcModuleSub.setImageType(srvcModule.getImageType());
-            srvcModuleSub.setModuleId(srvcModule.getId());
+            srvcModuleSub.setModuleId(srvcModule.getModuleId());
             srvcModuleSubService.insert(srvcModuleSub);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(ModuleErrorCode.SRVC_MODULE_SAVE_APP_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,20 +117,18 @@ public class ModuleCtl {
     public Result update(@RequestBody SrvcModule srvcModule) {
 
         try {
-            // 校验参数
-            // TODO: 2018/3/14
 
-            // 执行修改
-            srvcModuleService.update(srvcModule);
             SrvcModuleSub srvcModuleSub = new SrvcModuleSub();
             srvcModuleSub.setTitle(srvcModule.getTitle());
             srvcModuleSub.setImageUrl(srvcModule.getImageUrl());
             srvcModuleSub.setImageType(srvcModule.getImageType());
-            srvcModuleSub.setId(srvcModule.getModuleSubId());
+            srvcModuleSub.setModuleId(srvcModule.getModuleId());
             srvcModuleSubService.update(srvcModuleSub);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(ModuleErrorCode.SRVC_MODULE_UPDATE_APP_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(ModuleErrorCode.SRVC_MODULE_UPDATE_ERROR_CODE, ModuleErrorCode.SRVC_MODULE_UPDATE_ERROR_MESSAGE);
         }
 
@@ -147,11 +145,12 @@ public class ModuleCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
             srvcModuleService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 

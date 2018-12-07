@@ -39,6 +39,8 @@ ext {
     lombokVersion = "1.16.18"
     quartzVersion = '2.2.1'
     jsonVersion = '1.2.47'
+    ioVersion = '2.4'
+    fileuploadVersion = '1.2.2'
 }
 
 
@@ -59,6 +61,7 @@ dependencies {
     // swagger
     compile "io.springfox:springfox-swagger2:${swaggerVersion}"
     compile "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+
     // Model层省略getter&setter
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     // quartz
@@ -67,7 +70,13 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     //fastjson
     compile "com.alibaba:fastjson:${jsonVersion}"
-
+    compile "org.json:json:20180130"
+    //commons-io
+    compile "commons-io:commons-io:${ioVersion}"
+    //commons-fileupload
+    compile "commons-fileupload:commons-fileupload:${fileuploadVersion}"
+    //commons-codec
+    compile "commons-codec:commons-codec:1.9"
     // mysql
     runtime "mysql:mysql-connector-java"
     // 热部署

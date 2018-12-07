@@ -16,6 +16,7 @@
         <result property="workingExperience" column="working_experience"></result>
         <result property="style" column="style"></result>
 
+        <result property="housesId" column="houses_id"></result>
         <result property="houseName" column="house_name"></result>
         <result property="housesType" column="houses_type"></result>
         <result property="floorSpace" column="floor_space"></result>
@@ -54,7 +55,7 @@
 
     <!-- for update set -->
     <sql id="updates">
-        `name`=#{name}, head_url=#{headUrl}, `position`=#{position}, introduce=#{introduce},concept=#{concept},working_experience=#{workingExperience},style=#{style}, update_date=NOW(), delete_flag=#{deleteFlag}
+        head_url=#{headUrl}, `name`=#{name}, `position`=#{position}, introduce=#{introduce},concept=#{concept},working_experience=#{workingExperience},style=#{style}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
@@ -155,7 +156,7 @@
     <!--api 查询设计师及其案例作品信息列表-->
     <select id="selectDesignerById" resultMap="SrvcDesignerMap" parameterType="Integer">
         SELECT
-        d.*,h.name house_name,h.houses_type,h.floor_space,
+        d.*,h.id houses_id,h.name house_name,h.houses_type,h.floor_space,
         h.style house_style,h.area,s.house_location,i.image_url
         FROM
         <include refid="tableName"/> d

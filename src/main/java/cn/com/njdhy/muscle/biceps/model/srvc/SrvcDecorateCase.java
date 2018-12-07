@@ -27,6 +27,10 @@ public class SrvcDecorateCase extends BaseModel{
      */
     private String name;
     /**
+     * id 关联srvc_case_img表
+     */
+    private Integer imgId;
+    /**
      * 图片地址 关联srvc_case_img表
      */
     private String imageUrl;

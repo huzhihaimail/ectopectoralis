@@ -63,8 +63,6 @@ public class CompanyDescCtl {
         // todo 参数校验
 
         SrvcCompanyDesc model = srvcCompanyDescService.queryById(id);
-        String img = appCommonProperties.getImagesPrefix()  + model.getImageUrl();
-        model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcCompanyDesc();
         }

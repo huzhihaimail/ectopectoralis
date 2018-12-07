@@ -75,8 +75,6 @@ public class DecorateCaseCtl {
         // todo 参数校验
 
         SrvcDecorateCase model = srvcDecorateCaseService.queryById(id);
-        String img = appCommonProperties.getImagesPrefix() + model.getImageUrl();
-        model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDecorateCase();
         }
@@ -122,14 +120,17 @@ public class DecorateCaseCtl {
     public Result update(@RequestBody SrvcDecorateCase srvcDecorateCase) {
 
         try {
-            // 校验参数
-            // TODO: 2018/3/14
 
-            // 执行修改
             srvcDecorateCaseService.update(srvcDecorateCase);
+            SrvcCaseImg srvcCaseImg = new SrvcCaseImg();
+            srvcCaseImg.setId(srvcDecorateCase.getImgId());
+            srvcCaseImg.setImageUrl(srvcDecorateCase.getImageUrl());
+            srvcCaseImgService.update(srvcCaseImg);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_MESSAGE);
         }
 

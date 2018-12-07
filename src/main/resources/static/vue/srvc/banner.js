@@ -22,7 +22,7 @@ var showColumns = [
     }
     , {
         field: "imgUrl",
-        title: "图片地址",
+        title: "图片显示",
         width: "20%",
         formatter:function (value,row,index) {
             var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'

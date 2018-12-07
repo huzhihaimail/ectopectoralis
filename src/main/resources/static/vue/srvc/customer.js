@@ -17,7 +17,7 @@ var showColumns = [
     , {
         field: "mobile",
         title: "手机号码",
-        width: "20%"
+        width: "10%"
     }
     , {
         field: "floorSpace",

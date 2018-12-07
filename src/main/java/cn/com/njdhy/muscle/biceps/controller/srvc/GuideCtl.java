@@ -64,8 +64,6 @@ public class GuideCtl {
         // todo 参数校验
 
         SrvcGuide model = srvcGuideService.queryById(id);
-        String img =appCommonProperties.getImagesPrefix() + model.getImageUrl();
-        model.setImageUrl(img);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcGuide();
         }

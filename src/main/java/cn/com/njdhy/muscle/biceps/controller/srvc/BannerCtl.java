@@ -65,8 +65,6 @@ public class BannerCtl {
             return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
         }
         SrvcBanner model = srvcBannerService.queryById(id);
-        String imgUrl = appCommonProperties.getImagesPrefix() + model.getImgUrl();
-        model.setImgUrl(imgUrl);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcBanner();
         }

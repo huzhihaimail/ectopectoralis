@@ -103,10 +103,17 @@
                         <form id="form" enctype="multipart/form-data">
                             <input type="file" id="input-id" name="file" multiple data-show-caption="true">
                             <input type="hidden" name="imageUrl" v-model="model.imageUrl"/>
+                            <input type="hidden" name="imgId" v-model="model.imgId"/>
                         </form>
                     </div>
                 </div>
 
+                <!--<div class="form-group">-->
+                    <!--<div class="col-sm-3 control-label text-right">图片像素<span class="text-danger">*</span></div>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<input type="hidden" name="imageSize" v-model="model.imageSize"/>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="form-group text-center">
                     <a type="button" class="btn btn-success" @click="commit"><i class="fa fa-check-square-o"></i>&nbsp;确定</a>&nbsp;&nbsp;
                     <a type="button" class="btn btn-warning" @click="reload"><i class="fa fa-undo"></i>&nbsp;返回</a>

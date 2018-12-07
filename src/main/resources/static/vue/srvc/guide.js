@@ -19,14 +19,14 @@ var showColumns = [
         title: "文章标题",
         width: "10%"
     }
-    , {
-        field: "content",
-        title: "文章内容",
-        width: "10%"
-    }
+    // , {
+    //     field: "content",
+    //     title: "文章内容",
+    //     width: "10%"
+    // }
     , {
         field: "imageUrl",
-        title: "图片地址",
+        title: "标题图片",
         width: "20%",
         formatter:function (value,row,index) {
             var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'
@@ -122,15 +122,19 @@ var vm = new Vue({
             vm.title = PAGE_INSERT_TITLE;
             // 3. 清空表单数据
             vm.model = {};
+            //实例化Ueditor
+            vm.editor();
         }
 
         // 点击“确定”按钮
         , commit: function (el) {
 
-            // todo 校验新增时提交参数
+
 
             // 执行新增操作
             if (vm.model.id == null) {
+                // todo 给model.content复制
+
                 vm.doSave();
                 return;
             }
@@ -141,7 +145,7 @@ var vm = new Vue({
 
         // 执行保存操作
         , doSave: function () {
-
+            vm.editor();
             // 2. 入库
             $.ajax({
                 type: "POST",
@@ -251,6 +255,18 @@ var vm = new Vue({
             vm.queryOption = queryOpt;
             // 刷新表格数据
             bsTable.createBootStrapTable(showColumns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
+        }
+        //获取
+        , editor:function () {
+            var ue = UE.getEditor('editor');
+            debugger;
+            // var abc = ue.getAllHtml();
+            // console.log(abc);
+            // vm.model.content = ue.getContent();
+            // console.log(vm.model.content);
+        }
+        , editorShow:function () {
+            
         }
 
 

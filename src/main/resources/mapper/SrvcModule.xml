@@ -10,6 +10,7 @@
         <result property="id" column="id"></result>
         <result property="moduleName" column="module_name"></result>
         <result property="moduleSubId" column="module_sub_id"></result>
+        <result property="moduleId" column="module_id"></result>
         <result property="title" column="title"></result>
         <result property="imageUrl" column="image_url"></result>
         <result property="imageType" column="image_type"></result>
@@ -58,7 +59,7 @@
     <!-- 根据ID查询-->
     <select id="queryById" resultMap="SrvcModuleMap" parameterType="String">
         SELECT
-        m.*,s.id module_sub_id,s.title,s.image_url,s.image_type
+        m.*,s.id module_sub_id,s.title,s.image_url,s.image_type,s.module_id
         FROM
         <include refid="tableName"/> m
         LEFT JOIN
@@ -70,10 +71,13 @@
 
     <!-- 批量删除-->
     <delete id="deleteByIds" parameterType="java.util.List">
-        DELETE FROM
-        <include refid="tableName"/>
+        DELETE s.* FROM
+        <include refid="tableName"/> m
+        LEFT JOIN
+        <include refid="tableName2"/> s
+        ON m.id = s.module_id
         WHERE 1=1
-        AND id IN
+        AND m.id IN
         <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>
@@ -125,9 +129,9 @@
         m.*,
         s.id module_sub_id,s.title,s.image_url,s.image_type
         FROM
-        <include refid="tableName"/> m
-        LEFT JOIN
         <include refid="tableName2"/> s
+        LEFT JOIN
+        <include refid="tableName"/> m
         ON m.id = s.module_id
         <where>
             AND m.delete_flag = 0

@@ -167,6 +167,7 @@ var vm = new Vue({
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
             });
+            vm.queryHouses();
         }
 
         // 执行修改操作
@@ -308,7 +309,7 @@ $("#input-id").on("fileuploaded", function (event, data, previewId, index) {
     //后台返回的json
     var response = data.response;
     var path = response.data.path;
-    //返回上传的图片地址，赋值给vm model
+    console.log("-------------"+path);
     vm.model.imageUrl=path;
 
 });

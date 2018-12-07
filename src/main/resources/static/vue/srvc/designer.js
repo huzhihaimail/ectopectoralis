@@ -21,7 +21,7 @@ var showColumns = [
     }
     , {
         field: "headUrl",
-        title: "头像",
+        title: "头像图片",
         width: "10%",
         formatter:function (value,row,index) {
             var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'
@@ -31,6 +31,11 @@ var showColumns = [
     , {
         field: "position",
         title: "职位",
+        width: "10%"
+    }
+    , {
+        field: "introduce",
+        title: "简介",
         width: "10%"
     }
     , {

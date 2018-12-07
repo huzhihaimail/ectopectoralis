@@ -49,6 +49,10 @@ public class SrvcDesigner extends BaseModel{
     /**
      * 楼盘名称
      */
+    private Integer housesId;
+    /**
+     * 楼盘名称
+     */
     private String houseName;
     /**
      * 户型

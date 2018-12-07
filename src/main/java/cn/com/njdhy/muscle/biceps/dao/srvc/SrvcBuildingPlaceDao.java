@@ -35,4 +35,11 @@ public interface SrvcBuildingPlaceDao extends BaseDao<SrvcBuildingPlace> {
      */
     List<SrvcBuildingPlace> selectBuildingPlaceById(Integer id);
 
+    /**
+     * 查询进度记个数
+     * @param id
+     * @return
+     */
+    int selectBuildingCountById(Integer id);
+
 }

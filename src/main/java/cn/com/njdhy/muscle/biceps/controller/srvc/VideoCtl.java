@@ -62,8 +62,6 @@ public class VideoCtl {
         // todo 参数校验
 
         SrvcVideo model = srvcVideoService.queryById(id);
-        String video =  appCommonProperties.getImagesPrefix() +model.getVideoUrl();
-        model.setVideoUrl(video);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcVideo();
         }

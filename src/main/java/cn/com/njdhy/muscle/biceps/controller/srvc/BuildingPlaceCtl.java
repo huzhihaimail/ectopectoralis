@@ -93,6 +93,7 @@ public class BuildingPlaceCtl {
             SrvcPlaceImg srvcPlaceImg = new SrvcPlaceImg();
             srvcPlaceImg.setPlaceId(srvcBuildingPlace.getId());
             srvcPlaceImg.setImageUrl(srvcBuildingPlace.getImageUrl());
+            srvcPlaceImg.setImageSize(srvcBuildingPlace.getImageSize());
             srvcPlaceImgService.insert(srvcPlaceImg);
         } catch (ApplicationException e) {
             return Result.error(HousesSubErrorCode.SRVC_HOUSESSUB_SAVE_APP_ERROR_CODE, HousesSubErrorCode.SRVC_HOUSESSUB_SAVE_APP_ERROR_MESSAGE);
@@ -114,10 +115,12 @@ public class BuildingPlaceCtl {
     public Result update(@RequestBody SrvcBuildingPlace srvcBuildingPlace) {
 
         try {
-            // 校验参数
-            // TODO:
-            // 执行修改
+
             srvcBuildingPlaceService.update(srvcBuildingPlace);
+            SrvcPlaceImg srvcPlaceImg = new SrvcPlaceImg();
+            srvcPlaceImg.setId(srvcBuildingPlace.getImgId());
+            srvcPlaceImg.setImageUrl(srvcBuildingPlace.getImageUrl());
+            srvcPlaceImgService.update(srvcPlaceImg);
         } catch (RuntimeException e) {
             e.printStackTrace();
             return Result.error(HousesSubErrorCode.SRVC_HOUSESSUB_UPDATE_APP_ERROR_CODE, HousesSubErrorCode.SRVC_HOUSESSUB_UPDATE_APP_ERROR_MESSAGE);

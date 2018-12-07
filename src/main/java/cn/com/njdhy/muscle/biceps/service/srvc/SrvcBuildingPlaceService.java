@@ -38,4 +38,11 @@ public interface SrvcBuildingPlaceService extends BaseService<SrvcBuildingPlace>
      * @return
      */
     List<SrvcBuildingPlace> selectBuildingPlaceById(Integer id);
+
+    /**
+     * 查询进度记个数
+     * @param id
+     * @return
+     */
+    int selectBuildingCountById(Integer id);
 }

@@ -21,4 +21,8 @@ public class SrvcPlaceImg extends BaseModel {
      * 图片地址
      */
     private String imageUrl;
+    /**
+     * 图片地址
+     */
+    private String imageSize;
 }

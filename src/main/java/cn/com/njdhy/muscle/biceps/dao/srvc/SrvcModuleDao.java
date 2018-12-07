@@ -27,4 +27,11 @@ public interface SrvcModuleDao extends BaseDao<SrvcModule> {
      * @return
      */
     List<SrvcModule> selectModuleInfo(@Param("moduleName") String moduleName,@Param("imageType") Integer imageType);
+
+    /**
+     * 查询所有十大模块名
+     * @param map
+     * @return
+     */
+    List<SrvcModule> queryModules(Map<String,Object> map);
 }

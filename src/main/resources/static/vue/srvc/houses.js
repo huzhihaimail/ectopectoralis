@@ -180,6 +180,7 @@ var vm = new Vue({
                 vm.title = PAGE_UPDATE_TITLE;
                 vm.model = r.model;
             });
+            vm.queryDesigners();
         }
 
         // 执行修改操作

@@ -16,6 +16,8 @@
         <result property="floorSpace" column="floor_space"></result>
         <result property="style" column="style"></result>
         <result property="area" column="area"></result>
+
+        <result property="imgId" column="img_id"></result>
         <result property="imageUrl" column="image_url"></result>
 
         <result property="deleteFlag" column="delete_flag"></result>
@@ -46,7 +48,7 @@
 
     <!-- for update set -->
     <sql id="updates">
-        houses_id=#{housesId}, progress=#{progress}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style}, progress_title=#{progressTitle}, area=#{area}, update_date=NOW(), delete_flag=#{deleteFlag}
+        houses_id=#{housesId}, progress=#{progress}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
@@ -64,11 +66,14 @@
     <!-- 根据ID查询-->
     <select id="queryById" resultMap="SrvcBuildingPlaceMap" parameterType="String">
         SELECT
-        <include refid="columns"/>
+        p.id,p.houses_id,p.progress,i.id img_id,i.image_url
         FROM
-        <include refid="tableName"/>
+        <include refid="tableName"/> p
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON p.id = i.place_id
         WHERE 1 = 1
-        AND id=#{id}
+        AND p.id=#{id}
     </select>
 
     <!-- 批量删除-->
@@ -146,11 +151,13 @@
     </select>
     <!--api关联查询-->
     <select id="selectBuildingPlaceParams" resultMap="SrvcBuildingPlaceMap" parameterType="map">
-        SELECT
+        SELECT *
+        FROM
+        (SELECT
         h.id,h.name,h.houses_type,h.floor_space,
         h.style ,h.area,b.progress,i.image_url
         FROM
-        <include refid="tableName"/> b
+        <include refid="tableName"/>b
         LEFT JOIN
         <include refid="tableName1"/> h
         ON h.id = b.houses_id
@@ -161,8 +168,11 @@
             <if test="progress != null and progress != '' ">
                 AND b.progress =#{progress}
             </if>
-
         </where>
+        ORDER BY b.create_date DESC
+         ) t
+        GROUP BY t.name
+
     </select>
 
     <!--api 查询设计师及其案例作品信息列表-->
@@ -179,6 +189,23 @@
         <include refid="tableName2"/> i
         ON b.id = i.place_id
         WHERE h.id = #{id}
+    </select>
+
+    <!--api 查询设计师及其案例作品信息列表-->
+    <select id="selectBuildingCountById" resultType="Integer" parameterType="Integer">
+
+        SELECT
+        count(*)
+        FROM
+        (SELECT
+        b.progress
+        FROM
+        <include refid="tableName1"/> h
+        LEFT JOIN
+        <include refid="tableName"/> b
+        ON h.id = b.houses_id
+        WHERE h.id = #{id}
+        GROUP BY b.progress) t
     </select>
 
 </mapper>

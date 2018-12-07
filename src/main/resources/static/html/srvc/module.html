@@ -72,8 +72,19 @@
                 <div class="form-group">
                     <div class="col-sm-3 control-label">模块名称<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" v-model="model.moduleName"
-                               placeholder="请输入模块名称"/>
+                        <select class="form-control" v-model="model.moduleId">
+                            <option value="" selected>请选择模块名</option>
+                            <option value="1">全屋装修</option>
+                            <option value="2">别墅大宅</option>
+                            <option value="3">商业办公</option>
+                            <option value="4">软配升级</option>
+                            <option value="5">水电冷暖</option>
+                            <option value="6">老房翻新</option>
+                            <option value="7">厨卫改造</option>
+                            <option value="8">全屋木作</option>
+                            <option value="9">阳台门窗</option>
+                            <option value="10">定制设计</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">

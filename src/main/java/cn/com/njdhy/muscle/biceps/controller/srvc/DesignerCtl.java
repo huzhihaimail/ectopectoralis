@@ -63,8 +63,6 @@ public class DesignerCtl {
         // todo 参数校验
 
         SrvcDesigner model = srvcDesignerService.queryById(id);
-        String head = appCommonProperties.getImagesPrefix()+model.getHeadUrl();
-        model.setHeadUrl(head);
         if (ObjectUtils.isEmpty(model)) {
             model = new SrvcDesigner();
         }
