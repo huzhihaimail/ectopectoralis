@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 配置dao接口路径-->
-<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcCompanyDescDao">
+<mapper namespace="cn.com.njdhy.muscle.biceps.dao.srvc.SrvcCoreDao">
 
     <!-- type配置model层实体类名-->
-    <resultMap id="SrvcCompanyDescMap" type="SrvcCompanyDesc">
+    <resultMap id="SrvcCoreMap" type="SrvcCore">
         <!-- 配置实体和数据库列的对应关系，property：实体属性名；column：数据库表列名；-->
         <result property="id" column="id"></result>
         <result property="title" column="title"></result>
-        <result property="imageUrl" column="image_url"></result>
+        <result property="content" column="content"></result>
         <result property="type" column="type"></result>
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
@@ -18,26 +18,26 @@
 
     <!-- 配置表名 -->
     <sql id="tableName">
-        srvc_companydesc
+        srvc_core_service
     </sql>
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, title, image_url, `type`, create_date, update_date, delete_flag
+        id, title, content, `type`, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{title}, #{imageUrl}, #{type}, NOW(), NOW(), 0
+        #{id}, #{title}, #{content}, #{type}, NOW(), NOW(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        title=#{title}, image_url=#{imageUrl}, `type`=#{type}, update_date=NOW(), delete_flag=#{deleteFlag}
+        title=#{title}, content=#{content}, `type`=#{type}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
-    <select id="queryByName" resultMap="SrvcCompanyDescMap" parameterType="String">
+    <select id="queryByName" resultMap="SrvcCoreMap" parameterType="String">
         SELECT
         <include refid="columns"/>
         FROM
@@ -49,7 +49,7 @@
     </select>
 
     <!-- 根据ID查询-->
-    <select id="queryById" resultMap="SrvcCompanyDescMap" parameterType="String">
+    <select id="queryById" resultMap="SrvcCoreMap" parameterType="String">
         SELECT
         <include refid="columns"/>
         FROM
@@ -59,13 +59,15 @@
     </select>
 
     <!--api 根据type查询-->
-    <select id="queryByType" resultMap="SrvcCompanyDescMap" parameterType="Integer">
+    <select id="queryByType" resultMap="SrvcCoreMap" parameterType="Integer">
         SELECT
         <include refid="columns"/>
         FROM
         <include refid="tableName"/>
         WHERE 1 = 1
         AND type=#{type}
+        ORDER BY create_date DESC
+        limit 1
     </select>
 
     <!-- 批量删除-->
@@ -80,7 +82,7 @@
     </delete>
 
     <!-- 新建  useGeneratedKeys="true" 用于返回新增后的id值-->
-    <insert id="insert" parameterType="SrvcCompanyDesc" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="SrvcCore" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO
         <include refid="tableName"/>
         (<include refid="columns"/>)
@@ -89,7 +91,7 @@
     </insert>
 
     <!-- 修改 -->
-    <update id="update" parameterType="SrvcCompanyDesc">
+    <update id="update" parameterType="SrvcCore">
         UPDATE
         <include refid="tableName"/>
         SET
@@ -99,7 +101,7 @@
     </update>
 
     <!-- 根据条件查询 -->
-    <select id="queryList" resultMap="SrvcCompanyDescMap" parameterType="map">
+    <select id="queryList" resultMap="SrvcCoreMap" parameterType="map">
 
         SELECT
         <include refid="columns"/>

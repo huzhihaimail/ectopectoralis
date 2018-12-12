@@ -189,6 +189,7 @@
                 AND h.floor_space &lt;= #{maxFloorSpace}
             </if>
         </where>
+        ORDER BY d.create_date DESC
 
     </select>
 
@@ -212,18 +213,13 @@
         <where>
             <if test="name !=null and name !='' ">
                 AND h.name LIKE CONCAT('%',#{name},'%')
+                OR h.area LIKE CONCAT('%',#{name},'%')
+                OR h.houses_type LIKE CONCAT('%',#{name},'%')
+                OR r.position LIKE CONCAT('%',#{name},'%')
             </if>
-            <if test="area !=null and area !='' ">
-                AND h.area LIKE CONCAT('%',#{area},'%')
-            </if>
-            <if test="housesType !=null and housesType !='' ">
-                AND h.houses_type LIKE CONCAT('%',#{housesType},'%')
-            </if>
-            <if test="housesType !=null and housesType !='' ">
-                AND r.position LIKE CONCAT('%',#{position},'%')
-            </if>
-        </where>
 
+        </where>
+        ORDER BY d.create_date DESC
     </select>
 
     <!--api 查询设计师及其案例作品信息列表-->

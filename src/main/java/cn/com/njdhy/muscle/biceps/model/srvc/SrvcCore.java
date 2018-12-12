@@ -5,32 +5,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 装修指南（企业新闻、装修科普）
+ * Description：
+ * <功能简介>--家装服务核心优势模块实体类
+ *
  * @author rain
- * @date 2018/11/17 20:44
+ * @date 2018/12/11 15:14
  **/
 @Getter
 @Setter
-public class SrvcGuide extends BaseModel {
+public class SrvcCore extends BaseModel{
 
     /**
      * 文章标题
      */
     private String title;
     /**
-     * 标题简言
-     */
-    private String shortIntroduce;
-    /**
      * 文章内容
      */
     private String content;
     /**
-     * 图片地址
-     */
-    private String imageUrl;
-    /**
-     * 文章类型 1:企业新闻 2：装修科普
+     * 模块类型 1六大精英设计风格  2、5h关注工程  3、装修好管家
      */
     private Integer type;
 }

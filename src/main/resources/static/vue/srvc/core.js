@@ -20,30 +20,22 @@ var showColumns = [
         width: "10%",
         visible: false
     }
-    , {
-        field: "imageUrl",
-        title: "图片显示",
-        width: "20%",
-        formatter:function (value,row,index) {
-            var img  = '<img src="'+value+' " style="height: 100px;width: 200px" />'
-            return img;
-        }
-    }
+
     , {
         field: "type",
         title: "模块类型",
         width: "15%",
-        formatter: function (value, row, index) { //显示模块类型 1.整屋装修 2.卓尔高端设计 等
+        formatter: function (value, row, index) { //显示模块类型 1.六大精英设计风格 2.5h关注工程 等
             var role = '';
             switch (value){
                 case 1:
-                    role = '整屋装修'
+                    role = '六大精英设计'
                     break;
                 case 2:
-                    role = '卓尔高端设计'
+                    role = '5H观住工程'
                     break;
                 case 3:
-                    role = '房点装'
+                    role = '装修好管家'
                     break;
 
             }
@@ -101,9 +93,9 @@ var vm = new Vue({
             keyword: null,
         }
         , model: {} //实体对象(用于新建、修改页面)
-
+        , VueEditor:{}
         // 定义模块名称
-        , moduleName: "/srvc/company/desc"
+        , moduleName: "/srvc/core"
     }
     // 定义方法
     , methods: {
@@ -123,6 +115,8 @@ var vm = new Vue({
             vm.title = PAGE_INSERT_TITLE;
             // 3. 清空表单数据
             vm.model = {};
+
+            vm.wangEditor();
         }
 
         // 点击“确定”按钮
@@ -142,6 +136,8 @@ var vm = new Vue({
 
         // 执行保存操作
         , doSave: function () {
+
+            vm.getWangEditor();
 
             // 2. 入库
             $.ajax({
@@ -253,6 +249,45 @@ var vm = new Vue({
             // 刷新表格数据
             bsTable.createBootStrapTable(showColumns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
         }
+        // 加载富文本编辑器
+        ,wangEditor:function () {
+            var E = window.wangEditor;
+            var editor = new E('#editor')
+            editor.customConfig.uploadFileName = 'file'
+            editor.customConfig.uploadImgServer = '/wangEditor/upload';
+            // 将图片大小限制为 3M
+            editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+            // 限制一次最多上传 1 张图片
+            editor.customConfig.uploadImgMaxLength = 1;
+            editor.customConfig.showLinkImg = false;
+            //自定义上传图片事件
+            editor.customConfig.uploadImgHooks = {
+                before : function(xhr, editor, files) {
+                    console.log("before");
+                },
+                success : function(xhr, editor, result) {
+
+                    console.log("上传成功");
+
+                },
+                fail : function(xhr, editor, result) {
+                    console.log("上传失败,原因是"+result);
+                },
+                error : function(xhr, editor) {
+                    console.log("上传出错");
+                },
+                timeout : function(xhr, editor) {
+                    console.log("上传超时");
+                }
+            }
+
+            editor.create();
+
+            vm.VueEditor = editor;
+        }
+        ,getWangEditor:function () {
+            vm.model.content = vm.VueEditor.txt.html();
+        }
 
 
     }
@@ -267,51 +302,5 @@ $(function () {
     bsTable.createBootStrapTable(vm.columns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
-/**
- * 文件上传
- */
-$('#input-id').fileinput({
-    // 设置语言
-    language: 'zh',
-    // 设置url地址
-    uploadUrl: '/files/upload',
-    // 是否显示预览图
-    showPreview: true,
-    //默认异步上传
-    uploadAsync: true,
-    // 最大上传文件数
-    maxFileCount: 1,
-    // 设置图片格式,即接收的文件后缀
-    allowedFileExtensions: ['jpg', 'png', 'gif'],
-    //显示移除按钮
-    showRemove : true,
-    //是否显示预览
-    showPreview : true,
-    //是否显示标题
-    showCaption: false,
-    //按钮样式
-    browseClass: "btn btn-primary",
-    //是否显示拖拽区域
-    dropZoneEnabled: false,
-    enctype: 'multipart/form-data',
-    validateInitialCount:true,
-    slugCallback : function(filename) {
-        return filename.replace('(', '_').replace(']', '_');
-    }
-});
-//上传前
-$('#input-id').on('filepreupload', function(event, data, previewId, index) {
-    var form = data.form, files = data.files, extra = data.extra,
-        response = data.response, reader = data.reader;
-});
 
-//异步上传返回结果处理
-$("#input-id").on("fileuploaded", function (event, data, previewId, index) {
-    //后台返回的json
-    var response = data.response;
-    var path = response.data.path;
-    //返回上传的图片地址，赋值给vm model
-    vm.model.imageUrl=path;
-
-});
 

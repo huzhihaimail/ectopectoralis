@@ -20,8 +20,12 @@
         <div class="row-fluid">
             <div class="col-md-10 form-inline">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="请输入文章标题查询" @keyup.enter="query"
-                           v-model="vueQueryParam.keyword">
+                    <select class="form-control" v-model="vueQueryParam.keyword" @keyup.enter="query">
+                        <option value="" selected>请选择模块类型</option>
+                        <option value="1">六大精英设计</option>
+                        <option value="2">5H观住工程</option>
+                        <option value="3">装修好管家</option>
+                    </select>
                     <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" @click="query">
                                 <i class="fa fa-search"></i>查询
@@ -70,41 +74,22 @@
             <div class="form-horizontal col-md-8">
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">文章标题<span class="text-danger">*</span></div>
+                    <div class="col-sm-3 control-label">模块标题<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" v-model="model.title"
-                               placeholder="请输入文章标题"/>
+                               placeholder="请输入模块标题"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-3 control-label">标题简介<span class="text-danger">*</span></div>
-                    <div class="col-sm-6">
-                        <textarea  class="form-control" v-model="model.shortIntroduce"
-                                   placeholder="请输入标题简介,限制输入30字"
-                                   maxlength="30" onchange="this.value=this.value.substring(0, 60)" onkeydown="this.value=this.value.substring(0, 60)" onkeyup="this.value=this.value.substring(0, 60)">
-                        </textarea>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-3 control-label">文章类型<span class="text-danger">*</span></div>
+                    <div class="col-sm-3 control-label">模块类型<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
                         <select class="form-control" v-model="model.type">
                             <option value="" selected>请选择模块类型</option>
-                            <option value="1">企业新闻</option>
-                            <option value="2">装修科普</option>
+                            <option value="1">六大精英设计</option>
+                            <option value="2">5H观住工程</option>
+                            <option value="3">装修好管家</option>
                         </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-3 control-label text-right">标题图片<span class="text-danger">*</span></div>
-                    <div class="col-sm-6">
-                        <form id="form" enctype="multipart/form-data">
-                            <input type="file" id="input-id" name="file" multiple data-show-caption="true">
-                            <input type="hidden" name="imageUrl" v-model="model.imageUrl"/>
-                        </form>
                     </div>
                 </div>
 
@@ -145,6 +130,6 @@
 <!--wangeditor-->
 <script type="text/javascript" src="../../plugin/wangeditor/wangEditor.js"></script>
 <!-- 业务js -->
-<script src="../../vue/srvc/guide.js"></script>
+<script src="../../vue/srvc/core.js"></script>
 
 </html>
