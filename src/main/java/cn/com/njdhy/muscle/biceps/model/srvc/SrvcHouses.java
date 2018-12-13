@@ -37,6 +37,10 @@ public class SrvcHouses extends BaseModel{
      * 楼盘所在区域
      */
     private String area;
+    /**
+     * 设计理念
+     */
+    private String concept;
 
     /**
      * 关联srvc_designer 设计师名字

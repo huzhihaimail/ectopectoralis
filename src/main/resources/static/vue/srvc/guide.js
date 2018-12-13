@@ -120,6 +120,7 @@ var vm = new Vue({
             vm.model = {};
 
             vm.wangEditor();
+            vm.VueEditor.txt.clear();
         }
 
         // 点击“确定”按钮
@@ -150,8 +151,6 @@ var vm = new Vue({
                 success: function (r) {
                     if (r.code === 0) {
                         alert(PAGE_OPERATOR_SUCCESS, function (index) {
-                            // 清理wangeditor内容
-                            vm.VueEditor.txt.clear();
                             vm.reload();
                         });
                     } else if (r.code) {
@@ -258,12 +257,14 @@ var vm = new Vue({
         ,wangEditor:function () {
             var E = window.wangEditor;
             var editor = new E('#editor')
+
             editor.customConfig.uploadFileName = 'file'
             editor.customConfig.uploadImgServer = '/wangEditor/upload';
             // 将图片大小限制为 3M
             editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
             // 限制一次最多上传 1 张图片
             editor.customConfig.uploadImgMaxLength = 1;
+            editor.customConfig.zIndex = 100000;
             editor.customConfig.showLinkImg = false;
             //自定义上传图片事件
             editor.customConfig.uploadImgHooks = {
@@ -293,9 +294,6 @@ var vm = new Vue({
         ,getWangEditor:function () {
             vm.model.content = vm.VueEditor.txt.html();
         }
-        // ,setWangEditor:function () {
-        //     vm.VueEditor.txt.html(''+vm.content);
-        // }
 
 
     }

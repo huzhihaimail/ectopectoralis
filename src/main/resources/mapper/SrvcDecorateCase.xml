@@ -215,7 +215,7 @@
                 AND h.name LIKE CONCAT('%',#{name},'%')
                 OR h.area LIKE CONCAT('%',#{name},'%')
                 OR h.houses_type LIKE CONCAT('%',#{name},'%')
-                OR r.position LIKE CONCAT('%',#{name},'%')
+                OR d.house_location LIKE CONCAT('%',#{name},'%')
             </if>
 
         </where>
@@ -226,8 +226,8 @@
     <select id="selectDecorateCaseById" resultMap="SrvcDecorateCaseMap" parameterType="Integer">
         SELECT
         d.*,h.name,h.houses_type,h.floor_space,
-        h.style ,h.area,i.image_url,r.position,
-        r.name designer_name,r.head_url,r.concept
+        h.concept,h.style ,h.area,i.image_url,
+        r.position,r.name designer_name,r.head_url
         FROM
         <include refid="tableName1"/> h
         LEFT JOIN

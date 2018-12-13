@@ -33,7 +33,7 @@ public class SearchController {
     @Autowired
     private SrvcDesignerService srvcDesignerService;
 
-    @RequestMapping(value = "/search",method = RequestMethod.POST)
+    @RequestMapping(value = "/search")
     public Result homePageSearch(@RequestBody Map<String,Object> map) {
         Integer param = (Integer)map.get("param");
         try {

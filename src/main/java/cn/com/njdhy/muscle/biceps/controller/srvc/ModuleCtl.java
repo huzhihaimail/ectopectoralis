@@ -122,7 +122,7 @@ public class ModuleCtl {
             srvcModuleSub.setTitle(srvcModule.getTitle());
             srvcModuleSub.setImageUrl(srvcModule.getImageUrl());
             srvcModuleSub.setImageType(srvcModule.getImageType());
-            srvcModuleSub.setModuleId(srvcModule.getModuleId());
+            srvcModuleSub.setId(srvcModule.getModuleSubId());
             srvcModuleSubService.update(srvcModuleSub);
         } catch (RuntimeException e) {
             e.printStackTrace();

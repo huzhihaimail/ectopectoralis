@@ -59,14 +59,14 @@
     <!-- 根据ID查询-->
     <select id="queryById" resultMap="SrvcModuleMap" parameterType="String">
         SELECT
-        m.*,s.id module_sub_id,s.title,s.image_url,s.image_type,s.module_id
+        m.id module_id,m.module_name,s.id module_sub_id,s.title,s.image_url,s.image_type
         FROM
         <include refid="tableName"/> m
         LEFT JOIN
         <include refid="tableName2"/> s
         ON m.id = s.module_id
         WHERE 1 = 1
-        AND m.id=#{id}
+        AND s.id=#{id}
     </select>
 
     <!-- 批量删除-->
@@ -126,15 +126,14 @@
     <!--backend关联查询-->
     <select id="selectModuleList" resultMap="SrvcModuleMap" parameterType="map">
         SELECT
-        m.*,
-        s.id module_sub_id,s.title,s.image_url,s.image_type
+        m.module_name,
+        s.id ,s.title,s.image_url,s.image_type
         FROM
         <include refid="tableName2"/> s
         LEFT JOIN
         <include refid="tableName"/> m
         ON m.id = s.module_id
         <where>
-            AND m.delete_flag = 0
             <if test="keyword!=null and keyword!=''">
                 AND m.module_name LIKE CONCAT('%',#{keyword},'%')
             </if>

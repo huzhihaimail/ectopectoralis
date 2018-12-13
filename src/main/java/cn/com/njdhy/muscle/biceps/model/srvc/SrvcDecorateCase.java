@@ -64,7 +64,7 @@ public class SrvcDecorateCase extends BaseModel{
      */
     private String headUrl;
     /**
-     * 设计师理念
+     * 房屋设计理念设计理念
      */
     private String concept;
 }

@@ -34,6 +34,11 @@ var showColumns = [
         }
     }
     , {
+        field: "imageExplain",
+        title: "图片说明",
+        width: "10%"
+    }
+    , {
         field: "createDate",
         title: "创建时间",
         width: "15%",

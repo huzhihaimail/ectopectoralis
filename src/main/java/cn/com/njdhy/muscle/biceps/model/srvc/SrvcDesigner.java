@@ -31,10 +31,7 @@ public class SrvcDesigner extends BaseModel{
      * 个人简介
      */
     private String introduce;
-    /**
-     * 设计理念
-     */
-    private String concept;
+
     /**
      * 从业经验
      */

@@ -39,11 +39,6 @@ var showColumns = [
         width: "10%"
     }
     , {
-        field: "concept",
-        title: "设计理念",
-        width: "15%"
-    }
-    , {
         field: "workingExperience",
         title: "从业经验",
         width: "6%"

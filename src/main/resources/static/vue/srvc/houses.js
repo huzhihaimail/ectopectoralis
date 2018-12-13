@@ -47,6 +47,12 @@ var showColumns = [
 
     }
     , {
+        field: "concept",
+        title: "设计理念",
+        width: "15%",
+
+    }
+    , {
         field: "createDate",
         title: "创建时间",
         width: "15%",

@@ -19,6 +19,7 @@
 
         <result property="imgId" column="img_id"></result>
         <result property="imageUrl" column="image_url"></result>
+        <result property="imageExplain" column="image_explain"></result>
 
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
@@ -66,7 +67,7 @@
     <!-- 根据ID查询-->
     <select id="queryById" resultMap="SrvcBuildingPlaceMap" parameterType="String">
         SELECT
-        p.id,p.houses_id,p.progress,i.id img_id,i.image_url
+        p.id,p.houses_id,p.progress,i.id img_id,i.image_url,i.image_explain
         FROM
         <include refid="tableName"/> p
         LEFT JOIN
@@ -133,7 +134,7 @@
     <!--backend关联查询-->
     <select id="selectBuildingPlaceList" resultMap="SrvcBuildingPlaceMap" parameterType="map">
         SELECT
-        b.*,h.name,i.image_url
+        b.*,h.name,i.image_url,i.image_explain
         FROM
         <include refid="tableName"/> b
         LEFT JOIN
@@ -175,11 +176,11 @@
 
     </select>
 
-    <!--api 查询设计师及其案例作品信息列表-->
+    <!--api 根据id查询在施工地详情信息-->
     <select id="selectBuildingPlaceById" resultMap="SrvcBuildingPlaceMap" parameterType="Integer">
         SELECT
         b.*,h.name,h.houses_type,h.floor_space,
-        h.style ,h.area,i.image_url
+        h.style ,h.area,i.image_url,i.image_explain
         FROM
         <include refid="tableName1"/> h
         LEFT JOIN

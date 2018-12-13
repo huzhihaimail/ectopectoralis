@@ -12,7 +12,6 @@
         <result property="name" column="name"></result>
         <result property="position" column="position"></result>
         <result property="introduce" column="introduce"></result>
-        <result property="concept" column="concept"></result>
         <result property="workingExperience" column="working_experience"></result>
         <result property="style" column="style"></result>
 
@@ -45,17 +44,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id,  head_url, `name`, `position`, introduce, concept, working_experience, style, create_date, update_date, delete_flag
+        id,  head_url, `name`, `position`, introduce,  working_experience, style, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{headUrl}, #{name}, #{position},#{introduce},#{concept},#{workingExperience},#{style}, NOW(),NOW(), 0
+        #{id}, #{headUrl}, #{name}, #{position},#{introduce},#{workingExperience},#{style}, NOW(),NOW(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        head_url=#{headUrl}, `name`=#{name}, `position`=#{position}, introduce=#{introduce},concept=#{concept},working_experience=#{workingExperience},style=#{style}, update_date=NOW(), delete_flag=#{deleteFlag}
+        head_url=#{headUrl}, `name`=#{name}, `position`=#{position}, introduce=#{introduce},working_experience=#{workingExperience},style=#{style}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
