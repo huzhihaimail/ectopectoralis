@@ -264,7 +264,7 @@ var vm = new Vue({
             editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
             // 限制一次最多上传 1 张图片
             editor.customConfig.uploadImgMaxLength = 1;
-            editor.customConfig.zIndex = 100000;
+            // editor.customConfig.zIndex = 100000;
             editor.customConfig.showLinkImg = false;
             //自定义上传图片事件
             editor.customConfig.uploadImgHooks = {

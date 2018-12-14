@@ -31,7 +31,7 @@ public class BannerController {
      * 查询banner图列表
      * @return
      */
-    @RequestMapping(value ="/banners",method = RequestMethod.GET )
+    @RequestMapping(value ="/banners" )
     @ApiOperation(value = "查询banner图列表")
     public Result bannerQuery() {
         List<SrvcBanner> list=null;

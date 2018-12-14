@@ -117,7 +117,7 @@
     <!-- 根据条件查询 -->
     <select id="selectGuideList" resultMap="SrvcGuideMap" parameterType="Integer">
         SELECT
-        <include refid="columns"/>
+        id, title, short_introduce, image_url, `type`
         FROM
         (
         SELECT
