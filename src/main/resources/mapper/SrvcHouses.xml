@@ -44,7 +44,7 @@
 
     <!-- for update set -->
     <sql id="updates">
-        `name`=#{name}, designer_id=#{designerId}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style},  area=#{area}, ,concept=#{concept}, update_date=NOW(), delete_flag=#{deleteFlag}
+        `name`=#{name}, designer_id=#{designerId}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style},  area=#{area}, concept=#{concept}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->

@@ -104,8 +104,10 @@ public class HousesCtl {
             // 执行修改
             srvcHousesService.update(srvcHouses);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_MESSAGE);
         }
 

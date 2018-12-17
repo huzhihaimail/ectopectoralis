@@ -1,10 +1,13 @@
 package cn.com.njdhy.muscle.biceps.config;
 
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  * @author huzhihai
@@ -26,4 +29,13 @@ public class RestTemplateConfig {
         factory.setConnectTimeout(5000);
         return factory;
     }
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement(){
+        MultipartConfigFactory factory=new MultipartConfigFactory();
+        factory.setMaxRequestSize("3072KB");
+        factory.setMaxFileSize("3072KB");
+        return factory.createMultipartConfig();
+    }
+
 }

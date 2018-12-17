@@ -37,7 +37,7 @@ public class UploadCtl {
      * @param file
      * @return
      */
-    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/upload")
     @ResponseBody
     public AjaxResult upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         AjaxResult ajaxResult = new AjaxResult(true);
