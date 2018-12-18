@@ -44,4 +44,9 @@ public interface DesignerErrorCode {
     String SRVC_DESIGNER_SELECT_ERROR_CODE = SRVC_DESIGNER + "5";
     String SRVC_DESIGNER_SELECT_ERROR_MESSAGE = "查询设计师信息出现异常";
 
+    /**
+     * 入参校验异常
+     */
+    String SRVC_DESIGNER_PARAMS_ERROR_CODE = SRVC_DESIGNER + "6";
+    String SRVC_DESIGNER_PARAMS_ERROR_MESSAGE = "设计师参数出现异常";
 }

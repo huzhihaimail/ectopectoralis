@@ -51,8 +51,6 @@ public class ModuleSubCtl {
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
 
-        // todo 参数校验
-
         SrvcModuleSub model = srvcModuleSubService.queryById(id);
 
         if (ObjectUtils.isEmpty(model)) {
@@ -73,14 +71,12 @@ public class ModuleSubCtl {
     public Result insert(@RequestBody SrvcModuleSub srvcModuleSub) {
 
         try {
-
             // 执行入库操作
             srvcModuleSubService.insert(srvcModuleSub);
         } catch (ApplicationException e) {
-            return Result.error(UserErrorCode.SYS_USER_SAVE_APP_ERROR_CODE, UserErrorCode.SYS_USER_SAVE_APP_ERROR_MESSAGE);
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(UserErrorCode.SYS_USER_SAVE_ERROR_CODE, UserErrorCode.SYS_USER_SAVE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -96,14 +92,13 @@ public class ModuleSubCtl {
     public Result update(@RequestBody SrvcModuleSub srvcModuleSub) {
 
         try {
-            // 校验参数
-            // TODO: 2018/3/14
-
             // 执行修改
             srvcModuleSubService.update(srvcModuleSub);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(UserErrorCode.SYS_USER_UPDATE_APP_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(UserErrorCode.SYS_USER_UPDATE_ERROR_CODE, UserErrorCode.SYS_USER_UPDATE_ERROR_MESSAGE);
         }
 
@@ -120,11 +115,12 @@ public class ModuleSubCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
             srvcModuleSubService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 

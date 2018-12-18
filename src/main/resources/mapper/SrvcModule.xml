@@ -127,7 +127,7 @@
     <select id="selectModuleList" resultMap="SrvcModuleMap" parameterType="map">
         SELECT
         m.module_name,
-        s.id ,s.title,s.image_url,s.image_type
+        s.id ,s.title,s.image_url,s.image_type,s.create_date,s.update_date
         FROM
         <include refid="tableName2"/> s
         LEFT JOIN

@@ -3,7 +3,7 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
-import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
+import cn.com.njdhy.muscle.biceps.exception.srvc.CaseErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCaseImg;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDecorateCase;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
@@ -52,14 +52,21 @@ public class DecorateCaseCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcDecorateCase> result = srvcDecorateCaseService.selectDecorateCaseList(queryParam, pageNumber, pageSize);
-        List<SrvcDecorateCase> list = result.getList();
-        for (SrvcDecorateCase srvcDecorateCase : list) {
-            String s = appCommonProperties.getImagesPrefix() + srvcDecorateCase.getImageUrl();
-            srvcDecorateCase.setImageUrl(s);
+        PageInfo<SrvcDecorateCase> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcDecorateCaseService.selectDecorateCaseList(queryParam, pageNumber, pageSize);
+            List<SrvcDecorateCase> list = result.getList();
+            for (SrvcDecorateCase srvcDecorateCase : list) {
+                String s = appCommonProperties.getImagesPrefix() + srvcDecorateCase.getImageUrl();
+                srvcDecorateCase.setImageUrl(s);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(CaseErrorCode.SRVC_CASE_SELECT_ERROR_CODE,CaseErrorCode.SRVC_CASE_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -71,12 +78,18 @@ public class DecorateCaseCtl {
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
-
-        // todo 参数校验
-
-        SrvcDecorateCase model = srvcDecorateCaseService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcDecorateCase();
+        SrvcDecorateCase model=null;
+        try {
+            if (null == id) {
+                return Result.error(CaseErrorCode.SRVC_CASE_SELECT_ERROR_CODE,CaseErrorCode.SRVC_CASE_SELECT_ERROR_MESSAGE);
+            }
+            model = srvcDecorateCaseService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcDecorateCase();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(CaseErrorCode.SRVC_CASE_PARAMS_ERROR_CODE, CaseErrorCode.SRVC_CASE_PARAMS_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -94,17 +107,23 @@ public class DecorateCaseCtl {
     public Result insert(@RequestBody SrvcDecorateCase srvcDecorateCase) {
 
         try {
+            Integer id = srvcDecorateCase.getId();
+            String imageUrl = srvcDecorateCase.getImageUrl();
+            if (id == null || imageUrl==null ) {
+                return Result.error(CaseErrorCode.SRVC_CASE_PARAMS_ERROR_CODE, CaseErrorCode.SRVC_CASE_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcDecorateCaseService.insert(srvcDecorateCase);
             SrvcCaseImg srvcCaseImg = new SrvcCaseImg();
-            srvcCaseImg.setCaseId(srvcDecorateCase.getId());
-            srvcCaseImg.setImageUrl(srvcDecorateCase.getImageUrl());
+            srvcCaseImg.setCaseId(id);
+            srvcCaseImg.setImageUrl(imageUrl);
             srvcCaseImgService.insert(srvcCaseImg);
         } catch (ApplicationException e) {
-            return Result.error(HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_MESSAGE);
+            e.printStackTrace();
+            return Result.error(CaseErrorCode.SRVC_CASE_UPDATE_APP_ERROR_CODE, CaseErrorCode.SRVC_CASE_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(HousesErrorCode.SRVC_HOUSES_SAVE_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SAVE_ERROR_MESSAGE);
+            return Result.error(CaseErrorCode.SRVC_CASE_UPDATE_ERROR_CODE, CaseErrorCode.SRVC_CASE_UPDATE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -120,18 +139,22 @@ public class DecorateCaseCtl {
     public Result update(@RequestBody SrvcDecorateCase srvcDecorateCase) {
 
         try {
-
+            Integer id = srvcDecorateCase.getImgId();
+            String imageUrl = srvcDecorateCase.getImageUrl();
+            if (id == null || imageUrl==null ) {
+                return Result.error(CaseErrorCode.SRVC_CASE_PARAMS_ERROR_CODE, CaseErrorCode.SRVC_CASE_PARAMS_ERROR_MESSAGE);
+            }
             srvcDecorateCaseService.update(srvcDecorateCase);
             SrvcCaseImg srvcCaseImg = new SrvcCaseImg();
-            srvcCaseImg.setId(srvcDecorateCase.getImgId());
-            srvcCaseImg.setImageUrl(srvcDecorateCase.getImageUrl());
+            srvcCaseImg.setId(id);
+            srvcCaseImg.setImageUrl(imageUrl);
             srvcCaseImgService.update(srvcCaseImg);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_MESSAGE);
+            return Result.error(CaseErrorCode.SRVC_CASE_UPDATE_APP_ERROR_CODE, CaseErrorCode.SRVC_CASE_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_MESSAGE);
+            return Result.error(CaseErrorCode.SRVC_CASE_UPDATE_ERROR_CODE, CaseErrorCode.SRVC_CASE_UPDATE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -146,7 +169,11 @@ public class DecorateCaseCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(CaseErrorCode.SRVC_CASE_PARAMS_ERROR_CODE, CaseErrorCode.SRVC_CASE_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcDecorateCaseService.deleteByIds(ids);
         } catch (ApplicationException e) {
             e.printStackTrace();

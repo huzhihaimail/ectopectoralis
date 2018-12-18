@@ -3,6 +3,8 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
+import cn.com.njdhy.muscle.biceps.exception.srvc.GuideErrorCode;
+import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
 import cn.com.njdhy.muscle.biceps.exception.srvc.VideoErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
@@ -41,8 +43,14 @@ public class HousesCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcHouses> result = srvcHousesService.selectHousesList(queryParam, pageNumber, pageSize);
+        PageInfo<SrvcHouses> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcHousesService.selectHousesList(queryParam, pageNumber, pageSize);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.error(HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_MESSAGE);
+        }
 
         return Result.success(result.getTotal(), result.getList());
     }
@@ -55,10 +63,18 @@ public class HousesCtl {
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
-
-        SrvcHouses model = srvcHousesService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcHouses();
+        SrvcHouses model=null;
+        try {
+            if (null == id) {
+                return Result.error(HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcHousesService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcHouses();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -75,14 +91,18 @@ public class HousesCtl {
     public Result insert(@RequestBody SrvcHouses srvcHouses) {
 
         try {
-
+            // 校验参数
+            if(null==srvcHouses){
+                return Result.error(HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcHousesService.insert(srvcHouses);
         } catch (ApplicationException e) {
-            return Result.error(VideoErrorCode.SRVC_VIDEO_SAVE_APP_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_SAVE_APP_ERROR_MESSAGE);
+            e.printStackTrace();
+            return Result.error(HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(VideoErrorCode.SRVC_VIDEO_SAVE_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_SAVE_ERROR_MESSAGE);
+            return Result.error(HousesErrorCode.SRVC_HOUSES_SAVE_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SAVE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -99,16 +119,17 @@ public class HousesCtl {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
-
+            if(null==srvcHouses){
+                return Result.error(HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_MESSAGE);
+            }
             // 执行修改
             srvcHousesService.update(srvcHouses);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_MESSAGE);
+            return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_MESSAGE);
+            return Result.error(HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_UPDATE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -124,11 +145,18 @@ public class HousesCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            // 校验参数
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcHousesService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 

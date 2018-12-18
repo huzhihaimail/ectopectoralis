@@ -40,14 +40,21 @@ public class BannerCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcBanner> result = srvcBannerService.queryList(queryParam, pageNumber, pageSize);
-        List<SrvcBanner> list = result.getList();
-        for (SrvcBanner srvcBanner : list) {
-            String imagePath = appCommonProperties.getImagesPrefix()+ srvcBanner.getImgUrl();
-            srvcBanner.setImgUrl(imagePath);
+        PageInfo<SrvcBanner> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcBannerService.queryList(queryParam, pageNumber, pageSize);
+            List<SrvcBanner> list = result.getList();
+            for (SrvcBanner srvcBanner : list) {
+                String imagePath = appCommonProperties.getImagesPrefix()+ srvcBanner.getImgUrl();
+                srvcBanner.setImgUrl(imagePath);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(BannerErrorCode.SRVC_BANNER_SELECT_ERROR_CODE,BannerErrorCode.SRVC_BANNER_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -59,14 +66,19 @@ public class BannerCtl {
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
-
-        //  参数校验
-        if (id == null || id.length() <= 0) {
-            return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
-        }
-        SrvcBanner model = srvcBannerService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcBanner();
+        SrvcBanner model=null;
+        try {
+            //  参数校验
+            if (id == null || id.length() <= 0) {
+                return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcBannerService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcBanner();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(BannerErrorCode.SRVC_BANNER_SELECT_ERROR_CODE,BannerErrorCode.SRVC_BANNER_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -97,7 +109,6 @@ public class BannerCtl {
                 return Result.error(BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_CODE, BannerErrorCode.SRVC_BANNER_PARAMS_ERROR_MESSAGE);
             }
             // 执行入库操作
-
             srvcBannerService.insert(srvcBanner);
         } catch (ApplicationException e) {
             e.printStackTrace();
@@ -136,8 +147,10 @@ public class BannerCtl {
             // 执行修改
             srvcBannerService.update(srvcBanner);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(BannerErrorCode.SRVC_BANNER_UPDATE_APP_ERROR_CODE, BannerErrorCode.SRVC_BANNER_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(BannerErrorCode.SRVC_BANNER_UPDATE_ERROR_CODE, BannerErrorCode.SRVC_BANNER_UPDATE_ERROR_MESSAGE);
         }
 
@@ -162,8 +175,10 @@ public class BannerCtl {
             }
             srvcBannerService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 

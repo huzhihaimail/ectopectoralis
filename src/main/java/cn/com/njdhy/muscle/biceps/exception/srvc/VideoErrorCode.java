@@ -44,4 +44,10 @@ public interface VideoErrorCode {
     String SRVC_VIDEO_SELECT_ERROR_CODE = SRVC_VIDEO + "5";
     String SRVC_VIDEO_SELECT_ERROR_MESSAGE = "查询视频模块出现异常";
 
+    /**
+     * 入参校验
+     */
+    String SRVC_VIDEO_PARAMS_ERROR_CODE = SRVC_VIDEO + "6";
+    String SRVC_VIDEO_PARAMS_ERROR_MESSAGE = "视频模块参数出现异常";
+
 }

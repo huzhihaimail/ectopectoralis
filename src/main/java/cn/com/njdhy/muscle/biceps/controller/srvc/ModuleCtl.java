@@ -4,7 +4,6 @@ import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
 import cn.com.njdhy.muscle.biceps.exception.srvc.ModuleErrorCode;
-import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModule;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcModuleSub;
 import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
@@ -46,14 +45,21 @@ public class ModuleCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcModule> result = srvcModuleService.selectModuleList(queryParam, pageNumber, pageSize);
-        List<SrvcModule> list = result.getList();
-        for (SrvcModule srvcModule : list) {
-            String image = appCommonProperties.getImagesPrefix() +srvcModule.getImageUrl();
-            srvcModule.setImageUrl(image);
+        PageInfo<SrvcModule> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcModuleService.selectModuleList(queryParam, pageNumber, pageSize);
+            List<SrvcModule> list = result.getList();
+            for (SrvcModule srvcModule : list) {
+                String image = appCommonProperties.getImagesPrefix() +srvcModule.getImageUrl();
+                srvcModule.setImageUrl(image);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(ModuleErrorCode.SRVC_MODULE_SELECT_ERROR_CODE,ModuleErrorCode.SRVC_MODULE_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -66,11 +72,18 @@ public class ModuleCtl {
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
 
-        // todo 参数校验
-
-        SrvcModule model = srvcModuleService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcModule();
+        SrvcModule model=null;
+        try {
+            if (null == id) {
+                return Result.error(ModuleErrorCode.SRVC_MODULE_PARAMS_ERROR_CODE,ModuleErrorCode.SRVC_MODULE_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcModuleService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcModule();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(ModuleErrorCode.SRVC_MODULE_SELECT_ERROR_CODE,ModuleErrorCode.SRVC_MODULE_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -145,6 +158,12 @@ public class ModuleCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
+            // 校验参数
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(ModuleErrorCode.SRVC_MODULE_PARAMS_ERROR_CODE,ModuleErrorCode.SRVC_MODULE_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcModuleService.deleteByIds(ids);
         } catch (ApplicationException e) {
             e.printStackTrace();

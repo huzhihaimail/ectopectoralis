@@ -3,6 +3,8 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
+import cn.com.njdhy.muscle.biceps.exception.srvc.BannerErrorCode;
+import cn.com.njdhy.muscle.biceps.exception.srvc.BuildingPlaceErrorCode;
 import cn.com.njdhy.muscle.biceps.exception.srvc.HousesSubErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBuildingPlace;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcPlaceImg;
@@ -44,14 +46,20 @@ public class BuildingPlaceCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcBuildingPlace> result = srvcBuildingPlaceService.selectBuildingPlaceList(queryParam, pageNumber, pageSize);
-        List<SrvcBuildingPlace> list = result.getList();
-        for (SrvcBuildingPlace srvcBuildingPlace : list) {
-            String s = appCommonProperties.getImagesPrefix() + srvcBuildingPlace.getImageUrl();
-            srvcBuildingPlace.setImageUrl(s);
+        PageInfo<SrvcBuildingPlace> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcBuildingPlaceService.selectBuildingPlaceList(queryParam, pageNumber, pageSize);
+            List<SrvcBuildingPlace> list = result.getList();
+            for (SrvcBuildingPlace srvcBuildingPlace : list) {
+                String s = appCommonProperties.getImagesPrefix() + srvcBuildingPlace.getImageUrl();
+                srvcBuildingPlace.setImageUrl(s);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_SELECT_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -64,12 +72,18 @@ public class BuildingPlaceCtl {
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
 
-        // todo 参数校验
-
-        SrvcBuildingPlace model = srvcBuildingPlaceService.queryById(id);
-
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcBuildingPlace();
+        SrvcBuildingPlace model=null;
+        try {
+            if(id ==null || id.length() <= 0){
+                return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcBuildingPlaceService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcBuildingPlace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_SELECT_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -87,19 +101,24 @@ public class BuildingPlaceCtl {
     public Result insert(@RequestBody SrvcBuildingPlace srvcBuildingPlace) {
 
         try {
-
+            Integer id = srvcBuildingPlace.getId();
+            String imageUrl = srvcBuildingPlace.getImageUrl();
+            String explain = srvcBuildingPlace.getImageExplain();
+            if (id == null || imageUrl==null || explain ==null) {
+                return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcBuildingPlaceService.insert(srvcBuildingPlace);
             SrvcPlaceImg srvcPlaceImg = new SrvcPlaceImg();
-            srvcPlaceImg.setPlaceId(srvcBuildingPlace.getId());
-            srvcPlaceImg.setImageUrl(srvcBuildingPlace.getImageUrl());
-            srvcPlaceImg.setImageExplain(srvcBuildingPlace.getImageExplain());
+            srvcPlaceImg.setPlaceId(id);
+            srvcPlaceImg.setImageUrl(imageUrl);
+            srvcPlaceImg.setImageExplain(explain);
             srvcPlaceImgService.insert(srvcPlaceImg);
         } catch (ApplicationException e) {
-            return Result.error(HousesSubErrorCode.SRVC_HOUSESSUB_SAVE_APP_ERROR_CODE, HousesSubErrorCode.SRVC_HOUSESSUB_SAVE_APP_ERROR_MESSAGE);
+            return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_SAVE_APP_ERROR_CODE, BuildingPlaceErrorCode.SRVC_BUILDING_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(HousesSubErrorCode.SRVC_HOUSESSUB_SAVE_ERROR_CODE, HousesSubErrorCode.SRVC_HOUSESSUB_SAVE_ERROR_MESSAGE);
+            return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_SAVE_ERROR_CODE, BuildingPlaceErrorCode.SRVC_BUILDING_SAVE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -115,19 +134,24 @@ public class BuildingPlaceCtl {
     public Result update(@RequestBody SrvcBuildingPlace srvcBuildingPlace) {
 
         try {
-
+            Integer imgId = srvcBuildingPlace.getImgId();
+            String imageUrl = srvcBuildingPlace.getImageUrl();
+            String explain = srvcBuildingPlace.getImageExplain();
+            if (imgId == null || imageUrl==null || explain ==null) {
+                return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_MESSAGE);
+            }
             srvcBuildingPlaceService.update(srvcBuildingPlace);
             SrvcPlaceImg srvcPlaceImg = new SrvcPlaceImg();
-            srvcPlaceImg.setId(srvcBuildingPlace.getImgId());
-            srvcPlaceImg.setImageUrl(srvcBuildingPlace.getImageUrl());
-            srvcPlaceImg.setImageExplain(srvcBuildingPlace.getImageExplain());
+            srvcPlaceImg.setId(imgId);
+            srvcPlaceImg.setImageUrl(imageUrl);
+            srvcPlaceImg.setImageExplain(explain);
             srvcPlaceImgService.update(srvcPlaceImg);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return Result.error(HousesSubErrorCode.SRVC_HOUSESSUB_UPDATE_APP_ERROR_CODE, HousesSubErrorCode.SRVC_HOUSESSUB_UPDATE_APP_ERROR_MESSAGE);
+            return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_UPDATE_APP_ERROR_CODE, BuildingPlaceErrorCode.SRVC_BUILDING_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.error(HousesSubErrorCode.SRVC_HOUSESSUB_UPDATE_ERROR_CODE, HousesSubErrorCode.SRVC_HOUSESSUB_UPDATE_ERROR_MESSAGE);
+            return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_UPDATE_ERROR_CODE, BuildingPlaceErrorCode.SRVC_BUILDING_UPDATE_ERROR_MESSAGE);
         }
 
         return Result.success();
@@ -143,7 +167,11 @@ public class BuildingPlaceCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_CODE, BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcBuildingPlaceService.deleteByIds(ids);
         } catch (ApplicationException e) {
             e.printStackTrace();

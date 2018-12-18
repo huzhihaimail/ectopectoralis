@@ -3,6 +3,7 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
+import cn.com.njdhy.muscle.biceps.exception.srvc.BuildingPlaceErrorCode;
 import cn.com.njdhy.muscle.biceps.exception.srvc.CompanyDescErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcCompanyDesc;
 import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
@@ -40,14 +41,21 @@ public class CompanyDescCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcCompanyDesc> result = srvcCompanyDescService.queryList(queryParam, pageNumber, pageSize);
-        List<SrvcCompanyDesc> list = result.getList();
-        for (SrvcCompanyDesc srvcCompanyDesc : list) {
-            String imgUrl = appCommonProperties.getImagesPrefix() + srvcCompanyDesc.getImageUrl();
-            srvcCompanyDesc.setImageUrl(imgUrl);
+        PageInfo<SrvcCompanyDesc> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcCompanyDescService.queryList(queryParam, pageNumber, pageSize);
+            List<SrvcCompanyDesc> list = result.getList();
+            for (SrvcCompanyDesc srvcCompanyDesc : list) {
+                String imgUrl = appCommonProperties.getImagesPrefix() + srvcCompanyDesc.getImageUrl();
+                srvcCompanyDesc.setImageUrl(imgUrl);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_SELECT_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -59,12 +67,18 @@ public class CompanyDescCtl {
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
-
-        // todo 参数校验
-
-        SrvcCompanyDesc model = srvcCompanyDescService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcCompanyDesc();
+        SrvcCompanyDesc model=null;
+        try {
+            if (id==null){
+                return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcCompanyDescService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcCompanyDesc();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_SELECT_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -81,10 +95,13 @@ public class CompanyDescCtl {
     public Result insert(@RequestBody SrvcCompanyDesc srvcCompanyDesc) {
 
         try {
-
+            if(null == srvcCompanyDesc){
+                return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcCompanyDescService.insert(srvcCompanyDesc);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_SAVE_APP_ERROR_CODE, CompanyDescErrorCode.SRVC_COMPANYDESC_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,13 +122,16 @@ public class CompanyDescCtl {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
-
+            if(null == srvcCompanyDesc){
+                return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE,CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
+            }
             // 执行修改
             srvcCompanyDescService.update(srvcCompanyDesc);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_UPDATE_APP_ERROR_CODE, CompanyDescErrorCode.SRVC_COMPANYDESC_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_UPDATE_ERROR_CODE, CompanyDescErrorCode.SRVC_COMPANYDESC_UPDATE_ERROR_MESSAGE);
         }
 
@@ -128,11 +148,17 @@ public class CompanyDescCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_CODE, CompanyDescErrorCode.SRVC_COMPANYDESC_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcCompanyDescService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 

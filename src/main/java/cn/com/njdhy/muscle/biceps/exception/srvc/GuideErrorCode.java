@@ -44,4 +44,9 @@ public interface GuideErrorCode {
     String SRVC_DECORATEGUIDE_SELECT_ERROR_CODE = SRVC_DECORATEGUIDE + "5";
     String SRVC_DECORATEGUIDE_SELECT_ERROR_MESSAGE = "查询装修指南出现异常";
 
+    /**
+     * 装修指南入参校验异常
+     */
+    String SRVC_DECORATEGUIDE_PARAMS_ERROR_CODE = SRVC_DECORATEGUIDE + "5";
+    String SRVC_DECORATEGUIDE_PARAMS_ERROR_MESSAGE = "装修指南参数出现异常";
 }

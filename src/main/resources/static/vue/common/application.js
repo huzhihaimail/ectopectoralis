@@ -1,7 +1,7 @@
 // 应用名称:线下
-// const APP_NAME = "http://localhost:8080";
+const APP_NAME = "http://localhost:8080";
 // 应用名称:线上
-const APP_NAME = "http://101.132.191.205:8080";
+// const APP_NAME = "http://101.132.191.205:8080";
 // vue的el属性统一名称
 const VUE_EL = "app";
 // 显示表格的ID

@@ -3,6 +3,7 @@ package cn.com.njdhy.muscle.biceps.controller.srvc;
 import cn.com.njdhy.muscle.biceps.controller.Query;
 import cn.com.njdhy.muscle.biceps.controller.Result;
 import cn.com.njdhy.muscle.biceps.exception.ApplicationException;
+import cn.com.njdhy.muscle.biceps.exception.srvc.CaseErrorCode;
 import cn.com.njdhy.muscle.biceps.exception.srvc.DesignerErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
@@ -40,14 +41,21 @@ public class DesignerCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcDesigner> result = srvcDesignerService.queryList(queryParam, pageNumber, pageSize);
-        List<SrvcDesigner> list = result.getList();
-        for(SrvcDesigner srvcDesigner: list) {
-            String s = appCommonProperties.getImagesPrefix()+srvcDesigner.getHeadUrl();
-            srvcDesigner.setHeadUrl(s);
+        PageInfo<SrvcDesigner> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcDesignerService.queryList(queryParam, pageNumber, pageSize);
+            List<SrvcDesigner> list = result.getList();
+            for(SrvcDesigner srvcDesigner: list) {
+                String s = appCommonProperties.getImagesPrefix()+srvcDesigner.getHeadUrl();
+                srvcDesigner.setHeadUrl(s);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(DesignerErrorCode.SRVC_DESIGNER_SELECT_ERROR_CODE,DesignerErrorCode.SRVC_DESIGNER_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -60,11 +68,18 @@ public class DesignerCtl {
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
 
-        // todo 参数校验
-
-        SrvcDesigner model = srvcDesignerService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcDesigner();
+        SrvcDesigner model=null;
+        try {
+            if (null == id) {
+                return Result.error(DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_CODE,DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcDesignerService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcDesigner();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(DesignerErrorCode.SRVC_DESIGNER_SELECT_ERROR_CODE,DesignerErrorCode.SRVC_DESIGNER_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -81,10 +96,14 @@ public class DesignerCtl {
     public Result insert(@RequestBody SrvcDesigner srvcDesigner) {
 
         try {
-
+            // 校验参数
+            if (null == srvcDesigner) {
+                return Result.error(DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_CODE,DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcDesignerService.insert(srvcDesigner);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(DesignerErrorCode.SRVC_DESIGNER_SAVE_APP_ERROR_CODE, DesignerErrorCode.SRVC_DESIGNER_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,13 +124,16 @@ public class DesignerCtl {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
-
+            if (null == srvcDesigner) {
+                return Result.error(DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_CODE,DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_MESSAGE);
+            }
             // 执行修改
             srvcDesignerService.update(srvcDesigner);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(DesignerErrorCode.SRVC_DESIGNER_UPDATE_APP_ERROR_CODE, DesignerErrorCode.SRVC_DESIGNER_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(DesignerErrorCode.SRVC_DESIGNER_UPDATE_ERROR_CODE, DesignerErrorCode.SRVC_DESIGNER_UPDATE_ERROR_MESSAGE);
         }
 
@@ -128,11 +150,18 @@ public class DesignerCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            // 校验参数
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_CODE,DesignerErrorCode.SRVC_DESIGNER_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcDesignerService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 

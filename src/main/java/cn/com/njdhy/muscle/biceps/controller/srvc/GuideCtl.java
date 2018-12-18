@@ -41,14 +41,21 @@ public class GuideCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcGuide> result = srvcGuideService.queryList(queryParam, pageNumber, pageSize);
-        List<SrvcGuide> list = result.getList();
-        for (SrvcGuide srvcGuide : list) {
-            String s = appCommonProperties.getImagesPrefix() + srvcGuide.getImageUrl();
-            srvcGuide.setImageUrl(s);
+        PageInfo<SrvcGuide> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcGuideService.queryList(queryParam, pageNumber, pageSize);
+            List<SrvcGuide> list = result.getList();
+            for (SrvcGuide srvcGuide : list) {
+                String s = appCommonProperties.getImagesPrefix() + srvcGuide.getImageUrl();
+                srvcGuide.setImageUrl(s);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_SELECT_ERROR_CODE,GuideErrorCode.SRVC_DECORATEGUIDE_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -60,12 +67,18 @@ public class GuideCtl {
      */
     @RequestMapping("/{id}")
     public Result queryById(@PathVariable String id) {
-
-        // todo 参数校验
-
-        SrvcGuide model = srvcGuideService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcGuide();
+        SrvcGuide model=null;
+        try {
+            if (null == id) {
+                return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_CODE,GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcGuideService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcGuide();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_SELECT_ERROR_CODE,GuideErrorCode.SRVC_DECORATEGUIDE_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -82,10 +95,13 @@ public class GuideCtl {
     public Result insert(@RequestBody SrvcGuide srvcGuide) {
 
         try {
-
+            if (null == srvcGuide) {
+                return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_CODE,GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcGuideService.insert(srvcGuide);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_SAVE_APP_ERROR_CODE, GuideErrorCode.SRVC_DECORATEGUIDE_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,13 +122,16 @@ public class GuideCtl {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
-
+            if (null == srvcGuide) {
+                return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_CODE,GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_MESSAGE);
+            }
             // 执行修改
             srvcGuideService.update(srvcGuide);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_UPDATE_APP_ERROR_CODE, GuideErrorCode.SRVC_DECORATEGUIDE_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_UPDATE_ERROR_CODE, GuideErrorCode.SRVC_DECORATEGUIDE_UPDATE_ERROR_MESSAGE);
         }
 
@@ -129,11 +148,18 @@ public class GuideCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            // 校验参数
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_CODE,GuideErrorCode.SRVC_DECORATEGUIDE_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcGuideService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 

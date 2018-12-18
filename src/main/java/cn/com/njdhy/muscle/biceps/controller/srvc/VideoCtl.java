@@ -39,14 +39,21 @@ public class VideoCtl {
      */
     @RequestMapping("/list")
     public Result banner(@RequestParam Map<String, Object> params, Integer pageNumber, Integer pageSize) {
-        Query queryParam = new Query(params);
-        PageInfo<SrvcVideo> result = srvcVideoService.queryList(queryParam, pageNumber, pageSize);
-        List<SrvcVideo> list = result.getList();
-        for(SrvcVideo srvcVideo: list) {
-            String s =  appCommonProperties.getImagesPrefix()+srvcVideo.getVideoUrl();
-            srvcVideo.setVideoUrl(s);
+        PageInfo<SrvcVideo> result=null;
+        try {
+            Query queryParam = new Query(params);
+            result = srvcVideoService.queryList(queryParam, pageNumber, pageSize);
+            List<SrvcVideo> list = result.getList();
+            for(SrvcVideo srvcVideo: list) {
+                String s =  appCommonProperties.getImagesPrefix()+srvcVideo.getVideoUrl();
+                srvcVideo.setVideoUrl(s);
+            }
+            result.setList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(VideoErrorCode.SRVC_VIDEO_SELECT_ERROR_CODE,VideoErrorCode.SRVC_VIDEO_SELECT_ERROR_MESSAGE);
         }
-        result.setList(list);
+
         return Result.success(result.getTotal(), result.getList());
     }
 
@@ -60,10 +67,18 @@ public class VideoCtl {
     public Result queryById(@PathVariable String id) {
 
         // todo 参数校验
-
-        SrvcVideo model = srvcVideoService.queryById(id);
-        if (ObjectUtils.isEmpty(model)) {
-            model = new SrvcVideo();
+        SrvcVideo model=null;
+        try {
+            if (null == id) {
+                return Result.error(VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_CODE,VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_MESSAGE);
+            }
+            model = srvcVideoService.queryById(id);
+            if (ObjectUtils.isEmpty(model)) {
+                model = new SrvcVideo();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error(VideoErrorCode.SRVC_VIDEO_SELECT_ERROR_CODE,VideoErrorCode.SRVC_VIDEO_SELECT_ERROR_MESSAGE);
         }
 
         return Result.success().put("model", model);
@@ -80,10 +95,14 @@ public class VideoCtl {
     public Result insert(@RequestBody SrvcVideo srvcVideo) {
 
         try {
-
+            // 校验参数
+            if (null == srvcVideo) {
+                return Result.error(VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_CODE,VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_MESSAGE);
+            }
             // 执行入库操作
             srvcVideoService.insert(srvcVideo);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(VideoErrorCode.SRVC_VIDEO_SAVE_APP_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_SAVE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,13 +123,16 @@ public class VideoCtl {
 
         try {
             // 校验参数
-            // TODO: 2018/3/14
-
+            if (null == srvcVideo) {
+                return Result.error(VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_CODE,VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_MESSAGE);
+            }
             // 执行修改
             srvcVideoService.update(srvcVideo);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_APP_ERROR_MESSAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_CODE, VideoErrorCode.SRVC_VIDEO_UPDATE_ERROR_MESSAGE);
         }
 
@@ -127,11 +149,17 @@ public class VideoCtl {
     public Result deleteByIds(@RequestBody List<String> ids) {
 
         try {
-            // 校验参数 todo
+            for (String id : ids) {
+                if (id == null || id.length() <= 0) {
+                    return Result.error(VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_CODE,VideoErrorCode.SRVC_VIDEO_PARAMS_ERROR_MESSAGE);
+                }
+            }
             srvcVideoService.deleteByIds(ids);
         } catch (ApplicationException e) {
+            e.printStackTrace();
             return Result.error(e.getCode(), e.getMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.error(e.getMessage());
         }
 
