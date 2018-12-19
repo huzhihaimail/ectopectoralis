@@ -77,7 +77,7 @@
         <include refid="tableName2"/> s
         ON m.id = s.module_id
         WHERE 1=1
-        AND m.id IN
+        AND s.id IN
         <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
             #{id}
         </foreach>

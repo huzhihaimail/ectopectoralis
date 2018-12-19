@@ -240,19 +240,4 @@ $(function () {
     bsTable.createBootStrapTable(vm.columns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
-// /**
-//  * 文件上传
-//  */
-// $('#file').fileinput({
-//     // 设置语言
-//     language: 'zh',
-//     // 设置url地址
-//     uploadUrl: '#',
-//     // 是否显示预览图
-//     showPreview: true,
-//     // 最大上传文件数
-//     maxFileCount: 1,
-//     // 设置图片格式
-//     allowedFileExtensions: ['jpg', 'png', 'gif']
-// });
 

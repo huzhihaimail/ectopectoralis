@@ -101,16 +101,15 @@ public class BuildingPlaceCtl {
     public Result insert(@RequestBody SrvcBuildingPlace srvcBuildingPlace) {
 
         try {
-            Integer id = srvcBuildingPlace.getId();
             String imageUrl = srvcBuildingPlace.getImageUrl();
             String explain = srvcBuildingPlace.getImageExplain();
-            if (id == null || imageUrl==null || explain ==null) {
+            if ( imageUrl==null || explain ==null) {
                 return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_MESSAGE);
             }
             // 执行入库操作
             srvcBuildingPlaceService.insert(srvcBuildingPlace);
             SrvcPlaceImg srvcPlaceImg = new SrvcPlaceImg();
-            srvcPlaceImg.setPlaceId(id);
+            srvcPlaceImg.setPlaceId(srvcBuildingPlace.getId());
             srvcPlaceImg.setImageUrl(imageUrl);
             srvcPlaceImg.setImageExplain(explain);
             srvcPlaceImgService.insert(srvcPlaceImg);

@@ -106,6 +106,9 @@ var vm = new Vue({
             vm.title = PAGE_INSERT_TITLE;
             // 3. 清空表单数据
             vm.model = {};
+            //加载文件上传组件
+            vm.loadFileInput();
+            vm.RemoveImageShow();
         }
 
         // 点击“确定”按钮
@@ -148,7 +151,9 @@ var vm = new Vue({
 
         // 显示修改页面
         , update: function () {
-
+            //加载文件上传组件
+            vm.loadFileInput();
+            vm.RemoveImageShow();
             // 隐藏密码框
             vm.errorMessage = null;
 
@@ -237,6 +242,48 @@ var vm = new Vue({
             bsTable.createBootStrapTable(showColumns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption);
         }
 
+        // 加载文件上传组件
+        , loadFileInput: function(){
+            /**
+             * 文件上传
+             */
+            $('#input-id').fileinput({
+                // 设置语言
+                language: 'zh',
+                // 设置url地址
+                uploadUrl: '/files/upload',
+                // 是否显示预览图
+                showPreview: true,
+                //默认异步上传
+                uploadAsync: true,
+                // 最大上传文件数
+                maxFileCount: 1,
+                // 设置图片格式,即接收的文件后缀
+                allowedFileExtensions: ['jpg', 'png', 'gif'],
+                //显示移除按钮
+                showRemove : true,
+                //是否显示标题
+                showCaption: false,
+                //按钮样式
+                browseClass: "btn btn-primary",
+                //是否显示拖拽区域
+                dropZoneEnabled: false,
+                enctype: 'multipart/form-data',
+                validateInitialCount:true,
+                slugCallback : function(filename) {
+                    return filename.replace('(', '_').replace(']', '_');
+                }
+            });
+
+        }
+        ,RemoveImageShow: function(){
+            $('#input-id').fileinput('clear').fileinput('unlock');
+            $('#input-id')
+                .parent()
+                .siblings('.fileinput-remove')
+                .hide()
+        }
+
 
     }
 });
@@ -250,38 +297,6 @@ $(function () {
     bsTable.createBootStrapTable(vm.columns, APP_NAME + vm.moduleName + "/list?rnd=" + Math.random(), vm.queryOption)
 });
 
-/**
- * 文件上传
- */
-$('#input-id').fileinput({
-    // 设置语言
-    language: 'zh',
-    // 设置url地址
-    uploadUrl: '/files/upload',
-    // 是否显示预览图
-    showPreview: true,
-    //默认异步上传
-    uploadAsync: true,
-    // 最大上传文件数
-    maxFileCount: 1,
-    // 设置图片格式,即接收的文件后缀
-    allowedFileExtensions: ['jpg', 'png', 'gif'],
-    //显示移除按钮
-    showRemove : true,
-    //是否显示预览
-    showPreview : true,
-    //是否显示标题
-    showCaption: false,
-    //按钮样式
-    browseClass: "btn btn-primary",
-    //是否显示拖拽区域
-    dropZoneEnabled: false,
-    enctype: 'multipart/form-data',
-    validateInitialCount:true,
-    slugCallback : function(filename) {
-        return filename.replace('(', '_').replace(']', '_');
-    }
-});
 //上传前
 $('#input-id').on('filepreupload', function(event, data, previewId, index) {
     var form = data.form, files = data.files, extra = data.extra,

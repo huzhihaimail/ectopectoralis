@@ -107,15 +107,14 @@ public class DecorateCaseCtl {
     public Result insert(@RequestBody SrvcDecorateCase srvcDecorateCase) {
 
         try {
-            Integer id = srvcDecorateCase.getId();
             String imageUrl = srvcDecorateCase.getImageUrl();
-            if (id == null || imageUrl==null ) {
+            if (imageUrl==null ) {
                 return Result.error(CaseErrorCode.SRVC_CASE_PARAMS_ERROR_CODE, CaseErrorCode.SRVC_CASE_PARAMS_ERROR_MESSAGE);
             }
             // 执行入库操作
             srvcDecorateCaseService.insert(srvcDecorateCase);
             SrvcCaseImg srvcCaseImg = new SrvcCaseImg();
-            srvcCaseImg.setCaseId(id);
+            srvcCaseImg.setCaseId(srvcDecorateCase.getId());
             srvcCaseImg.setImageUrl(imageUrl);
             srvcCaseImgService.insert(srvcCaseImg);
         } catch (ApplicationException e) {
