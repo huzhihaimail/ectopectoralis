@@ -101,17 +101,13 @@ public class BuildingPlaceCtl {
     public Result insert(@RequestBody SrvcBuildingPlace srvcBuildingPlace) {
 
         try {
-            String imageUrl = srvcBuildingPlace.getImageUrl();
-            String explain = srvcBuildingPlace.getImageExplain();
-            if ( imageUrl==null || explain ==null) {
-                return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_MESSAGE);
-            }
+
             // 执行入库操作
             srvcBuildingPlaceService.insert(srvcBuildingPlace);
             SrvcPlaceImg srvcPlaceImg = new SrvcPlaceImg();
             srvcPlaceImg.setPlaceId(srvcBuildingPlace.getId());
-            srvcPlaceImg.setImageUrl(imageUrl);
-            srvcPlaceImg.setImageExplain(explain);
+            srvcPlaceImg.setImageUrl(srvcBuildingPlace.getImageUrl());
+            srvcPlaceImg.setImageExplain(srvcBuildingPlace.getImageExplain());
             srvcPlaceImgService.insert(srvcPlaceImg);
         } catch (ApplicationException e) {
             return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_SAVE_APP_ERROR_CODE, BuildingPlaceErrorCode.SRVC_BUILDING_SAVE_APP_ERROR_MESSAGE);
@@ -133,17 +129,12 @@ public class BuildingPlaceCtl {
     public Result update(@RequestBody SrvcBuildingPlace srvcBuildingPlace) {
 
         try {
-            Integer imgId = srvcBuildingPlace.getImgId();
-            String imageUrl = srvcBuildingPlace.getImageUrl();
-            String explain = srvcBuildingPlace.getImageExplain();
-            if (imgId == null || imageUrl==null || explain ==null) {
-                return Result.error(BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_CODE,BuildingPlaceErrorCode.SRVC_BUILDING_PARAMS_ERROR_MESSAGE);
-            }
+
             srvcBuildingPlaceService.update(srvcBuildingPlace);
             SrvcPlaceImg srvcPlaceImg = new SrvcPlaceImg();
-            srvcPlaceImg.setId(imgId);
-            srvcPlaceImg.setImageUrl(imageUrl);
-            srvcPlaceImg.setImageExplain(explain);
+            srvcPlaceImg.setId(srvcBuildingPlace.getImgId());
+            srvcPlaceImg.setImageUrl(srvcBuildingPlace.getImageUrl());
+            srvcPlaceImg.setImageExplain(srvcBuildingPlace.getImageExplain());
             srvcPlaceImgService.update(srvcPlaceImg);
         } catch (RuntimeException e) {
             e.printStackTrace();

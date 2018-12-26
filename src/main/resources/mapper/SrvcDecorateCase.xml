@@ -189,7 +189,9 @@
                 AND h.floor_space &lt;= #{maxFloorSpace}
             </if>
         </where>
+        GROUP BY d.houses_id
         ORDER BY d.create_date DESC
+
 
     </select>
 

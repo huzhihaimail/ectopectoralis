@@ -25,6 +25,11 @@ var showColumns = [
         width: "10%"
     }
     , {
+        field: "moduleType",
+        title: "装修类型",
+        width: "10%"
+    }
+    , {
         field: "createDate",
         title: "创建时间",
         width: "20%",
