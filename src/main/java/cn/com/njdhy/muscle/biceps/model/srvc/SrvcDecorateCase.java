@@ -52,6 +52,10 @@ public class SrvcDecorateCase extends BaseModel{
      */
     private String area;
     /**
+     * 房屋展示图
+     */
+    private String homePageImg;
+    /**
      * 设计师名字
      */
     private String designerName;

@@ -304,7 +304,6 @@ $('#input-id').on('filepreupload', function(event, data, previewId, index) {
         response = data.response, reader = data.reader;
 
 });
-
 //异步上传返回结果处理
 $("#input-id").on("fileuploaded", function (event, data, previewId, index) {
     //后台返回的json

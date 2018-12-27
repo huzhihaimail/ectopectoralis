@@ -40,4 +40,10 @@ public interface SrvcDecorateCaseDao extends BaseDao<SrvcDecorateCase> {
      * @return
      */
     List<SrvcDecorateCase> selectDecorateCaseById(Integer id);
+
+    /**
+     * api 查询首页装修案例展示5条
+     * @return
+     */
+    List<SrvcDecorateCase> selectPageCase();
 }

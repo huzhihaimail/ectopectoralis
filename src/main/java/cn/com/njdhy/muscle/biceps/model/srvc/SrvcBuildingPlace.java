@@ -44,6 +44,10 @@ public class SrvcBuildingPlace extends BaseModel{
      */
     private String area;
     /**
+     * 房屋展示图
+     */
+    private String homePageImg;
+    /**
      * 图片地址 关联srvc_place_img表
      */
     private String imageUrl;

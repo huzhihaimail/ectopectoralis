@@ -45,4 +45,10 @@ public interface SrvcDecorateCaseService extends BaseService<SrvcDecorateCase>{
      * @return
      */
     List<SrvcDecorateCase> selectDecorateCaseById(Integer id);
+
+    /**
+     * 查询首页装修案例展示数
+     * @return
+     */
+    List<SrvcDecorateCase> selectPageCase();
 }

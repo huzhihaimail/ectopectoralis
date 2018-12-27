@@ -42,4 +42,10 @@ public interface SrvcBuildingPlaceDao extends BaseDao<SrvcBuildingPlace> {
      */
     int selectBuildingCountById(Integer id);
 
+    /**
+     * api 首页查询在施工地 限制5条
+     * @return
+     */
+    List<SrvcBuildingPlace> selectPageBuildingImg();
+
 }

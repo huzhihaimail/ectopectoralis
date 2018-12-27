@@ -16,6 +16,7 @@
         <result property="floorSpace" column="floor_space"></result>
         <result property="style" column="style"></result>
         <result property="area" column="area"></result>
+        <result property="homePageImg" column="home_page_img"></result>
 
         <result property="imgId" column="img_id"></result>
         <result property="imageUrl" column="image_url"></result>
@@ -150,12 +151,38 @@
             </if>
         </where>
     </select>
+    <!--api 查询首页在施工地展示数限定五条-->
+    <select id="selectPageBuildingImg" resultMap="SrvcBuildingPlaceMap" >
+        SELECT *
+        FROM
+        (SELECT
+        h.id,h.name,h.houses_type,h.floor_space,h.home_page_img,
+        h.style ,h.area,b.progress,i.image_url
+        FROM
+        <include refid="tableName"/> b
+        LEFT JOIN
+        <include refid="tableName1"/> h
+        ON h.id = b.houses_id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON b.id = i.place_id
+        <where>
+            <if test="progress != null and progress != '' ">
+                AND b.progress =#{progress}
+            </if>
+        </where>
+        ORDER BY b.create_date DESC
+        ) t
+        GROUP BY t.name
+        limit 5
+
+    </select>
     <!--api关联查询-->
     <select id="selectBuildingPlaceParams" resultMap="SrvcBuildingPlaceMap" parameterType="map">
         SELECT *
         FROM
         (SELECT
-        h.id,h.name,h.houses_type,h.floor_space,
+        h.id,h.name,h.houses_type,h.floor_space,h.home_page_img,
         h.style ,h.area,b.progress,i.image_url
         FROM
         <include refid="tableName"/> b
@@ -179,7 +206,7 @@
     <!--api 根据id查询在施工地详情信息-->
     <select id="selectBuildingPlaceById" resultMap="SrvcBuildingPlaceMap" parameterType="Integer">
         SELECT
-        b.*,h.name,h.houses_type,h.floor_space,
+        b.*,h.name,h.houses_type,h.floor_space,h.home_page_img,
         h.style ,h.area,i.image_url,i.image_explain
         FROM
         <include refid="tableName1"/> h
@@ -192,7 +219,7 @@
         WHERE h.id = #{id}
     </select>
 
-    <!--api 查询设计师及其案例作品信息列表-->
+    <!--api 查询在施工地进度-->
     <select id="selectBuildingCountById" resultType="Integer" parameterType="Integer">
 
         SELECT

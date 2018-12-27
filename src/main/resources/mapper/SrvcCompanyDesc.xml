@@ -11,6 +11,7 @@
         <result property="title" column="title"></result>
         <result property="imageUrl" column="image_url"></result>
         <result property="type" column="type"></result>
+        <result property="orderNum" column="order_num"></result>
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
         <result property="updateDate" column="update_date"></result>
@@ -23,17 +24,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, title, image_url, `type`, create_date, update_date, delete_flag
+        id, title, image_url, `type`, order_num, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{title}, #{imageUrl}, #{type}, NOW(), NOW(), 0
+        #{id}, #{title}, #{imageUrl}, #{type}, #{orderNum}, NOW(), NOW(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        title=#{title}, image_url=#{imageUrl}, `type`=#{type}, update_date=NOW(), delete_flag=#{deleteFlag}
+        title=#{title}, image_url=#{imageUrl}, `type`=#{type}, order_num=#{orderNum},update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->

@@ -15,6 +15,8 @@
         <result property="style" column="style"></result>
         <result property="area" column="area"></result>
         <result property="concept" column="concept"></result>
+        <result property="orderNum" column="order_num"></result>
+        <result property="homePageImg" column="home_page_img"></result>
 
         <result property="designerName" column="designer_name"></result>
 
@@ -34,17 +36,17 @@
 
     <!-- for insert columns -->
     <sql id="columns">
-        id, `name`, designer_id, houses_type, floor_space, style, area, concept, create_date, update_date, delete_flag
+        id, `name`, designer_id, houses_type, floor_space,home_page_img, style, area, concept, order_num, create_date, update_date, delete_flag
     </sql>
 
     <!-- for insert value -->
     <sql id="values">
-        #{id}, #{name}, #{designerId}, #{housesType}, #{floorSpace}, #{style}, #{area}, #{concept}, NOW(),NOW(), 0
+        #{id}, #{name}, #{designerId}, #{housesType}, #{floorSpace}, #{homePageImg}, #{style}, #{area}, #{concept}, #{orderNum}, NOW(),NOW(), 0
     </sql>
 
     <!-- for update set -->
     <sql id="updates">
-        `name`=#{name}, designer_id=#{designerId}, houses_type=#{housesType}, floor_space=#{floorSpace}, style=#{style},  area=#{area}, concept=#{concept}, update_date=NOW(), delete_flag=#{deleteFlag}
+        `name`=#{name}, designer_id=#{designerId}, houses_type=#{housesType}, floor_space=#{floorSpace}, home_page_img=#{homePageImg}, style=#{style},  area=#{area}, concept=#{concept}, order_num=#{orderNum}, update_date=NOW(), delete_flag=#{deleteFlag}
     </sql>
 
     <!-- 根据名称查询 -->
@@ -150,18 +152,6 @@
         </where>
     </select>
 
-    <!--&lt;!&ndash;api关联查询&ndash;&gt;-->
-    <!--<select id="selectHousesInfo" resultMap="SrvcHousesMap" parameterType="Integer">-->
-        <!--SELECT-->
-        <!--h.*,-->
-        <!--s.id,s.image_url-->
-        <!--FROM-->
-        <!--<include refid="tableName"/> h-->
-        <!--LEFT JOIN-->
-        <!--<include refid="tableName2"/> s-->
-        <!--ON h.id = s.houses_id-->
-        <!--WHERE h.delete_flag = 0 -->
-    <!--</select>-->
 
 </mapper>
 

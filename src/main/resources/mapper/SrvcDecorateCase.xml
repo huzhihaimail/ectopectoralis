@@ -17,11 +17,13 @@
         <result property="style" column="style"></result>
         <result property="area" column="area"></result>
         <result property="imageUrl" column="image_url"></result>
+        <result property="homePageImg" column="home_page_img"></result>
         <result property="imgId" column="img_id"></result>
         <result property="designerName" column="designer_name"></result>
         <result property="position" column="position"></result>
         <result property="headUrl" column="head_url"></result>
         <result property="concept" column="concept"></result>
+        <result property="orderNum" column="order_num"></result>
 
         <result property="deleteFlag" column="delete_flag"></result>
         <result property="createDate" column="create_date"></result>
@@ -154,11 +156,35 @@
             </if>
         </where>
     </select>
-
+    <!--api 查询首页装修案例展示5条-->
+    <select id="selectPageCase" resultMap="SrvcDecorateCaseMap">
+        SELECT t.* FROM
+        (
+        SELECT
+        d.*,h.name,h.houses_type,h.floor_space,h.home_page_img,
+        h.style ,h.area,i.image_url,r.position,
+        r.name designer_name,r.head_url,h.order_num
+        FROM
+        <include refid="tableName"/>d
+        LEFT JOIN
+        <include refid="tableName1"/> h
+        ON h.id = d.houses_id
+        LEFT JOIN
+        <include refid="tableName2"/> i
+        ON d.id = i.case_id
+        LEFT JOIN
+        <include refid="tableName3"/> r
+        ON r.id = h.designer_id
+        GROUP BY d.houses_id
+        ORDER BY h.create_date DESC
+        limit 5
+        ) t
+        ORDER BY t.order_num
+    </select>
     <!--api 查询设计师及其案例作品信息列表-->
     <select id="selectDecorateCaseByParams" resultMap="SrvcDecorateCaseMap" parameterType="map">
         SELECT
-        d.*,h.name,h.houses_type,h.floor_space,
+        d.*,h.name,h.houses_type,h.floor_space,h.home_page_img,
         h.style ,h.area,i.image_url,r.position,
         r.name designer_name,r.head_url
         FROM
@@ -192,13 +218,12 @@
         GROUP BY d.houses_id
         ORDER BY d.create_date DESC
 
-
     </select>
 
     <!--api 首页搜索接口 案例作品信息列表-->
     <select id="selectDecorateCaseParams" resultMap="SrvcDecorateCaseMap" parameterType="map">
         SELECT
-        d.*,h.name,h.houses_type,h.floor_space,
+        d.*,h.name,h.houses_type,h.floor_space,h.home_page_img,
         h.style ,h.area,i.image_url,r.position,
         r.name designer_name,r.head_url
         FROM
@@ -227,7 +252,7 @@
     <!--api 查询设计师及其案例作品信息列表-->
     <select id="selectDecorateCaseById" resultMap="SrvcDecorateCaseMap" parameterType="Integer">
         SELECT
-        d.*,h.name,h.houses_type,h.floor_space,
+        d.*,h.name,h.houses_type,h.floor_space,h.home_page_img,
         h.concept,h.style ,h.area,i.image_url,
         r.position,r.name designer_name,r.head_url
         FROM

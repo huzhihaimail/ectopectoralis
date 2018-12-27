@@ -29,6 +29,24 @@ public class DecorateCaseController {
     private SrvcDecorateCaseService srvcDecorateCaseService;
 
     /**
+     * 查询首页装修案例展示数
+     * @return
+     */
+    @RequestMapping(value = "/page/case",method = RequestMethod.POST)
+    @ApiOperation("查询首页装修案例展示数")
+    public Result queryPageCase() {
+        List<SrvcDecorateCase> list =null;
+        try {
+            list = srvcDecorateCaseService.selectPageCase();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.error(HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_MESSAGE);
+        }
+        return Result.success(list);
+    }
+
+    /**
      * 查询楼盘情况及图片信息列表
      * @param map
      * @return

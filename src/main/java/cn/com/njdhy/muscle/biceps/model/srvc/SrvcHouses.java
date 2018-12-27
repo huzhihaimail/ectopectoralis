@@ -41,6 +41,14 @@ public class SrvcHouses extends BaseModel{
      * 设计理念
      */
     private String concept;
+    /**
+     * 首页显示图片
+     */
+    private String homePageImg;
+    /**
+     * 排序
+     */
+    private Integer orderNum;
 
     /**
      * 关联srvc_designer 设计师名字

@@ -91,6 +91,15 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <div class="col-sm-3 control-label text-right">上传图片<span class="text-danger">*</span></div>
+                    <div class="col-sm-6">
+                        <form id="form" enctype="multipart/form-data">
+                            <input type="file" id="input-id" name="file" multiple data-show-caption="true">
+                            <input type="hidden" name="homePageImg" v-model="model.homePageImg"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-sm-3 control-label">房屋风格<span class="text-danger">*</span></div>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" v-model="model.style"
@@ -113,7 +122,12 @@
                         </textarea>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">楼盘排序<span class="text-danger">*</span></div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" v-model="model.orderNum" placeholder="请输入数字，越小越靠前"/>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-sm-3 control-label">设 计 师<span class="text-danger">*</span></div>
                     <div class="col-sm-6">

@@ -51,4 +51,9 @@ public class SrvcBuildingPlaceServiceImpl extends BaseServiceImpl<SrvcBuildingPl
     public int selectBuildingCountById(Integer id) {
         return srvcBuildingPlaceDao.selectBuildingCountById(id);
     }
+
+    @Override
+    public List<SrvcBuildingPlace> selectPageBuildingImg() {
+        return srvcBuildingPlaceDao.selectPageBuildingImg();
+    }
 }

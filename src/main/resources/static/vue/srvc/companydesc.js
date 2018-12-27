@@ -50,7 +50,11 @@ var showColumns = [
             return role;
         }
     }
-
+    , {
+        field: "orderNum",
+        title: "排序号",
+        width: "10%",
+    }
     , {
         field: "createDate",
         title: "创建时间",

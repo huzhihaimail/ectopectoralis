@@ -44,4 +44,9 @@ public class SrvcDecorateCaseServiceImpl extends BaseServiceImpl<SrvcDecorateCas
     public List<SrvcDecorateCase> selectDecorateCaseById(Integer id) {
         return srvcDecorateCaseDao.selectDecorateCaseById(id);
     }
+
+    @Override
+    public List<SrvcDecorateCase> selectPageCase() {
+        return srvcDecorateCaseDao.selectPageCase();
+    }
 }

@@ -29,4 +29,8 @@ public class SrvcCompanyDesc extends BaseModel{
      */
     private Integer type;
 
+    /**
+     * 图片排序
+     */
+    private Integer orderNum;
 }

@@ -30,6 +30,27 @@ public class BuildingPlaceController {
     private SrvcBuildingPlaceService srvcBuildingPlaceService;
 
     /**
+     * 首页查询在施工地
+     * @return
+     */
+
+    @RequestMapping(value = "/page/place",method = RequestMethod.POST)
+    @ApiOperation("首页查询在施工地")
+    public Result pagePlaceQuery (){
+        List<SrvcBuildingPlace> list =null;
+        try {
+
+            list = srvcBuildingPlaceService.selectPageBuildingImg();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.error(HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_CODE, HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_MESSAGE);
+        }
+
+        return Result.success(list);
+    }
+
+    /**
      * 查询在施工地及图片信息列表
      * @return
      */
