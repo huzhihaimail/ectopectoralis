@@ -71,4 +71,9 @@ public class SrvcDecorateCase extends BaseModel{
      * 房屋设计理念设计理念
      */
     private String concept;
+
+    /**
+     * 用于排序
+     */
+    private String orderNum;
 }
