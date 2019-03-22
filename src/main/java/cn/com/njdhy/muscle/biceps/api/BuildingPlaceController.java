@@ -5,6 +5,7 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcBuildingPlace;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDecorateCase;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcBuildingPlaceService;
+import cn.com.njdhy.muscle.biceps.service.srvc.SrvcBuildingPlaceServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,9 @@ public class BuildingPlaceController {
 
     @Autowired
     private SrvcBuildingPlaceService srvcBuildingPlaceService;
+
+    @Autowired
+    private SrvcBuildingPlaceServiceImpl srvcBuildingPlaceServiceImpl;
 
     /**
      * 首页查询在施工地
@@ -95,7 +99,8 @@ public class BuildingPlaceController {
     public int queryCountById(@PathVariable Integer id) {
         Integer number = null;
         try {
-            number   =  srvcBuildingPlaceService.selectBuildingCountById(id);
+//            number   =  srvcBuildingPlaceService.selectBuildingCountById(id);
+            number = srvcBuildingPlaceServiceImpl.countBuilding(id);
         } catch (Exception e) {
             e.printStackTrace();
 

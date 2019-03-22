@@ -56,4 +56,63 @@ public class SrvcBuildingPlaceServiceImpl extends BaseServiceImpl<SrvcBuildingPl
     public List<SrvcBuildingPlace> selectPageBuildingImg() {
         return srvcBuildingPlaceDao.selectPageBuildingImg();
     }
+
+    public int countBuilding(Integer id) {
+        int number = 0;
+        List<SrvcBuildingPlace> buildingPlaceList = srvcBuildingPlaceDao.selectBuildingPlaceById(id);
+        if(buildingPlaceList == null){
+            return number;
+        }
+        for (SrvcBuildingPlace srvcBuildingPlace : buildingPlaceList) {
+            if(srvcBuildingPlace.getProgress().equals("售后服务")){
+                number = 10;
+            }
+            if(srvcBuildingPlace.getProgress().equals("竣工验收")){
+                if(number < 9){
+                    number = 9;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("安装项目")){
+                if(number < 8){
+                    number = 8;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("油工施工")){
+                if(number < 7){
+                    number = 7;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("木工施工")){
+                if(number < 6){
+                    number = 6;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("瓦工施工")){
+                if(number < 5){
+                    number = 5;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("水电施工")){
+                if(number < 4){
+                    number = 4;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("拆改项目")){
+                if(number < 3){
+                    number = 3;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("开工仪式")){
+                if(number < 2){
+                    number = 2;
+                }
+            }
+            if(srvcBuildingPlace.getProgress().equals("形象保护")){
+                if(number < 1){
+                    number = 1;
+                }
+            }
+        }
+        return number;
+    }
 }

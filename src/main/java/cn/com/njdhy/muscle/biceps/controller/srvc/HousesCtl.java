@@ -8,6 +8,7 @@ import cn.com.njdhy.muscle.biceps.exception.srvc.HousesErrorCode;
 import cn.com.njdhy.muscle.biceps.exception.srvc.VideoErrorCode;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcDesigner;
 import cn.com.njdhy.muscle.biceps.model.srvc.SrvcHouses;
+import cn.com.njdhy.muscle.biceps.properties.AppCommonProperties;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcDesignerService;
 import cn.com.njdhy.muscle.biceps.service.srvc.SrvcHousesService;
 import com.github.pagehelper.PageInfo;
@@ -27,7 +28,8 @@ import java.util.Map;
 @RequestMapping("/srvc/houses")
 public class HousesCtl {
 
-
+    @Autowired
+    private AppCommonProperties appCommonProperties;
     @Autowired
     private SrvcHousesService srvcHousesService;
     @Autowired
@@ -47,6 +49,12 @@ public class HousesCtl {
         try {
             Query queryParam = new Query(params);
             result = srvcHousesService.selectHousesList(queryParam, pageNumber, pageSize);
+            List<SrvcHouses> list = result.getList();
+            for (SrvcHouses srvcHouses : list) {
+                String imgUrl = appCommonProperties.getImagesPrefix() + srvcHouses.getHomePageImg();
+                srvcHouses.setHomePageImg(imgUrl);
+            }
+            result.setList(list);
         }catch (Exception e){
             e.printStackTrace();
             return Result.error(HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_CODE,HousesErrorCode.SRVC_HOUSES_SELECT_ERROR_MESSAGE);
